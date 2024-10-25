@@ -17,6 +17,11 @@
     color: inherit;
 }
 
+.navbar-logo-image {
+    width: 80px; 
+    height: auto; 
+  }
+
 .navbar-right {
     display: flex;
     align-items: center;
@@ -32,6 +37,7 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+    font-size: 20px;
 }
 
 .navbar-icon span {
@@ -49,18 +55,18 @@
     border: 1px solid #ddd;
     background-color: white;
     width: 300px;
+    border-radius: 5px;
 }
 
 .navbar-search-input {
     width: 100%;
-    padding: 5px;
     border: none;
     outline: none;
 }
 
 .navbar-search-icon {
     cursor: pointer;
-    font-size: 18px;
+    font-size: 20px;
 }
 
 .navbar-bottom {
@@ -102,7 +108,7 @@
     border-top: 1px solid #ddd;
     justify-content: space-around;
     align-items: center;
-    padding: 10px 0;
+    padding: 20px 0;
     z-index: 1000;
 }
 
@@ -110,7 +116,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
 }
 
@@ -156,6 +162,11 @@
     .navbar-container {
       padding: 20px;
     }
+
+    .navbar-logo-image {
+        width: 45px;
+        height: auto;
+      }
   
     .navbar-top {
       display: flex;
@@ -172,13 +183,13 @@
     }
   
     .hamburger-icon {
-      font-size: 24px;
+      font-size: 20px;
       cursor: pointer;
       display: inline-block;
     }
   
-    .navbar-logo {
-      font-size: 16px;
+    .navbar-left .navbar-logo  {
+      font-size: 20px;
       margin: 0;
     }
   
@@ -189,12 +200,28 @@
       transform: translateY(-50%);
     }
   
-    .navbar-right .navbar-icon:not(:last-child) {
-      display: none;
-    }
+    .navbar-right .navbar-icon:not(:nth-child(3)):not(:last-child) {
+        display: none;
+      }
   
     .navbar-bottom-icons {
       display: flex;
+      justify-content: space-around;
+      align-items: center;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: #fff;
+      border-top: 1px solid #ddd;
+      padding: 10px 0;
+      z-index: 1000;
+    }
+  
+    .navbar-bottom-icons .navbar-icon span {
+      display: block; 
+      font-size: 12px; 
+      margin-top: 4px;
     }
   
     .navbar-bottom .navbar-menu-list {
@@ -203,5 +230,6 @@
       gap: 10px;
     }
   }
+  
   
   
