@@ -1,4 +1,4 @@
-body{
+/* body{
   font-family: sans-serif;
   background-color: #FAF9F8;
 }
@@ -53,7 +53,6 @@ body{
 
 .search-box{
   border-bottom: 1px solid black;
-  /* position: absolute; */
   padding: 5px;
 }
 .search-box input{
@@ -186,14 +185,7 @@ body{
   min-height: 100vh !important;
   background-color: red;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-  /* box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1); */
-  /* box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px; */
-   /* width: 100vw; */
- /* margin-left: -1rem;
-  -webkit-transition: margin .25s ease-out;
-  -moz-transition: margin .25s ease-out;
-  -o-transition: margin .25s ease-out;
-  transition: margin .25s ease-out; */
+
 }
 .sidebar-item{
   color:black;
@@ -249,7 +241,6 @@ body{
   .sidebar{
     max-width: 100%;
     padding:0px;
-    /* margin-bottom: 0; */
   }
   .mobile-sidebar{
     max-height: 104px;
@@ -274,4 +265,4 @@ body{
   justify-content: flex-end;
   margin-top: 20px;
   margin-right: 20px;
-}
+} */

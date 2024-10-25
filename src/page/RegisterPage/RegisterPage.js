@@ -16,14 +16,13 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const [passwordError, setPasswordError] = useState("");
   const [policyError, setPolicyError] = useState(false);
-  const { registrationError } = useSelector((state) => state.user);
+  const { registrationError, isLoading } = useSelector((state) => state.user);
 
   const register = (event) => {
     event.preventDefault();
     const { name, email, password, confirmPassword, policy } = formData;
-    
-    const checkConfirmPassword = password === confirmPassword;
-    if (!checkConfirmPassword) {
+
+    if (password !== confirmPassword) {
       setPasswordError("비밀번호가 일치하지 않습니다.");
       return;
     }
@@ -31,34 +30,33 @@ const RegisterPage = () => {
       setPolicyError(true);
       return;
     }
+
     setPasswordError("");
     setPolicyError(false);
     dispatch(registerUser({ name, email, password, navigate }));
   };
 
-    const handleChange = (event) => {
-      let { id, value, type, checked } = event.target;
-    
-      if (type === "checkbox") {
-        setFormData((prevState) => ({ ...prevState, [id]: checked }));
-      } else {
-        setFormData((prevState) => ({ ...prevState, [id]: value }));
-      }
-    
-      if (id === "confirmPassword" && passwordError) {
-        setPasswordError("");
-      }
-      if (type === "checkbox" && policyError) {
-        setPolicyError(false);
-      }
-    };
+  const handleChange = (event) => {
+    const { id, value, type, checked } = event.target;
+
+    if (type === "checkbox") {
+      setFormData((prevState) => ({ ...prevState, [id]: checked }));
+    } else {
+      setFormData((prevState) => ({ ...prevState, [id]: value }));
+    }
+
+    if (id === "confirmPassword" && passwordError) {
+      setPasswordError("");
+    }
+    if (type === "checkbox" && policyError) {
+      setPolicyError(false);
+    }
+  };
 
   return (
     <div className="register-container">
       {registrationError && (
-        <div className="error-message">
-          {registrationError}
-        </div>
+        <div className="error-message">{registrationError}</div>
       )}
       <form className="register-form" onSubmit={register}>
         <div className="form-group">
@@ -71,7 +69,6 @@ const RegisterPage = () => {
             required
           />
         </div>
-       
         <div className="form-group">
           <label>Email*</label>
           <input
@@ -104,22 +101,21 @@ const RegisterPage = () => {
           {passwordError && <p className="error-text">{passwordError}</p>}
         </div>
         <div className="form-group checkbox">
-  <label htmlFor="policy">
-    <input
-      type="checkbox"
-      id="policy"
-      onChange={handleChange}
-      isInvalid={policyError}
-      checked={formData.policy}
-    />
-     By signing up, you agree to MY`&nbsp;
-    <a href="/terms">Terms of Service</a>&nbsp;and&nbsp;
-    <a href="/privacy">Privacy Policy</a>.
-  </label>
-  
-</div>
-        <button type="submit" className="register-button">
-          Sign Up
+          <label htmlFor="policy">
+            <input
+              type="checkbox"
+              id="policy"
+              onChange={handleChange}
+              className={policyError ? "input-error" : ""}
+              checked={formData.policy}
+            />
+            By signing up, you agree to MY`&nbsp;
+            <a href="/terms">Terms of Service</a>&nbsp;and&nbsp;
+            <a href="/privacy">Privacy Policy</a>.
+          </label>
+        </div>
+        <button type="submit" className="register-button" disabled={isLoading}>
+          {isLoading ? "Signing Up..." : "Sign Up"}
         </button>
       </form>
       <div className="login-link">
@@ -130,4 +126,3 @@ const RegisterPage = () => {
 };
 
 export default RegisterPage;
- 
