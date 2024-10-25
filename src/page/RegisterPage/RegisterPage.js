@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import "./RegisterPage.style.css";
-import { registerUser } from "../../features/user/userSlice";
+import { registerUser, clearErrors } from "../../features/user/userSlice";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -51,13 +51,13 @@ const RegisterPage = () => {
     if (type === "checkbox" && policyError) {
       setPolicyError(false);
     }
+    if (registrationError) {
+      dispatch(clearErrors());
+    }
   };
 
   return (
     <div className="register-container">
-      {registrationError && (
-        <div className="error-message">{registrationError}</div>
-      )}
       <form className="register-form" onSubmit={register}>
         <div className="form-group">
           <label>Name*</label>
@@ -77,7 +77,11 @@ const RegisterPage = () => {
             placeholder="Enter email"
             onChange={handleChange}
             required
+            className={registrationError ? "input-invalid" : ""}
           />
+          {registrationError && (
+            <p className="error-text">이미 가입된 유저입니다.</p>
+          )}
         </div>
         <div className="form-group">
           <label>Password*</label>
@@ -110,7 +114,7 @@ const RegisterPage = () => {
               className={policyError ? "input-invalid" : ""}
               checked={formData.policy}
             />
-            By signing up, you agree to MY`&nbsp;
+            By signing up, you agree to MY&nbsp;
             <a href="/terms">Terms of Service</a>&nbsp;and&nbsp;
             <a href="/privacy">Privacy Policy</a>.
           </label>
