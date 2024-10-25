@@ -21,6 +21,7 @@ const RegisterPage = () => {
   const register = (event) => {
     event.preventDefault();
     const { name, email, password, confirmPassword, policy } = formData;
+    
     const checkConfirmPassword = password === confirmPassword;
     if (!checkConfirmPassword) {
       setPasswordError("비밀번호가 일치하지 않습니다.");
@@ -115,6 +116,7 @@ const RegisterPage = () => {
     <a href="/terms">Terms of Service</a>&nbsp;and&nbsp;
     <a href="/privacy">Privacy Policy</a>.
   </label>
+  
 </div>
         <button type="submit" className="register-button">
           Sign Up
@@ -128,3 +130,4 @@ const RegisterPage = () => {
 };
 
 export default RegisterPage;
+ 
