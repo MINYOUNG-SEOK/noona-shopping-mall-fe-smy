@@ -1,76 +1,76 @@
 .navbar-container {
     padding: 10px 40px;
     position: relative;
-  }
-  
-  .navbar-top {
+}
+
+.navbar-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin: 20px auto;
-  }
-  
-  .navbar-left .navbar-logo {
+}
+
+.navbar-left .navbar-logo {
     font-size: 28px;
     font-weight: 500;
     text-decoration: none;
     color: inherit;
-  }
-  
-  .navbar-right {
+}
+
+.navbar-right {
     display: flex;
     align-items: center;
-  }
-  
-  .navbar-icons {
+}
+
+.navbar-icons {
     display: flex;
     gap: 20px;
     align-items: center;
-  }
-  
-  .navbar-icon {
+}
+
+.navbar-icon {
     display: flex;
     align-items: center;
     cursor: pointer;
-  }
-  
-  .navbar-icon span {
+}
+
+.navbar-icon span {
     margin-left: 5px;
     font-size: 14px;
-  }
-  
-  .navbar-search-box {
+}
+
+.navbar-search-box {
     position: absolute;
     top: 80px;
-    right: 35px; 
+    right: 35px;
     display: flex;
     align-items: center;
     padding: 10px;
     border: 1px solid #ddd;
     background-color: white;
     width: 300px;
-  }
-  
-  .navbar-search-input {
+}
+
+.navbar-search-input {
     width: 100%;
     padding: 5px;
     border: none;
     outline: none;
-  }
-  
-  .navbar-search-icon {
+}
+
+.navbar-search-icon {
     cursor: pointer;
     font-size: 18px;
-  }
-  
-  .navbar-bottom {
+}
+
+.navbar-bottom {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 10px;
-  }
-  
-  .navbar-bottom .navbar-menu-list {
+}
+
+.navbar-bottom .navbar-menu-list {
     display: flex;
     gap: 20px;
     list-style: none;
@@ -81,44 +81,127 @@
     justify-content: flex-start;
     flex-grow: 1;
     flex-wrap: wrap;
-  }
-  
-  .navbar-menu-list li {
-    white-space: nowrap; 
-  }
-  
-  .navbar-menu-list li a {
+}
+
+.navbar-menu-list li {
+    white-space: nowrap;
+}
+
+.navbar-menu-list li a {
     text-decoration: none;
     color: black;
-  }
-  
-  @media (max-width: 1200px) {
+}
+
+.navbar-bottom-icons {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    z-index: 1000;
+}
+
+.navbar-bottom-icons .navbar-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.hamburger-icon {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+@media (max-width: 1200px) {
     .navbar-right {
-      flex-direction: row;
-      align-items: center;
+        flex-direction: row;
+        align-items: center;
     }
-  
+
     .navbar-icons {
-      flex-direction: row;
-      align-items: center;
+        flex-direction: row;
+        align-items: center;
     }
-  
+
     .navbar-icon span {
-      display: none;
+        display: none;
     }
-  
+
     .navbar-search-icon {
-      order: 1;
-      margin-left: 0;
+        order: 1;
+        margin-left: 0;
     }
-  
+
     .navbar-icons .navbar-icon {
-      order: 0;
+        order: 0;
     }
-  }
-  
-  @media (max-width : 768px) {
+}
+
+@media (max-width : 768px) {
     .navbar-bottom .navbar-menu-list {
         font-size: 14px;
     }
+}
+
+@media (max-width: 480px) {
+    .navbar-container {
+      padding: 20px;
+    }
+  
+    .navbar-top {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+  
+    .navbar-left {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  
+    .hamburger-icon {
+      font-size: 24px;
+      cursor: pointer;
+      display: inline-block;
+    }
+  
+    .navbar-logo {
+      font-size: 16px;
+      margin: 0;
+    }
+  
+    .navbar-right {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  
+    .navbar-right .navbar-icon:not(:last-child) {
+      display: none;
+    }
+  
+    .navbar-bottom-icons {
+      display: flex;
+    }
+  
+    .navbar-bottom .navbar-menu-list {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
   }
+  
+  
