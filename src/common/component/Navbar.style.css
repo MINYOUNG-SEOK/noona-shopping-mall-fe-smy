@@ -18,7 +18,7 @@
 }
 
 .navbar-logo-image {
-    width: 80px; 
+    width: 70px; 
     height: auto; 
   }
 
@@ -29,7 +29,7 @@
 
 .navbar-icons {
     display: flex;
-    gap: 30px;
+    gap: 25px;
     align-items: center;
 }
 
@@ -78,7 +78,7 @@
 
 .navbar-bottom .navbar-menu-list {
     display: flex;
-    gap: 40px;
+    gap: 25px;
     list-style: none;
     padding: 0;
     margin: 10px auto;
@@ -91,6 +91,7 @@
 
 .navbar-menu-list li {
     white-space: nowrap;
+ 
 }
 
 .navbar-menu-list li a {
@@ -133,6 +134,12 @@
         align-items: center;
     }
 
+    
+    .navbar-logo-image {
+        width: 60px;
+        height: auto;
+      }
+
     .navbar-icons {
         flex-direction: row;
         align-items: center;
@@ -156,6 +163,7 @@
     .navbar-bottom .navbar-menu-list {
         font-size: 14px;
     }
+
 }
 
 @media (max-width: 480px) {
@@ -164,7 +172,7 @@
     }
 
     .navbar-logo-image {
-        width: 45px;
+        width: 50px;
         height: auto;
       }
   
