@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import "./RegisterPage.style.css";
 import { registerUser, clearErrors } from "../../features/user/userSlice";
+import api from "../../utils/api";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -16,7 +17,29 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const [passwordError, setPasswordError] = useState("");
   const [policyError, setPolicyError] = useState(false);
+  const [emailError, setEmailError] = useState("");
   const { registrationError, isLoading } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    const checkEmailDebounced = setTimeout(() => {
+      if (formData.email) {
+        handleEmailCheck();
+      }
+    }, 300);
+
+    return () => clearTimeout(checkEmailDebounced);
+  }, [formData.email]);
+
+  const handleEmailCheck = async () => {
+    try {
+      const response = await api.post("/user/check-email", {
+        email: formData.email,
+      });
+      setEmailError("");
+    } catch (error) {
+      setEmailError("이미 가입된 유저입니다.");
+    }
+  };
 
   const register = (event) => {
     event.preventDefault();
@@ -43,6 +66,9 @@ const RegisterPage = () => {
       setFormData((prevState) => ({ ...prevState, [id]: checked }));
     } else {
       setFormData((prevState) => ({ ...prevState, [id]: value }));
+      if (id === "email") {
+        setEmailError("");
+      }
     }
 
     if (id === "confirmPassword" && passwordError) {
@@ -77,11 +103,9 @@ const RegisterPage = () => {
             placeholder="Enter email"
             onChange={handleChange}
             required
-            className={registrationError ? "input-invalid" : ""}
+            className={emailError ? "input-invalid" : ""}
           />
-          {registrationError && (
-            <p className="error-text">이미 가입된 유저입니다.</p>
-          )}
+          {emailError && <p className="error-text">{emailError}</p>}
         </div>
         <div className="form-group">
           <label>Password*</label>
