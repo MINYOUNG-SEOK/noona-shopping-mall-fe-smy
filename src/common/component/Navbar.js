@@ -66,7 +66,7 @@ const Navbar = ({ user }) => {
             onClick={toggleMenuList}
           />
           <Link to="/" className="navbar-logo">
-            CHILLING
+          <img src="/image/logo.png" alt="Logo" className="navbar-logo-image" />
           </Link>
         </div>
 
@@ -122,13 +122,10 @@ const Navbar = ({ user }) => {
         <div className="navbar-search-box">
           <input
             type="text"
-            placeholder="제품검색"
+            placeholder="Search..."
             onKeyPress={onCheckEnter}
             className="navbar-search-input"
           />
-          <button className="closebtn" onClick={() => setShowSearchBox(false)}>
-            &times;
-          </button>
         </div>
       )}
 
@@ -136,24 +133,29 @@ const Navbar = ({ user }) => {
       <div className="navbar-bottom-icons">
         <div className="navbar-icon" onClick={goBack}>
           <FontAwesomeIcon icon={faArrowLeft} />
+          <span>BACK</span>
         </div>
         <div onClick={() => navigate("/mypage")} className="navbar-icon">
           <FontAwesomeIcon icon={faUser} />
+          <span>MY ORDERS</span>
         </div>
         <div onClick={() => navigate("/favorites")} className="navbar-icon">
           <FontAwesomeIcon icon={faHeart} />
+          <span>MY LIKES</span>
         </div>
-        <div onClick={() => navigate("/cart")} className="navbar-icon">
+        {/* <div onClick={() => navigate("/cart")} className="navbar-icon">
               <FontAwesomeIcon icon={faShoppingBag} />
               <span style={{ cursor: "pointer" }}>{`SHOPPING BAG(${cartItemCount || 0})`}</span>
-            </div>
+            </div> */}
         {user ? (
           <div onClick={handleLogout} className="navbar-icon">
             <FontAwesomeIcon icon={faSignOutAlt} />
+            <span>LOGOUT</span>
           </div>
         ) : (
           <div onClick={() => navigate("/login")} className="navbar-icon">
             <FontAwesomeIcon icon={faSignInAlt} />
+            <span>LOGIN</span>
           </div>
         )}
       </div>
