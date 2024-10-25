@@ -8,15 +8,16 @@ export const loginWithEmail = createAsyncThunk(
   "user/loginWithEmail",
   async ({ email, password }, { rejectWithValue }) => {
     try {
+      console.log("Logging in with:", { email, password }); // 입력 데이터 로그
+
       const response = await api.post("/auth/login", { email, password });
-      // 성공
-      // Login page
+
+      console.log("Login response:", response); // 응답 데이터 로그
 
       return response.data;
     } catch (error) {
-      // 실패
-      // 실패 시 생긴 에러 값을 reducer에 저장하기
-      return rejectWithValue(error.error);
+      console.error("Login error:", error); // 에러 로그
+      return rejectWithValue(error.response?.data || "로그인 실패");
     }
   }
 );
@@ -36,6 +37,7 @@ export const registerUser = createAsyncThunk(
   ) => {
     try {
       const response = await api.post("/user", { email, name, password });
+
       // 성공
       // 1. 성공 토스트 메세지 보여주기
       dispatch(
@@ -53,12 +55,12 @@ export const registerUser = createAsyncThunk(
       // 1. 실패 토스트 메세지 보여주기
       dispatch(
         showToastMessage({
-          message: "회원가입을 실패했습니다.",
+          message: error.response?.data?.message || "회원가입을 실패했습니다.",
           status: "error",
         })
       );
       // 2. 에러 값을 저장한다
-      return rejectWithValue(error.error);
+      return rejectWithValue(error.response?.data || "회원가입 실패");
     }
   }
 );
@@ -86,26 +88,31 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
+        console.log("Register pending...");
         state.loading = true;
       })
-      .addCase(registerUser.fulfilled, (state) => {
+      .addCase(registerUser.fulfilled, (state, action) => {
+        console.log("Register fulfilled:", action.payload);
         state.loading = false;
         state.registrationError = null;
       })
       .addCase(registerUser.rejected, (state, action) => {
+        console.log("Register rejected:", action.payload);
+        state.loading = false;
         state.registrationError = action.payload;
       })
       .addCase(loginWithEmail.pending, (state) => {
+        console.log("Login pending...");
         state.loading = true;
       })
       .addCase(loginWithEmail.fulfilled, (state, action) => {
+        console.log("Login fulfilled:", action.payload);
         state.loading = false;
-        console.log("Payload received:", action.payload);
-
         state.user = action.payload.user;
         state.loginError = null;
       })
       .addCase(loginWithEmail.rejected, (state, action) => {
+        console.log("Login rejected:", action.payload);
         state.loading = false;
         state.loginError = action.payload;
       });

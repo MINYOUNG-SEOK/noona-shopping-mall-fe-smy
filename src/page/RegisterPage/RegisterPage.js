@@ -97,6 +97,7 @@ const RegisterPage = () => {
             placeholder="Confirm Password"
             onChange={handleChange}
             required
+            className={passwordError ? "input-invalid" : ""}
           />
           {passwordError && <p className="error-text">{passwordError}</p>}
         </div>
@@ -106,13 +107,14 @@ const RegisterPage = () => {
               type="checkbox"
               id="policy"
               onChange={handleChange}
-              className={policyError ? "input-error" : ""}
+              className={policyError ? "input-invalid" : ""}
               checked={formData.policy}
             />
             By signing up, you agree to MY`&nbsp;
             <a href="/terms">Terms of Service</a>&nbsp;and&nbsp;
             <a href="/privacy">Privacy Policy</a>.
           </label>
+          {policyError && <p className="error-text">정책에 동의해주세요.</p>}
         </div>
         <button type="submit" className="register-button" disabled={isLoading}>
           {isLoading ? "Signing Up..." : "Sign Up"}
