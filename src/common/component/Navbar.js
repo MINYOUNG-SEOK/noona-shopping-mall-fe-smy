@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import {
+  faBars,
   faUser,
   faSearch,
   faShoppingBag,
   faSignInAlt,
   faSignOutAlt,
+  faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +20,7 @@ const Navbar = ({ user }) => {
   const dispatch = useDispatch();
   const { cartItemCount } = useSelector((state) => state.cart);
   const [showSearchBox, setShowSearchBox] = useState(false);
+  const [showMenuList, setShowMenuList] = useState(false);
   const menuList = [
     "BEST",
     "WOMEN",
@@ -45,10 +48,23 @@ const Navbar = ({ user }) => {
     dispatch(logout());
   };
 
+  const toggleMenuList = () => {
+    setShowMenuList(!showMenuList); 
+  };
+
+  const goBack = () => {
+    navigate(-1); 
+  };
+
   return (
     <div className="navbar-container">
       <div className="navbar-top">
         <div className="navbar-left">
+        <FontAwesomeIcon
+            icon={faBars}
+            className="hamburger-icon"
+            onClick={toggleMenuList}
+          />
           <Link to="/" className="navbar-logo">
             CHILLING
           </Link>
@@ -87,7 +103,6 @@ const Navbar = ({ user }) => {
       </div>
 
       <div className="navbar-bottom">
-      
         <ul className="navbar-menu-list">
           {menuList.map((menu, index) => (
             <li key={index}>
@@ -116,6 +131,32 @@ const Navbar = ({ user }) => {
           </button>
         </div>
       )}
+
+      {/* 모바일 하단 아이콘 섹션 */}
+      <div className="navbar-bottom-icons">
+        <div className="navbar-icon" onClick={goBack}>
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </div>
+        <div onClick={() => navigate("/mypage")} className="navbar-icon">
+          <FontAwesomeIcon icon={faUser} />
+        </div>
+        <div onClick={() => navigate("/favorites")} className="navbar-icon">
+          <FontAwesomeIcon icon={faHeart} />
+        </div>
+        <div onClick={() => navigate("/cart")} className="navbar-icon">
+              <FontAwesomeIcon icon={faShoppingBag} />
+              <span style={{ cursor: "pointer" }}>{`SHOPPING BAG(${cartItemCount || 0})`}</span>
+            </div>
+        {user ? (
+          <div onClick={handleLogout} className="navbar-icon">
+            <FontAwesomeIcon icon={faSignOutAlt} />
+          </div>
+        ) : (
+          <div onClick={() => navigate("/login")} className="navbar-icon">
+            <FontAwesomeIcon icon={faSignInAlt} />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
