@@ -160,6 +160,10 @@
 }
 
 @media (max-width : 768px) {
+    .navbar-container {
+        padding: 10px 20px;
+    }
+
     .navbar-bottom .navbar-menu-list {
         font-size: 14px;
     }
