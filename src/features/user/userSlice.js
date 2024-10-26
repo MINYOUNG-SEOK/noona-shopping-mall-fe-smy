@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
 import { showToastMessage } from "../common/uiSlice";
 import api from "../../utils/api";
 import { initialCart } from "../cart/cartSlice";
@@ -8,15 +7,9 @@ export const loginWithEmail = createAsyncThunk(
   "user/loginWithEmail",
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      console.log("Logging in with:", { email, password }); // 입력 데이터 로그
-
       const response = await api.post("/auth/login", { email, password });
-
-      console.log("Login response:", response); // 응답 데이터 로그
-
       return response.data;
     } catch (error) {
-      console.error("Login error:", error); // 에러 로그
       return rejectWithValue(error.response?.data || "로그인 실패");
     }
   }
@@ -24,10 +17,38 @@ export const loginWithEmail = createAsyncThunk(
 
 export const loginWithGoogle = createAsyncThunk(
   "user/loginWithGoogle",
-  async (token, { rejectWithValue }) => {}
+  async (token, { rejectWithValue }) => {
+    try {
+      const response = await api.post("/auth/google", { token });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Google 로그인 실패");
+    }
+  }
 );
 
-export const logout = () => (dispatch) => {};
+export const loginWithToken = createAsyncThunk(
+  "user/loginWithToken",
+  async (_, { rejectWithValue }) => {
+    // try {
+    //   const response = await api.post("/auth/token");
+    //   return response.data;
+    // } catch (error) {
+    //   return rejectWithValue(error.response?.data || "토큰 로그인 실패");
+    // }
+  }
+);
+
+export const logout = () => (dispatch) => {
+  dispatch(userSlice.actions.setLoading(true));
+  try {
+    dispatch(userSlice.actions.logoutSuccess());
+  } catch (error) {
+    console.error("Logout error:", error);
+  } finally {
+    dispatch(userSlice.actions.setLoading(false));
+  }
+};
 
 export const registerUser = createAsyncThunk(
   "user/registerUser",
@@ -63,11 +84,6 @@ export const registerUser = createAsyncThunk(
       return rejectWithValue(error.response?.data || "회원가입 실패");
     }
   }
-);
-
-export const loginWithToken = createAsyncThunk(
-  "user/loginWithToken",
-  async (_, { rejectWithValue }) => {}
 );
 
 const userSlice = createSlice({

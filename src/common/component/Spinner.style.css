@@ -7,13 +7,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.8);
-    z-index: 999;
+    background-color: #fff;
+    z-index: 99999;
 }
 
 .spinner {
     border: 8px solid #f3f3f3;
-    border-top: 8px solid #3498db;
+    border-top: 8px solid #eee;
     border-radius: 50%;
     width: 60px;
     height: 60px;
