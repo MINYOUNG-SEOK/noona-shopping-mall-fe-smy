@@ -35,7 +35,7 @@
 .form-group input[type="email"],
 .form-group input[type="password"] {
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #999;
     border-radius: 5px;
     width: 100%;
     box-sizing: border-box;
@@ -88,7 +88,7 @@
 .line {
     flex: 1;
     height: 1px;
-    background-color: #ddd;
+    background-color: #999;
 }
 
 .or-text {
@@ -115,7 +115,8 @@
 }
 
 .login-button:focus,
-.login-button:active {
+.login-button:active,
+.login-button:disabled {
     background-color: #333 !important;
     color: #fff !important;
     border: none !important;
