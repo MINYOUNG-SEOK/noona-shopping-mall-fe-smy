@@ -1,0 +1,141 @@
+.login-area {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.login-area h1,
+.login-area .sign-in-title {
+    text-align: left;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    text-align: left;
+    width: 100%;
+}
+
+.form-group input[type="email"],
+.form-group input[type="password"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    border: 1px solid #5d90ed !important;
+    outline: none !important;
+    box-shadow: none !important;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.forgot-password {
+    font-size: 16px;
+    text-align: right;
+    margin-top: -15px;
+
+}
+
+.google-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.or-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0;
+    width: 100%;
+}
+
+.line {
+    flex: 1;
+    height: 1px;
+    background-color: #ddd;
+}
+
+.or-text {
+    margin: 0 1rem;
+    font-weight: bold;
+    color: #999;
+}
+
+.login-button {
+    padding: 15px 0;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: #333;
+}
+
+.sign-up-link {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.sign-up-link a {
+    font-weight: bold;
+    color: #000;
+    text-decoration: none;
+}
+
+.sign-up-link a:hover {
+    text-decoration: underline;
+}
+
+.error-text {
+    color: red;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+.input-invalid {
+    border: 1px solid red;
+}
+
+
+
+@media (max-width: 768px) {
+    .login-area {
+        margin-top: -15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sign-up-link {
+        margin-bottom: 40px;
+    }
+}

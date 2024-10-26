@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { GoogleLogin } from "@react-oauth/google";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import "./style/login.style.css";
+import "./LoginPage.style.css";
 import { loginWithEmail, loginWithGoogle } from "../../features/user/userSlice";
 import { clearErrors } from "../../features/user/userSlice";
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
@@ -12,7 +12,7 @@ const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, loginError } = useSelector((state) => state.user);
+  const { user, loginError, loading } = useSelector((state) => state.user);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -21,6 +21,7 @@ const Login = () => {
       dispatch(clearErrors());
     }
   }, [navigate]);
+
   const handleLoginWithEmail = (event) => {
     event.preventDefault();
     dispatch(loginWithEmail({ email, password }));
@@ -30,20 +31,44 @@ const Login = () => {
     //구글 로그인 하기
   };
 
-  if (user) {
-    navigate("/");
-  }
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
   return (
     <>
       <Container className="login-area">
+        <h1 className="sign-in-title">Sign In</h1>
         {loginError && (
           <div className="error-message">
             <Alert variant="danger">{loginError}</Alert>
           </div>
         )}
+
+        <div className="text-align-center mt-2">
+          <div className="display-center">
+            <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+              <GoogleLogin
+                onSuccess={handleGoogleLogin}
+                onError={() => {
+                  console.log("Login Failed");
+                }}
+              />
+            </GoogleOAuthProvider>
+          </div>
+        </div>
+
+        <div className="or-divider">
+          <span className="line"></span>
+          <span className="or-text">or</span>
+          <span className="line"></span>
+        </div>
+
         <Form className="login-form" onSubmit={handleLoginWithEmail}>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
+          <Form.Group className="mb-3 form-group" controlId="formBasicEmail">
+            <Form.Label>Email*</Form.Label>
             <Form.Control
               type="email"
               placeholder="Enter email"
@@ -52,8 +77,8 @@ const Login = () => {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
+          <Form.Group className="mb-3 form-group" controlId="formBasicPassword">
+            <Form.Label>Password*</Form.Label>
             <Form.Control
               type="password"
               placeholder="Password"
@@ -61,26 +86,19 @@ const Login = () => {
               onChange={(event) => setPassword(event.target.value)}
             />
           </Form.Group>
-          <div className="display-space-between login-button-area">
-            <Button variant="danger" type="submit">
-              Login
-            </Button>
-            <div>
-              아직 계정이 없으세요?<Link to="/register">회원가입 하기</Link>{" "}
-            </div>
-          </div>
 
-          <div className="text-align-center mt-2">
-            <p>-외부 계정으로 로그인하기-</p>
-            <div className="display-center">
-              <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-                <GoogleLogin
-                  onSuccess={handleGoogleLogin}
-                  onError={() => {
-                    console.log("Login Failed");
-                  }}
-                />
-              </GoogleOAuthProvider>
+          <Link to="/forgot-password" className="forgot-password">
+            Forgot password?
+          </Link>
+
+          <Button className="login-button" type="submit" disabled={loading}>
+            {loading ? "Signing In..." : "Sign In"}
+          </Button>
+
+          <div className="display-space-between login-button-area">
+            <div className="sign-up-link">
+              You don’t have an account?{" "}
+              <Link to="/register">Sign up here</Link>
             </div>
           </div>
         </Form>

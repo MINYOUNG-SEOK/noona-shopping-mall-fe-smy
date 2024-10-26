@@ -118,7 +118,6 @@ const userSlice = createSlice({
         state.registrationError = action.payload;
       })
       .addCase(loginWithEmail.pending, (state) => {
-        console.log("Login pending...");
         state.loading = true;
       })
       .addCase(loginWithEmail.fulfilled, (state, action) => {
