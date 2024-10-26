@@ -87,17 +87,27 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-export const logout = () => (dispatch) => {
-  dispatch(userSlice.actions.setLoading(true));
-  try {
-    localStorage.removeItem("token"); // 토큰 제거
-    dispatch(userSlice.actions.logoutSuccess());
-  } catch (error) {
-    console.error("Logout error:", error);
-  } finally {
-    dispatch(userSlice.actions.setLoading(false));
+export const logout = createAsyncThunk(
+  "user/logout",
+  async (_, { dispatch }) => {
+    try {
+      // 로컬 스토리지의 토큰 제거
+      localStorage.removeItem("token");
+
+      dispatch(
+        showToastMessage({
+          message: "로그아웃 되었습니다.",
+          status: "success",
+        })
+      );
+
+      return null;
+    } catch (error) {
+      console.error("Logout error:", error);
+      throw error;
+    }
   }
-};
+);
 
 const userSlice = createSlice({
   name: "user",
@@ -116,6 +126,7 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Register 리듀서
       .addCase(registerUser.pending, (state) => {
         console.log("Register pending...");
         state.loading = true;
@@ -130,6 +141,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.registrationError = action.payload;
       })
+      // Login 리듀서
       .addCase(loginWithEmail.pending, (state) => {
         state.loading = true;
       })
@@ -143,6 +155,20 @@ const userSlice = createSlice({
         console.log("Login rejected:", action.payload);
         state.loading = false;
         state.loginError = action.payload;
+      })
+      // Logout 리듀서
+      .addCase(logout.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.user = null;
+        state.loading = false;
+        state.loginError = null;
+        state.registrationError = null;
+        state.success = false;
+      })
+      .addCase(logout.rejected, (state) => {
+        state.loading = false;
       });
   },
 });

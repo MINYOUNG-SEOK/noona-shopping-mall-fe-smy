@@ -32,7 +32,7 @@ const Navbar = ({ user }) => {
     "FOOD",
     "KIDS",
   ];
- 
+
   let navigate = useNavigate();
 
   const onCheckEnter = (event) => {
@@ -44,29 +44,38 @@ const Navbar = ({ user }) => {
     }
   };
 
-  const handleLogout = () => {
-    dispatch(logout());
+  const handleLogout = async () => {
+    try {
+      await dispatch(logout()).unwrap();
+      navigate("/");
+    } catch (error) {
+      console.error("로그아웃 실패:", error);
+    }
   };
 
   const toggleMenuList = () => {
-    setShowMenuList(!showMenuList); 
+    setShowMenuList(!showMenuList);
   };
 
   const goBack = () => {
-    navigate(-1); 
+    navigate(-1);
   };
 
   return (
     <div className="navbar-container">
       <div className="navbar-top">
         <div className="navbar-left">
-        <FontAwesomeIcon
+          <FontAwesomeIcon
             icon={faBars}
             className="hamburger-icon"
             onClick={toggleMenuList}
           />
           <Link to="/" className="navbar-logo">
-          <img src="/image/logo.png" alt="Logo" className="navbar-logo-image" />
+            <img
+              src="/image/logo.png"
+              alt="Logo"
+              className="navbar-logo-image"
+            />
           </Link>
         </div>
 
@@ -82,7 +91,9 @@ const Navbar = ({ user }) => {
             </div>
             <div onClick={() => navigate("/cart")} className="navbar-icon">
               <FontAwesomeIcon icon={faShoppingBag} />
-              <span style={{ cursor: "pointer" }}>{`SHOPPING BAG(${cartItemCount || 0})`}</span>
+              <span style={{ cursor: "pointer" }}>{`SHOPPING BAG(${
+                cartItemCount || 0
+              })`}</span>
             </div>
             {user ? (
               <div onClick={handleLogout} className="navbar-icon">
@@ -96,7 +107,10 @@ const Navbar = ({ user }) => {
               </div>
             )}
             <div className="navbar-search-icon">
-              <FontAwesomeIcon icon={faSearch} onClick={() => setShowSearchBox(!showSearchBox)} />
+              <FontAwesomeIcon
+                icon={faSearch}
+                onClick={() => setShowSearchBox(!showSearchBox)}
+              />
             </div>
           </div>
         </div>
