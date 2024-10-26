@@ -8,11 +8,15 @@ export const loginWithEmail = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await api.post("/auth/login", { email, password });
+      // 로그인 성공시 토큰 저장
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+      }
       return response.data;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data || "이메일 혹은 비밀번호를 확인해주세요."
-      );
+      const errorMessage =
+        error.response?.data?.message || "이메일 혹은 비밀번호를 확인해주세요.";
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -22,9 +26,15 @@ export const loginWithGoogle = createAsyncThunk(
   async (token, { rejectWithValue }) => {
     try {
       const response = await api.post("/auth/google", { token });
+      // 구글 로그인 성공시 토큰 저장
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+      }
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Google 로그인 실패");
+      return rejectWithValue(
+        error.response?.data?.message || "Google 로그인 실패"
+      );
     }
   }
 );
@@ -40,17 +50,6 @@ export const loginWithToken = createAsyncThunk(
     // }
   }
 );
-
-export const logout = () => (dispatch) => {
-  dispatch(userSlice.actions.setLoading(true));
-  try {
-    dispatch(userSlice.actions.logoutSuccess());
-  } catch (error) {
-    console.error("Logout error:", error);
-  } finally {
-    dispatch(userSlice.actions.setLoading(false));
-  }
-};
 
 export const registerUser = createAsyncThunk(
   "user/registerUser",
@@ -87,6 +86,18 @@ export const registerUser = createAsyncThunk(
     }
   }
 );
+
+export const logout = () => (dispatch) => {
+  dispatch(userSlice.actions.setLoading(true));
+  try {
+    localStorage.removeItem("token"); // 토큰 제거
+    dispatch(userSlice.actions.logoutSuccess());
+  } catch (error) {
+    console.error("Logout error:", error);
+  } finally {
+    dispatch(userSlice.actions.setLoading(false));
+  }
+};
 
 const userSlice = createSlice({
   name: "user",
