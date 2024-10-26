@@ -164,6 +164,13 @@
         padding: 10px 25px;
     }
 
+    .navbar-search-box {
+        top: 70px;
+        right: 20px;
+        width: 250px;
+        padding: 8px 12px;
+    }
+
     .navbar-bottom .navbar-menu-list {
         font-size: 14px;
     }
@@ -172,7 +179,7 @@
 
 @media (max-width: 480px) {
     .navbar-container {
-        padding: 20px 10px;
+        padding: 20px 5px;
     }
 
     .navbar-logo-image {
@@ -214,6 +221,13 @@
 
     .navbar-right .navbar-icon:not(:nth-child(3)):not(:last-child) {
         display: none;
+    }
+
+    .navbar-search-box {
+        top: 60px;
+        right: 20px;
+        width: 200px;
+        padding: 6px 12px;
     }
 
     .navbar-bottom-icons {
