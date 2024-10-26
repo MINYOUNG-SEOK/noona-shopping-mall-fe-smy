@@ -18,9 +18,9 @@
 }
 
 .navbar-logo-image {
-    width: 70px; 
-    height: auto; 
-  }
+    width: 70px;
+    height: auto;
+}
 
 .navbar-right {
     display: flex;
@@ -91,7 +91,7 @@
 
 .navbar-menu-list li {
     white-space: nowrap;
- 
+
 }
 
 .navbar-menu-list li a {
@@ -134,11 +134,11 @@
         align-items: center;
     }
 
-    
+
     .navbar-logo-image {
         width: 60px;
         height: auto;
-      }
+    }
 
     .navbar-icons {
         flex-direction: row;
@@ -168,76 +168,73 @@
 
 @media (max-width: 480px) {
     .navbar-container {
-      padding: 20px;
+        padding: 20px 0;
     }
 
     .navbar-logo-image {
         width: 50px;
         height: auto;
-      }
-  
+    }
+
     .navbar-top {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
     }
-  
+
     .navbar-left {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
     }
-  
+
     .hamburger-icon {
-      font-size: 20px;
-      cursor: pointer;
-      display: inline-block;
+        font-size: 20px;
+        cursor: pointer;
+        display: inline-block;
     }
-  
-    .navbar-left .navbar-logo  {
-      font-size: 20px;
-      margin: 0;
+
+    .navbar-left .navbar-logo {
+        font-size: 20px;
+        margin: 0;
     }
-  
+
     .navbar-right {
-      position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
     }
 
     .navbar-right .navbar-icon:not(:nth-child(3)):not(:last-child) {
         display: none;
-      }
-  
+    }
+
     .navbar-bottom-icons {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background-color: #fff;
-      border-top: 1px solid #ddd;
-      padding: 10px 0;
-      z-index: 1000;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #fff;
+        border-top: 1px solid #ddd;
+        padding: 10px 0;
+        z-index: 1000;
     }
-  
+
     .navbar-bottom-icons .navbar-icon span {
-      display: block; 
-      font-size: 12px; 
-      margin-top: 4px;
+        display: block;
+        font-size: 12px;
+        margin-top: 4px;
     }
-  
+
     .navbar-bottom .navbar-menu-list {
-      display: none;
-      flex-direction: column;
-      gap: 10px;
+        display: none;
+        flex-direction: column;
+        gap: 10px;
     }
-  }
-  
-  
-  
+}

@@ -118,7 +118,11 @@ const RegisterPage = () => {
             <a href="/terms">Terms of Service</a>&nbsp;and&nbsp;
             <a href="/privacy">Privacy Policy</a>.
           </label>
-          {policyError && <p className="error-text">정책에 동의해주세요.</p>}
+          {policyError && (
+            <p className="error-text">
+              서비스 이용약관 및 개인정보 보호정책에 동의해주세요.
+            </p>
+          )}
         </div>
         <button type="submit" className="register-button" disabled={isLoading}>
           {isLoading ? "Signing Up..." : "Sign Up"}

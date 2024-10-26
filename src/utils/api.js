@@ -7,16 +7,16 @@ const api = axios.create({
     authorization: `Bearer ${sessionStorage.getItem("token")}`,
   },
 });
-/**
- * console.log all requests and responses
- */
+
 api.interceptors.request.use(
   (request) => {
     console.log("Starting Request", request);
+    request.headers.authorization = `Bearer ${sessionStorage.getItem("token")}`;
     return request;
   },
-  function (error) {
+  (error) => {
     console.log("REQUEST ERROR", error);
+    return Promise.reject(error);
   }
 );
 
@@ -24,8 +24,10 @@ api.interceptors.response.use(
   (response) => {
     return response;
   },
-  function (error) {
-    return Promise.reject(error);
+  (error) => {
+    const errorData = error.response?.data || {};
+    console.log("RESPONSE ERROR", errorData);
+    return Promise.reject(errorData);
   }
 );
 
