@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "../../App.css";
 
 const ToastMessage = () => {
   const { toastMessage } = useSelector((state) => state.ui);
@@ -16,6 +17,7 @@ const ToastMessage = () => {
   }, [toastMessage]);
   return (
     <ToastContainer
+      className="custom-toast-container"
       position="top-right"
       autoClose={5000}
       hideProgressBar={false}

@@ -1,0 +1,9 @@
+.custom-toast-container .Toastify__toast--success {
+    background-color: #5d90ed !important;
+    color: white !important;
+}
+
+.custom-toast-container .Toastify__toast--error {
+    background-color: rgb(174, 174, 174) !important;
+    color: white
+}

@@ -41,18 +41,32 @@
     box-sizing: border-box;
 }
 
-.form-control:focus {
+.form-group input[type="email"]:focus,
+.form-group input[type="password"]:focus {
     border: 1px solid #5d90ed !important;
     outline: none !important;
     box-shadow: none !important;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
+.error-and-forgot-password {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.error-and-forgot-password .error-message {
+    flex-grow: 1;
+    margin-top: -30px;
+    margin-bottom: -15px;
+    margin-left: -10px;
+}
+
 .forgot-password {
     font-size: 16px;
     text-align: right;
     margin-top: -15px;
-
 }
 
 .google-button {
@@ -100,6 +114,19 @@
     background-color: #333;
 }
 
+.login-button:focus,
+.login-button:active {
+    background-color: #333 !important;
+    color: #fff !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    transition: none !important;
+}
+
+
+
+
 .sign-up-link {
     margin-top: 10px;
     font-size: 16px;
@@ -122,6 +149,14 @@
     font-size: 14px;
 }
 
+.error-message .alert-danger {
+    color: red !important;
+    border: none !important;
+    background-color: #fff !important;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 .input-invalid {
     border: 1px solid red;
 }
@@ -137,5 +172,13 @@
 @media (max-width: 480px) {
     .sign-up-link {
         margin-bottom: 40px;
+    }
+
+    .error-and-forgot-password .error-message {
+        font-size: 14px;
+    }
+
+    .error-and-forgot-password .forgot-password {
+        font-size: 14px;
     }
 }

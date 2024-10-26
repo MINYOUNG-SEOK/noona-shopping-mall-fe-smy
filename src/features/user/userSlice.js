@@ -10,7 +10,9 @@ export const loginWithEmail = createAsyncThunk(
       const response = await api.post("/auth/login", { email, password });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "로그인 실패");
+      return rejectWithValue(
+        error.response?.data || "이메일 혹은 비밀번호를 확인해주세요."
+      );
     }
   }
 );

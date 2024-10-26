@@ -79,6 +79,10 @@
   background-color: #333;
 }
 
+.register-button:focus {
+  background-color: #333;
+}
+
 .login-link {
   margin-top: 20px;
 }

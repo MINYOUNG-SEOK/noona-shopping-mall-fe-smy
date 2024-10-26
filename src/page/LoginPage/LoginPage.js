@@ -41,11 +41,6 @@ const Login = () => {
     <>
       <Container className="login-area">
         <h1 className="sign-in-title">Sign In</h1>
-        {loginError && (
-          <div className="error-message">
-            <Alert variant="danger">{loginError}</Alert>
-          </div>
-        )}
 
         <div className="text-align-center mt-2">
           <div className="display-center">
@@ -87,9 +82,16 @@ const Login = () => {
             />
           </Form.Group>
 
-          <Link to="/forgot-password" className="forgot-password">
-            Forgot password?
-          </Link>
+          <div className="error-and-forgot-password">
+            {loginError && (
+              <div className="error-message">
+                <Alert variant="danger">{loginError}</Alert>
+              </div>
+            )}
+            <Link to="/forgot-password" className="forgot-password">
+              Forgot password?
+            </Link>
+          </div>
 
           <Button className="login-button" type="submit" disabled={loading}>
             {loading ? "Signing In..." : "Sign In"}
