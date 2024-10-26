@@ -224,7 +224,7 @@
         bottom: 0;
         left: 0;
         right: 0;
-        background-color: #fff;
+        background-color: #eee;
         border-top: 1px solid #ddd;
         padding: 10px 0;
         z-index: 1000;
@@ -233,7 +233,7 @@
     .navbar-bottom-icons .navbar-icon span {
         display: block;
         font-size: 12px;
-        margin-top: 4px;
+        margin-top: 5px;
     }
 
     .navbar-bottom .navbar-menu-list {
