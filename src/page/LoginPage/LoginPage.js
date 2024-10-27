@@ -20,7 +20,7 @@ const Login = () => {
     if (loginError) {
       dispatch(clearErrors());
     }
-  }, [navigate]);
+  }, [dispatch]);
 
   const handleLoginWithEmail = (event) => {
     event.preventDefault();

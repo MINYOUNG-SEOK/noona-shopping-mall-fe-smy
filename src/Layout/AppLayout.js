@@ -11,16 +11,22 @@ import { getCartQty } from "../features/cart/cartSlice";
 const AppLayout = ({ children }) => {
   const location = useLocation();
   const dispatch = useDispatch();
-
   const { user } = useSelector((state) => state.user);
+
   useEffect(() => {
-    dispatch(loginWithToken());
-  }, []);
+    // 세션스토리지에 토큰이 있을 때만 실행
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      dispatch(loginWithToken());
+    }
+  }, [dispatch]);
+
   useEffect(() => {
     if (user) {
       dispatch(getCartQty());
     }
-  }, [user]);
+  }, [user, dispatch]);
+
   return (
     <div>
       <ToastMessage />

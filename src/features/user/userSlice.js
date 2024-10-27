@@ -8,9 +8,9 @@ export const loginWithEmail = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await api.post("/auth/login", { email, password });
-      // 로그인 성공시 토큰 저장
+      // 로그인 성공시 토큰 저장 1. session storage 2. session storage
       if (response.data.token) {
-        localStorage.setItem("token", response.data.token);
+        sessionStorage.setItem("token", response.data.token);
       }
       return response.data;
     } catch (error) {
@@ -28,7 +28,7 @@ export const loginWithGoogle = createAsyncThunk(
       const response = await api.post("/auth/google", { token });
       // 구글 로그인 성공시 토큰 저장
       if (response.data.token) {
-        localStorage.setItem("token", response.data.token);
+        sessionStorage.setItem("token", response.data.token);
       }
       return response.data;
     } catch (error) {
@@ -42,12 +42,12 @@ export const loginWithGoogle = createAsyncThunk(
 export const loginWithToken = createAsyncThunk(
   "user/loginWithToken",
   async (_, { rejectWithValue }) => {
-    // try {
-    //   const response = await api.post("/auth/token");
-    //   return response.data;
-    // } catch (error) {
-    //   return rejectWithValue(error.response?.data || "토큰 로그인 실패");
-    // }
+    try {
+      const response = await api.get("/user/me");
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.error);
+    }
   }
 );
 
@@ -92,7 +92,7 @@ export const logout = createAsyncThunk(
   async (_, { dispatch }) => {
     try {
       // 로컬 스토리지의 토큰 제거
-      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
 
       dispatch(
         showToastMessage({
@@ -155,6 +155,10 @@ const userSlice = createSlice({
         console.log("Login rejected:", action.payload);
         state.loading = false;
         state.loginError = action.payload;
+      })
+      // Token Login 리듀서
+      .addCase(loginWithToken.fulfilled, (state, action) => {
+        state.user = action.payload.user;
       })
       // Logout 리듀서
       .addCase(logout.pending, (state) => {
