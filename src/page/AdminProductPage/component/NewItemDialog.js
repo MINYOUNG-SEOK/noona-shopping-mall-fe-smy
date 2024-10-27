@@ -55,7 +55,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
       }
     }
   }, [showDialog]);
-
+  console.log("stock", stock);
   const handleClose = () => {
     //모든걸 초기화시키고;
     // 다이얼로그 닫아주기
@@ -75,22 +75,39 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
 
   const handleChange = (event) => {
     //form에 데이터 넣어주기
+    const { id, value } = event.target;
+    setFormData({ ...formData, [id]: value });
   };
 
   const addStock = () => {
     //재고타입 추가시 배열에 새 배열 추가
+    setStock([...stock, []]);
   };
 
   const deleteStock = (idx) => {
     //재고 삭제하기
+    const newStock = stock.filter((item, index) => index !== idx);
+    setStock(newStock);
   };
 
   const handleSizeChange = (value, index) => {
-    //  재고 사이즈 변환하기
+    // 재고 수량 변환하기
+    setStock((prevStock) => {
+      const newStock = prevStock.map((item, idx) =>
+        idx === index ? [value, item[1]] : [...item]
+      );
+      return newStock;
+    });
   };
 
   const handleStockChange = (value, index) => {
-    //재고 수량 변환하기
+    setStock((prevStock) => {
+      // 재고 사이즈 변환하기
+      const newStock = prevStock.map((item, idx) =>
+        idx === index ? [item[0], value] : [...item]
+      );
+      return newStock;
+    });
   };
 
   const onHandleCategory = (event) => {
@@ -183,21 +200,22 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
                       handleSizeChange(event.target.value, index)
                     }
                     required
-                    defaultValue={item[0] ? item[0].toLowerCase() : ""}
+                    value={item[0] || ""}
                   >
-                    <option value="" disabled selected hidden>
+                    <option value="" disabled>
                       Please Choose...
                     </option>
-                    {SIZE.map((item, index) => (
+                    {SIZE.map((sizeOption, idx) => (
                       <option
-                        inValid={true}
-                        value={item.toLowerCase()}
+                        key={idx}
+                        value={sizeOption.toLowerCase()}
                         disabled={stock.some(
-                          (size) => size[0] === item.toLowerCase()
+                          (stockItem) =>
+                            stockItem[0] === sizeOption.toLowerCase() &&
+                            stockItem !== item
                         )}
-                        key={index}
                       >
-                        {item}
+                        {sizeOption}
                       </option>
                     ))}
                   </Form.Select>
@@ -209,7 +227,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
                     }
                     type="number"
                     placeholder="number of stock"
-                    value={item[1]}
+                    value={item[1] || ""}
                     required
                   />
                 </Col>
@@ -230,13 +248,6 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
         <Form.Group className="mb-3" controlId="Image" required>
           <Form.Label>Image</Form.Label>
           <CloudinaryUploadWidget uploadImage={uploadImage} />
-
-          <img
-            id="uploadedimage"
-            src={formData.image}
-            className="upload-image mt-2"
-            alt="uploadedimage"
-          ></img>
         </Form.Group>
 
         <Row className="mb-3">
