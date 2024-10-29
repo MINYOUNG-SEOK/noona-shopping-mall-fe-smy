@@ -16,7 +16,6 @@
 
 .search-box {
     border-bottom: 1px solid black;
-    /* position: absolute; */
     padding: 5px;
 }
 
@@ -27,7 +26,7 @@
 }
 
 .search-box input:focus {
-    outline: none
+    outline: none;
 }
 
 .mobile-search-box {
@@ -38,7 +37,6 @@
 
 .search {
     align-items: center;
-
 }
 
 .search-icon {
@@ -52,7 +50,7 @@
 }
 
 .search input:focus {
-    outline: none
+    outline: none;
 }
 
 .mobile-search-box .closebtn {
@@ -83,7 +81,7 @@
 }
 
 .hide {
-    visibility: hidden
+    visibility: hidden;
 }
 
 .side-menu {
@@ -133,14 +131,6 @@
     min-height: 100vh !important;
     background-color: red;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-    /* box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1); */
-    /* box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px; */
-    /* width: 100vw; */
-    /* margin-left: -1rem;
-    -webkit-transition: margin .25s ease-out;
-    -moz-transition: margin .25s ease-out;
-    -o-transition: margin .25s ease-out;
-    transition: margin .25s ease-out; */
 }
 
 .sidebar-item {
@@ -148,7 +138,6 @@
     font-weight: bold;
     padding: 20px 0;
     list-style-type: none;
-
 }
 
 .sidebar-item:hover {
@@ -163,8 +152,7 @@
 
 .sidebar-logo {
     margin-bottom: 20px;
-  }
-  
+}
 
 .sidebar {
     max-width: 300px;
@@ -178,8 +166,7 @@
     display: none;
 }
 
-
-@media screen and (max-width: 63rem) {
+@media screen and (max-width: 768px) {
     .hide {
         visibility: visible;
     }
@@ -194,7 +181,7 @@
 
     .nav-header {
         margin-top: 20px;
-        margin-bottom: 30px
+        margin-bottom: 30px;
     }
 
     .sidebar-toggle {
@@ -202,13 +189,18 @@
     }
 
     .mobile-sidebar-toggle {
-        display: block;
+        display: flex;
+        height: 100px;
+        padding: 10px; 
+        background-color: #fff !important;
+        margin-left: 10px;
     }
+
 
     .sidebar {
         max-width: 100%;
         padding: 0px;
-        /* margin-bottom: 0; */
+        margin-bottom: 0;
     }
 
     .mobile-sidebar {
