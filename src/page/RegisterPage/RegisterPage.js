@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router";
+import { useNavigate, Link } from "react-router-dom";
 import "./RegisterPage.style.css";
 import { registerUser, clearErrors } from "../../features/user/userSlice";
 import Spinner from "../../common/component/Spinner";
@@ -17,37 +17,70 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const [passwordError, setPasswordError] = useState("");
   const [policyError, setPolicyError] = useState(false);
-  const [emailError, setEmailError] = useState("");
+  const [errors, setErrors] = useState({});
   const { registrationError, loading } = useSelector((state) => state.user);
 
-  // 로딩 상태 확인용 useEffect
   useEffect(() => {
-    console.log("Loading State:", loading);
-  }, [loading]);
+    if (registrationError) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        email: "이미 가입된 유저입니다.",
+      }));
+    }
+  }, [registrationError]);
 
-  // 등록 시 로직
   const register = (event) => {
     event.preventDefault();
     const { name, email, password, confirmPassword, policy } = formData;
 
-    if (password !== confirmPassword) {
-      setPasswordError("비밀번호가 일치하지 않습니다.");
-      return;
+    let hasErrors = false;
+    const newErrors = {};
+
+    // Name 필드가 비어 있는지 확인
+    if (!name.trim()) {
+      newErrors.name = "이름을 입력해주세요.";
+      hasErrors = true;
     }
+
+    // 이메일 필드가 비어 있는지 확인
+    if (!email.trim()) {
+      newErrors.email = "이메일을 입력해주세요.";
+      hasErrors = true;
+    }
+
+    // 비밀번호 필드가 비어 있는지 확인
+    if (!password.trim()) {
+      newErrors.password = "비밀번호를 입력해주세요.";
+      hasErrors = true;
+    }
+
+    // 비밀번호 일치 여부 확인
+    if (password !== confirmPassword) {
+      newErrors.confirmPassword = "비밀번호가 일치하지 않습니다.";
+      hasErrors = true;
+    }
+
+    // 정책 동의 여부 확인
     if (!policy) {
       setPolicyError(true);
+      hasErrors = true;
+    }
+
+    // 오류가 있는 경우, 오류 상태를 설정하고 함수 종료
+    if (hasErrors) {
+      setErrors(newErrors);
       return;
     }
 
+    // 모든 오류 초기화
     setPasswordError("");
     setPolicyError(false);
-    setEmailError(""); // 이메일 에러 초기화
+    setErrors({});
 
-    // 이메일 중복 확인 후 등록 진행
+    // 회원가입 요청
     dispatch(registerUser({ name, email, password, navigate }));
   };
 
-  // 입력 변경 시 로직
   const handleChange = (event) => {
     const { id, value, type, checked } = event.target;
 
@@ -57,16 +90,18 @@ const RegisterPage = () => {
       setFormData((prevState) => ({ ...prevState, [id]: value }));
     }
 
-    // 특정 오류 클리어
+    // 이메일이 변경될 때 오류 초기화
+    if (id === "email") {
+      setErrors((prevErrors) => ({ ...prevErrors, email: "" }));
+    }
+
     if (id === "confirmPassword" && passwordError) {
       setPasswordError("");
     }
     if (type === "checkbox" && policyError) {
       setPolicyError(false);
     }
-    if (id === "email") {
-      setEmailError(""); // 이메일 에러 초기화
-    }
+
     if (registrationError) {
       dispatch(clearErrors());
     }
@@ -74,7 +109,6 @@ const RegisterPage = () => {
 
   return (
     <div className="register-container">
-      {/* loading 상태에 따라 스피너 표시 */}
       {loading && (
         <div className="spinner-overlay">
           <Spinner />
@@ -88,8 +122,10 @@ const RegisterPage = () => {
             id="name"
             placeholder="Name"
             onChange={handleChange}
-            required
+            value={formData.name}
+            className={errors.name ? "input-invalid" : ""}
           />
+          {errors.name && <div className="form-error">{errors.name}</div>}
         </div>
         <div className="form-group">
           <label>Email*</label>
@@ -98,14 +134,10 @@ const RegisterPage = () => {
             id="email"
             placeholder="Enter email"
             onChange={handleChange}
-            required
-            className={emailError || registrationError ? "input-invalid" : ""}
+            value={formData.email}
+            className={errors.email ? "input-invalid" : ""}
           />
-          {/* 구체적인 이메일 중복 에러 표시 */}
-          {emailError && <p className="error-text">{emailError}</p>}
-          {registrationError && (
-            <p className="error-text">이미 가입된 유저입니다.</p>
-          )}
+          {errors.email && <div className="form-error">{errors.email}</div>}
         </div>
         <div className="form-group">
           <label>Password*</label>
@@ -114,8 +146,12 @@ const RegisterPage = () => {
             id="password"
             placeholder="Password"
             onChange={handleChange}
-            required
+            value={formData.password}
+            className={errors.password ? "input-invalid" : ""}
           />
+          {errors.password && (
+            <div className="form-error">{errors.password}</div>
+          )}
         </div>
         <div className="form-group">
           <label>Confirm Password*</label>
@@ -124,10 +160,12 @@ const RegisterPage = () => {
             id="confirmPassword"
             placeholder="Confirm Password"
             onChange={handleChange}
-            required
-            className={passwordError ? "input-invalid" : ""}
+            value={formData.confirmPassword}
+            className={errors.confirmPassword ? "input-invalid" : ""}
           />
-          {passwordError && <p className="error-text">{passwordError}</p>}
+          {errors.confirmPassword && (
+            <div className="form-error">{errors.confirmPassword}</div>
+          )}
         </div>
         <div className="form-group checkbox">
           <label htmlFor="policy">
@@ -139,13 +177,13 @@ const RegisterPage = () => {
               checked={formData.policy}
             />
             By signing up, you agree to MY&nbsp;
-            <a href="/terms">Terms of Service</a>&nbsp;and&nbsp;
-            <a href="/privacy">Privacy Policy</a>.
+            <Link to="/terms">Terms of Service</Link>&nbsp;and&nbsp;
+            <Link to="/privacy">Privacy Policy</Link>.
           </label>
           {policyError && (
-            <p className="error-text">
+            <div className="form-error">
               서비스 이용약관 및 개인정보 보호정책에 동의해주세요.
-            </p>
+            </div>
           )}
         </div>
         <button type="submit" className="register-button" disabled={loading}>
@@ -153,7 +191,7 @@ const RegisterPage = () => {
         </button>
       </form>
       <div className="login-link">
-        Already have an account? <a href="/login">Login here</a>
+        Already have an account? <Link to="/login">Login here</Link>
       </div>
     </div>
   );

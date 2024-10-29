@@ -67,7 +67,6 @@ const Login = () => {
             <Form.Control
               type="email"
               placeholder="Enter email"
-              required
               onChange={(event) => setEmail(event.target.value)}
             />
           </Form.Group>
@@ -77,7 +76,6 @@ const Login = () => {
             <Form.Control
               type="password"
               placeholder="Password"
-              required
               onChange={(event) => setPassword(event.target.value)}
             />
           </Form.Group>
