@@ -17,11 +17,12 @@ const AdminProductPage = () => {
   const [query] = useSearchParams();
   const dispatch = useDispatch();
   const { productList, totalPageNum } = useSelector((state) => state.product);
+  const [currentPage, setCurrentPage] = useState(parseInt(query.get("page") || 1));
   const [showDialog, setShowDialog] = useState(false);
   const [searchQuery, setSearchQuery] = useState({
-    page: query.get("page") || 1,
+    page: currentPage,
     name: query.get("name") || "",
-  }); //검색 조건들을 저장하는 객체
+  });
 
   const [mode, setMode] = useState("new");
 
@@ -36,30 +37,36 @@ const AdminProductPage = () => {
     "",
   ];
 
-  //상품리스트 가져오기 (url쿼리 맞춰서)
-
   useEffect(() => {
-    //검색어나 페이지가 바뀌면 url바꿔주기 (검색어또는 페이지가 바뀜 => url 바꿔줌=> url쿼리 읽어옴=> 이 쿼리값 맞춰서  상품리스트 가져오기)
-  }, [searchQuery]);
+    // 검색어나 페이지가 바뀌면 url을 바꿔줌 => URL 쿼리를 읽어옴 => 상품 리스트 가져오기
+    navigate(`?page=${currentPage}&name=${searchQuery.name}`);
+    // 상품 리스트를 서버에서 가져오기 (API 호출 등)
+    // dispatch(getProductList(searchQuery)); // 여기에 실제 API 호출
+  }, [currentPage, searchQuery.name]);
 
   const deleteItem = (id) => {
-    //아이템 삭제하가ㅣ
+    // 아이템 삭제 처리
+    dispatch(deleteProduct(id));
   };
 
   const openEditForm = (product) => {
-    //edit모드로 설정하고
-    // 아이템 수정다이얼로그 열어주기
+    // edit 모드로 설정 후 아이템 수정 다이얼로그 열기
+    setMode("edit");
+    dispatch(setSelectedProduct(product));
+    setShowDialog(true);
   };
 
+  
+
   const handleClickNewItem = () => {
-    //new 모드로 설정하고
+    // new 모드로 설정 후 다이얼로그 열기
     setMode("new");
-    // 다이얼로그 열어주기
     setShowDialog(true);
   };
 
   const handlePageClick = ({ selected }) => {
-    //  쿼리에 페이지값 바꿔주기
+    // 페이지 번호가 변경될 때 현재 페이지 상태 업데이트
+    setCurrentPage(selected + 1);
   };
 
   return (
@@ -73,37 +80,37 @@ const AdminProductPage = () => {
             field="name"
           />
         </div>
-        <Button className="mt-2 mb-2" onClick={handleClickNewItem}>
+        <Button className="mt-2 mb-2 add-new-item-btn" onClick={handleClickNewItem}>
           Add New Item +
         </Button>
 
         <ProductTable
           header={tableHeader}
-          data=""
+          data={productList}
           deleteItem={deleteItem}
           openEditForm={openEditForm}
         />
-        <ReactPaginate
-          nextLabel="next >"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={5}
-          pageCount={100}
-          forcePage={searchQuery.page - 1}
-          previousLabel="< previous"
-          renderOnZeroPageCount={null}
-          pageClassName="page-item"
-          pageLinkClassName="page-link"
-          previousClassName="page-item"
-          previousLinkClassName="page-link"
-          nextClassName="page-item"
-          nextLinkClassName="page-link"
-          breakLabel="..."
-          breakClassName="page-item"
-          breakLinkClassName="page-link"
-          containerClassName="pagination"
-          activeClassName="active"
-          className="display-center list-style-none"
-        />
+    <ReactPaginate
+    nextLabel=">"
+    previousLabel="<"
+    onPageChange={handlePageClick}
+    pageRangeDisplayed={5}
+    pageCount={30}
+    forcePage={currentPage - 1}  // 1을 기본값으로 설정
+    renderOnZeroPageCount={null}
+    containerClassName="pagination"
+    pageClassName="page-item"
+    pageLinkClassName="page-link"
+    previousClassName="page-item"
+    previousLinkClassName="page-link arrow"
+    nextClassName="page-item"
+    nextLinkClassName="page-link arrow"
+    breakLabel="..."
+    breakClassName="page-item"
+    breakLinkClassName="page-link break"
+    activeClassName="active"
+    disableInitialCallback={true}  // 초기 렌더링시 콜백 비활성화
+/>
       </Container>
 
       <NewItemDialog
