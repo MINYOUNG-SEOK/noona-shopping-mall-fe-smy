@@ -180,59 +180,67 @@
 
 
 .create-new-product-btn {
-    background-color: #5d90ed !important; 
+    background-color: #5d90ed !important;
     border: none;
 }
 
 .create-new-product-btn:hover {
-    background-color: #4267aa !important; 
-    border: none; 
+    background-color: #4267aa !important;
+    border: none;
 }
 
 
 .create-new-product-btn:focus,
 .create-new-product-btn:active {
     background-color: #5d90ed !important;
-    box-shadow: none; 
+    box-shadow: none;
 }
 
 .add-new-item-btn {
-    background-color: #5d90ed !important; 
+    background-color: #5d90ed !important;
     border: none;
 }
 
 .add-new-item-btn:hover {
-    background-color: #4267aa !important; 
-    border: none; 
+    background-color: #4267aa !important;
+    border: none;
 }
 
 .add-new-item-btn:focus,
 .add-new-item-btn:active {
-    background-color: #5d90ed !important; 
+    background-color: #5d90ed !important;
     box-shadow: none;
 }
 
 .gray-button {
     margin-top: 4px;
     background-color: grey;
-    color: white; 
-    border: none; 
+    color: white;
+    border: none;
 }
 
 .gray-button:hover {
-    background-color: #5a6268; 
+    background-color: #5a6268;
+}
+
+
+.form-error {
+    color: red;
+    font-weight: bold;
+    margin-top: 5px;
 }
 
 
 
 @media screen and (max-width: 768px) {
+
     .page-link,
     .page-item.active .page-link {
         min-width: 28px;
         height: 28px;
         font-size: 14px;
     }
-    
+
     .container {
         padding: 0 10px;
     }

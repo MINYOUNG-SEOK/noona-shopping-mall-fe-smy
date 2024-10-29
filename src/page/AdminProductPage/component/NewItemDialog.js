@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Editor } from "@toast-ui/react-editor";
-import { Form, Modal, Button, Row, Col, Alert } from "react-bootstrap";
+import { Form, Modal, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import CloudinaryUploadWidget from "../../../utils/CloudinaryUploadWidget";
 import { CATEGORY, STATUS, SIZE } from "../../../constants/product.constants";
@@ -34,6 +34,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   const dispatch = useDispatch();
   const [stockError, setStockError] = useState(false);
   const editorRef = useRef();
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (success) setShowDialog(false);
@@ -46,7 +47,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     if (showDialog) {
       if (mode === "edit") {
         setFormData(selectedProduct);
-        // 객체형태로 온 stock을  다시 배열로 세팅해주기
+        // 객체형태로 온 stock을 다시 배열로 세팅해주기
         const sizeArray = Object.keys(selectedProduct.stock).map((size) => [
           size,
           selectedProduct.stock[size],
@@ -58,8 +59,9 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
       }
     }
   }, [showDialog]);
+
   const handleClose = () => {
-    //모든걸 초기화시키고;
+    // 모든걸 초기화시키고;
     setFormData({ ...InitialFormData });
     setStock([]);
     setStockError(false);
@@ -70,8 +72,42 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    //재고를 입력했는지 확인, 아니면 에러
-    if (stock.length === 0) return setStockError(true);
+    // 필수 필드 검사
+    const newErrors = {};
+    if (!formData.name) newErrors.name = "Product name is required.";
+    if (!formData.sku) newErrors.sku = "SKU is required.";
+
+    // Editor의 내용을 가져오기
+    const description = editorRef.current.getInstance().getMarkdown();
+    if (!description || description.trim() === "") {
+      newErrors.description = "Description is required.";
+    }
+
+    if (!formData.price || formData.price <= 0)
+      newErrors.price = "Price must be greater than 0.";
+    if (stock.length === 0) {
+      newErrors.stock = "Please add stock information.";
+    } else {
+      // 재고 검사
+      stock.forEach((item, index) => {
+        if (!item[1] || parseInt(item[1]) <= 0) {
+          newErrors[`stock-${index}`] =
+            "Stock quantity must be greater than 0.";
+        }
+      });
+    }
+    if (!formData.category.length)
+      newErrors.category = "Please select at least one category.";
+
+    // 이미지 필드 검사
+    if (!formData.image)
+      newErrors.image = "Please upload an image for the product.";
+
+    setErrors(newErrors);
+
+    // 오류가 있으면 반환하여 제출 방지
+    if (Object.keys(newErrors).length > 0) return;
+
     // 재고를 배열에서 객체로 바꿔주기
     const totalStock = stock.reduce((total, item) => {
       return { ...total, [item[0]]: parseInt(item[1]) };
@@ -81,30 +117,29 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     console.log("formData", stock);
     console.log("formData", totalStock);
 
-    // Editor의 내용을 가져오기
-    const description = editorRef.current.getInstance().getMarkdown();
+    const updatedFormData = { ...formData, description };
 
     if (mode === "new") {
-      //새 상품 만들기
-      dispatch(createProduct({ ...formData, stock: totalStock }));
+      // 새 상품 만들기
+      dispatch(createProduct({ ...updatedFormData, stock: totalStock }));
     } else {
       // 상품 수정하기
     }
   };
 
   const handleChange = (event) => {
-    //form에 데이터 넣어주기
+    // form에 데이터 넣어주기
     const { id, value } = event.target;
     setFormData({ ...formData, [id]: value });
   };
 
   const addStock = () => {
-    //재고타입 추가시 배열에 새 배열 추가
+    // 재고 타입 추가 시 배열에 새 배열 추가
     setStock([...stock, []]);
   };
 
   const deleteStock = (idx) => {
-    //재고 삭제하기
+    // 재고 삭제하기
     const newStock = stock.filter((item, index) => index !== idx);
     setStock(newStock);
   };
@@ -162,11 +197,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
           <Modal.Title>Edit Product</Modal.Title>
         )}
       </Modal.Header>
-      {error && (
-        <div className="error-message">
-          <Alert variant="danger">{error}</Alert>
-        </div>
-      )}
+      {error && <div className="form-error">{error}</div>}
       <Form className="form-container" onSubmit={handleSubmit}>
         <Row className="mb-3">
           <Form.Group as={Col} controlId="sku">
@@ -175,9 +206,10 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
               onChange={handleChange}
               type="string"
               placeholder="Enter Sku"
-              required
               value={formData.sku}
+              isInvalid={!!errors.sku}
             />
+            {errors.sku && <div className="form-error">{errors.sku}</div>}
           </Form.Group>
 
           <Form.Group as={Col} controlId="name">
@@ -186,9 +218,10 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
               onChange={handleChange}
               type="string"
               placeholder="Name"
-              required
               value={formData.name}
+              isInvalid={!!errors.name}
             />
+            {errors.name && <div className="form-error">{errors.name}</div>}
           </Form.Group>
         </Row>
 
@@ -213,13 +246,13 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
               ["scrollSync"],
             ]}
           />
+          {errors.description && (
+            <div className="form-error">{errors.description}</div>
+          )}
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="stock">
           <Form.Label className="mr-1">Stock</Form.Label>
-          {stockError && (
-            <span className="error-message">재고를 추가해주세요</span>
-          )}
           <Button
             size="sm"
             onClick={addStock}
@@ -235,8 +268,8 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
                     onChange={(event) =>
                       handleSizeChange(event.target.value, index)
                     }
-                    required
                     value={item[0] || ""}
+                    isInvalid={!!errors.stock}
                   >
                     <option value="" disabled>
                       Please Choose...
@@ -264,8 +297,11 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
                     type="number"
                     placeholder="number of stock"
                     value={item[1] || ""}
-                    required
+                    isInvalid={!!errors[`stock-${index}`]}
                   />
+                  {errors[`stock-${index}`] && (
+                    <div className="form-error">{errors[`stock-${index}`]}</div>
+                  )}
                 </Col>
                 <Col sm={2}>
                   <Button
@@ -278,16 +314,16 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
                 </Col>
               </Row>
             ))}
+            {errors.stock && <div className="form-error">{errors.stock}</div>}
           </div>
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="Image" required>
+        <Form.Group className="mb-3" controlId="Image">
           <Form.Label className="mr-1">Image</Form.Label>
           <CloudinaryUploadWidget
             uploadImage={uploadImage}
             className="create-new-product-btn"
           />
-
           <div className="mt-2">
             {formData.image ? (
               <img
@@ -298,6 +334,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
               />
             ) : null}
           </div>
+          {errors.image && <div className="form-error">{errors.image}</div>}
         </Form.Group>
 
         <Row className="mb-3">
@@ -305,11 +342,12 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
             <Form.Label>Price</Form.Label>
             <Form.Control
               value={formData.price}
-              required
               onChange={handleChange}
               type="number"
               placeholder="0"
+              isInvalid={!!errors.category}
             />
+            {errors.price && <div className="form-error">{errors.price}</div>}
           </Form.Group>
 
           <Form.Group as={Col} controlId="category">
@@ -319,7 +357,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
               multiple
               onChange={onHandleCategory}
               value={formData.category}
-              required
+              isInvalid={!!errors.category}
             >
               {CATEGORY.map((item, idx) => (
                 <option key={idx} value={item.toLowerCase()}>
@@ -327,6 +365,9 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
                 </option>
               ))}
             </Form.Control>
+            {errors.category && (
+              <div className="form-error">{errors.category}</div>
+            )}
           </Form.Group>
 
           <Form.Group as={Col} controlId="status">
