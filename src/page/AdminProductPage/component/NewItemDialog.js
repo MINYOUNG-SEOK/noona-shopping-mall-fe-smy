@@ -77,6 +77,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     // [['M',2]] 에서 {M:2}로
     if (mode === "new") {
       //새 상품 만들기
+      dispatch(createProduct({ ...formData, stock: totalStock }));
     } else {
       // 상품 수정하기
     }
@@ -138,9 +139,9 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     }
   };
 
-  const uploadImage = (url) => {
-    //이미지 업로드
-    setFormData({ ...formData, image: url });
+  const uploadImage = (secureUrl) => {
+    console.log("Uploaded image URL:", secureUrl);
+    setFormData({ ...formData, image: secureUrl });
   };
 
   return (
@@ -200,7 +201,11 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
           {stockError && (
             <span className="error-message">재고를 추가해주세요</span>
           )}
-          <Button size="sm" onClick={addStock}>
+          <Button
+            size="sm"
+            onClick={addStock}
+            className="create-new-product-btn"
+          >
             Add +
           </Button>
           <div className="mt-2">
@@ -258,16 +263,20 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="Image" required>
-          <Form.Label>Image</Form.Label>
-          <CloudinaryUploadWidget uploadImage={uploadImage} />
-
-          <img
-            id="uploadedimage"
-            src={formData.image}
-            className="upload-image mt-2"
-            alt="uploadedimage"
-          ></img>
-        </Form.Group>
+  <Form.Label className="mr-1">Image</Form.Label>
+  <CloudinaryUploadWidget uploadImage={uploadImage} className="create-new-product-btn"/>
+  
+  <div className="mt-2">
+    {formData.image ? (
+      <img
+        src={formData.image}
+        style={{ maxWidth: '200px', height: 'auto' }}
+        className="upload-image"
+        alt="Product preview"
+      />
+    ) : null}
+  </div>
+</Form.Group>
 
         <Row className="mb-3">
           <Form.Group as={Col} controlId="price">
@@ -314,11 +323,19 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
           </Form.Group>
         </Row>
         {mode === "new" ? (
-          <Button variant="primary" type="submit">
+          <Button
+            variant="primary"
+            type="submit"
+            className="create-new-product-btn"
+          >
             Submit
           </Button>
         ) : (
-          <Button variant="primary" type="submit">
+          <Button
+            variant="primary"
+            type="submit"
+            className="create-new-product-btn"
+          >
             Edit
           </Button>
         )}
