@@ -48,3 +48,12 @@
     font-size: 10pt;
     padding-right: 10px;
 }
+
+.add-new-item-btn {
+    background-color: #3cbf7c;
+    border: none;
+}
+
+.add-new-item-btn:hover {
+    background-color: #3ab475;
+}
