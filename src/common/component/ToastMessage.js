@@ -10,11 +10,17 @@ const ToastMessage = () => {
   useEffect(() => {
     if (toastMessage) {
       const { message, status } = toastMessage;
-      if (message !== "" && status !== "") {
+      if (
+        message !== "" &&
+        ["success", "error", "info", "warn"].includes(status)
+      ) {
         toast[status](message, { theme: "colored" });
+      } else {
+        console.warn("올바르지 않은 toast 상태 값:", status);
       }
     }
   }, [toastMessage]);
+
   return (
     <ToastContainer
       className="custom-toast-container"
