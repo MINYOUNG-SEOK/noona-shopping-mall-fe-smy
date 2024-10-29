@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { Editor } from "@toast-ui/react-editor";
 import { Form, Modal, Button, Row, Col, Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import CloudinaryUploadWidget from "../../../utils/CloudinaryUploadWidget";
@@ -9,6 +10,7 @@ import {
   createProduct,
   editProduct,
 } from "../../../features/product/productSlice";
+import "@toast-ui/editor/dist/toastui-editor.css";
 
 const InitialFormData = {
   name: "",
@@ -31,6 +33,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   const [stock, setStock] = useState([]);
   const dispatch = useDispatch();
   const [stockError, setStockError] = useState(false);
+  const editorRef = useRef();
 
   useEffect(() => {
     if (success) setShowDialog(false);
@@ -78,7 +81,9 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     console.log("formData", stock);
     console.log("formData", totalStock);
 
-    // [['M',2]] 에서 {M:2}로
+    // Editor의 내용을 가져오기
+    const description = editorRef.current.getInstance().getMarkdown();
+
     if (mode === "new") {
       //새 상품 만들기
       dispatch(createProduct({ ...formData, stock: totalStock }));
@@ -189,14 +194,24 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
 
         <Form.Group className="mb-3" controlId="description">
           <Form.Label>Description</Form.Label>
-          <Form.Control
-            type="string"
-            placeholder="Description"
-            as="textarea"
-            onChange={handleChange}
-            rows={3}
-            value={formData.description}
-            required
+          <Editor
+            ref={editorRef}
+            initialValue={
+              formData.description ||
+              "Please write your product description here."
+            }
+            previewStyle="tab"
+            height="500px"
+            initialEditType="wysiwyg"
+            useCommandShortcut={true}
+            toolbarItems={[
+              ["heading", "bold", "italic", "strike"],
+              ["hr", "quote"],
+              ["ul", "ol", "task", "indent", "outdent"],
+              ["table", "image", "link"],
+              ["code", "codeblock"],
+              ["scrollSync"],
+            ]}
           />
         </Form.Group>
 
@@ -254,7 +269,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
                 </Col>
                 <Col sm={2}>
                   <Button
-                     className="gray-button"
+                    className="gray-button"
                     size="sm"
                     onClick={() => deleteStock(index)}
                   >
@@ -267,20 +282,23 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="Image" required>
-  <Form.Label className="mr-1">Image</Form.Label>
-  <CloudinaryUploadWidget uploadImage={uploadImage} className="create-new-product-btn"/>
-  
-  <div className="mt-2">
-    {formData.image ? (
-      <img
-        src={formData.image}
-        style={{ maxWidth: '200px', height: 'auto' }}
-        className="upload-image"
-        alt="Product preview"
-      />
-    ) : null}
-  </div>
-</Form.Group>
+          <Form.Label className="mr-1">Image</Form.Label>
+          <CloudinaryUploadWidget
+            uploadImage={uploadImage}
+            className="create-new-product-btn"
+          />
+
+          <div className="mt-2">
+            {formData.image ? (
+              <img
+                src={formData.image}
+                style={{ maxWidth: "200px", height: "auto" }}
+                className="upload-image"
+                alt="Product preview"
+              />
+            ) : null}
+          </div>
+        </Form.Group>
 
         <Row className="mb-3">
           <Form.Group as={Col} controlId="price">
