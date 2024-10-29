@@ -54,7 +54,6 @@
     padding-right: 10px;
 }
 
-/* 버튼 스타일 수정 */
 .add-new-item-btn {
     background-color: #5d90ed;
     color: white;
@@ -84,7 +83,6 @@
     background-color: #3c5c97;
 }
 
-/* 폼 요소 스타일 추가 */
 .form-label {
     font-weight: bold;
     display: block;
@@ -113,7 +111,6 @@
     background-color: white;
 }
 
-/* 컨테이너 스타일 */
 .container {
     width: 100%;
     max-width: 1200px;
@@ -121,7 +118,6 @@
     margin: 0 auto;
 }
 
-/* 페이지네이션 스타일 유지 */
 .pagination {
     display: flex;
     justify-content: center;
@@ -183,10 +179,52 @@
 }
 
 
+.create-new-product-btn {
+    background-color: #5d90ed !important; 
+    border: none;
+}
+
+.create-new-product-btn:hover {
+    background-color: #4267aa !important; 
+    border: none; 
+}
+
+
+.create-new-product-btn:focus,
+.create-new-product-btn:active {
+    background-color: #5d90ed !important;
+    box-shadow: none; 
+}
+
+.add-new-item-btn {
+    background-color: #5d90ed !important; 
+    border: none;
+}
+
+.add-new-item-btn:hover {
+    background-color: #4267aa !important; 
+    border: none; 
+}
+
+.add-new-item-btn:focus,
+.add-new-item-btn:active {
+    background-color: #5d90ed !important; 
+    box-shadow: none;
+}
+
+.gray-button {
+    margin-top: 4px;
+    background-color: grey;
+    color: white; 
+    border: none; 
+}
+
+.gray-button:hover {
+    background-color: #5a6268; 
+}
 
 
 
-/* 반응형 스타일 */
 @media screen and (max-width: 768px) {
     .page-link,
     .page-item.active .page-link {
