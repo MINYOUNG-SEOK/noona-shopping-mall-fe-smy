@@ -1,80 +1,127 @@
-.card-area{
-    margin-top:20px;
-}
-.admin-product-card{
-    border:1px solid red;
-
-}
-.tag{
-    margin-left:10px
+.card-area {
+    margin-top: 20px;
 }
 
-.display-flex{
-    display:flex;
+.admin-product-card {
+    border: 1px solid red;
+}
+
+.tag {
+    margin-left: 10px;
+}
+
+.display-flex {
+    display: flex;
     align-items: center;
 }
-.locate-center{
+
+.locate-center {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
 }
-.stock{
+
+.stock {
     margin-right: 10px;
 }
 
-
-.mt-2{
+.mt-2 {
     margin-top: 20px;
 }
 
-.form-container{
-    padding:20px
+.form-container {
+    padding: 20px;
 }
-.mr-1{
+
+.mr-1 {
     margin-right: 10px;
 }
 
-.upload-image{
+.upload-image {
     max-width: 458px;
-    width:100%
+    width: 100%;
 }
-.display-center{
+
+.display-center {
     display: flex;
     justify-content: center;
 }
-.error-message{
+
+.error-message {
     color: red;
     font-size: 10pt;
     padding-right: 10px;
 }
 
+/* 버튼 스타일 수정 */
 .add-new-item-btn {
-    background-color: #3cbf7c;
+    background-color: #5d90ed;
+    color: white;
     border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
 }
 
 .add-new-item-btn:hover {
-    background-color: #2e945f;
+    background-color: #3c5c97;
 }
 
 .create-new-product-btn {
-    background-color: #3cbf7c;
+    background-color: #5d90ed;
+    color: white;
     border: none;
     padding: 8px 10px;
     font-size: 15px;
     margin-right: 10px;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 .create-new-product-btn:hover {
-    background-color: #2e945f;
+    background-color: #3c5c97;
 }
 
+/* 폼 요소 스타일 추가 */
 .form-label {
-font-weight: bold;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
 }
 
+.form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
 
+.form-control:focus {
+    outline: none;
+    border: none;
+}
+
+.form-select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: white;
+}
+
+/* 컨테이너 스타일 */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 15px;
+    margin: 0 auto;
+}
+
+/* 페이지네이션 스타일 유지 */
 .pagination {
     display: flex;
     justify-content: center;
@@ -111,6 +158,7 @@ font-weight: bold;
     outline: none;
     text-decoration: none;
     transition: color 0.2s ease;
+    cursor: pointer;
 }
 
 .page-item.active .page-link {
@@ -134,11 +182,20 @@ font-weight: bold;
     color: #000;
 }
 
+
+
+
+
+/* 반응형 스타일 */
 @media screen and (max-width: 768px) {
     .page-link,
     .page-item.active .page-link {
         min-width: 28px;
         height: 28px;
         font-size: 14px;
+    }
+    
+    .container {
+        padding: 0 10px;
     }
 }
