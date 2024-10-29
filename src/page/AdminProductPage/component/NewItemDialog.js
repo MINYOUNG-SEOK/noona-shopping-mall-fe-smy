@@ -254,7 +254,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
                 </Col>
                 <Col sm={2}>
                   <Button
-                    variant="danger"
+                     className="gray-button"
                     size="sm"
                     onClick={() => deleteStock(index)}
                   >
