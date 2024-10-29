@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router";
-import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Sidebar from "../common/component/Sidebar";
 import Navbar from "../common/component/Navbar";
 import ToastMessage from "../common/component/ToastMessage";
 import { loginWithToken } from "../features/user/userSlice";
 import { getCartQty } from "../features/cart/cartSlice";
+import "./AppLayout.style.css"; // 새 CSS 파일 생성
 
 const AppLayout = ({ children }) => {
   const location = useLocation();
@@ -28,17 +28,17 @@ const AppLayout = ({ children }) => {
   }, [user, dispatch]);
 
   return (
-    <div>
+    <div className="app-layout">
       <ToastMessage />
       {location.pathname.includes("admin") ? (
-        <Row className="vh-100">
-          <Col xs={12} md={3} className="sidebar mobile-sidebar">
+        <div className="admin-layout">
+          <div className="sidebar-container">
             <Sidebar />
-          </Col>
-          <Col xs={12} md={9}>
+          </div>
+          <div className="content-container">
             {children}
-          </Col>
-        </Row>
+          </div>
+        </div>
       ) : (
         <>
           <Navbar user={user} />
