@@ -55,5 +55,22 @@
 }
 
 .add-new-item-btn:hover {
-    background-color: #3ab475;
+    background-color: #2e945f;
 }
+
+.create-new-product-btn {
+    background-color: #3cbf7c;
+    border: none;
+    padding: 8px 10px;
+    font-size: 15px;
+    margin-right: 10px;
+}
+
+.create-new-product-btn:hover {
+    background-color: #2e945f;
+}
+
+.form-label {
+font-weight: bold;
+}
+
