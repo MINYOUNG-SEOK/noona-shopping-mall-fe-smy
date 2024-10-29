@@ -94,9 +94,10 @@ const AdminProductPage = () => {
     nextLabel=">"
     previousLabel="<"
     onPageChange={handlePageClick}
-    pageRangeDisplayed={5}
+    pageRangeDisplayed={5} 
+    marginPagesDisplayed={1} 
     pageCount={30}
-    forcePage={currentPage - 1}  // 1을 기본값으로 설정
+    forcePage={currentPage - 1}  
     renderOnZeroPageCount={null}
     containerClassName="pagination"
     pageClassName="page-item"
@@ -109,7 +110,7 @@ const AdminProductPage = () => {
     breakClassName="page-item"
     breakLinkClassName="page-link break"
     activeClassName="active"
-    disableInitialCallback={true}  // 초기 렌더링시 콜백 비활성화
+    disableInitialCallback={true}
 />
       </Container>
 
