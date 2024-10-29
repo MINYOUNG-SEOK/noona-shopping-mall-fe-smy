@@ -1,126 +1,239 @@
-import React, { useEffect, useState } from "react";
-import { Container, Button } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import ReactPaginate from "react-paginate";
-import SearchBox from "../../common/component/SearchBox";
-import NewItemDialog from "./component/NewItemDialog";
-import ProductTable from "./component/ProductTable";
-import {
-  getProductList,
-  deleteProduct,
-  setSelectedProduct,
-} from "../../features/product/productSlice";
+.card-area {
+    margin-top: 20px;
+}
 
-const AdminProductPage = () => {
-  const navigate = useNavigate();
-  const [query] = useSearchParams();
-  const dispatch = useDispatch();
-  const { productList, totalPageNum } = useSelector((state) => state.product);
-  const [currentPage, setCurrentPage] = useState(parseInt(query.get("page") || 1));
-  const [showDialog, setShowDialog] = useState(false);
-  const [searchQuery, setSearchQuery] = useState({
-    page: currentPage,
-    name: query.get("name") || "",
-  });
+.admin-product-card {
+    border: 1px solid red;
+}
 
-  const [mode, setMode] = useState("new");
+.tag {
+    margin-left: 10px;
+}
 
-  const tableHeader = [
-    "#",
-    "Sku",
-    "Name",
-    "Price",
-    "Stock",
-    "Image",
-    "Status",
-    "",
-  ];
+.display-flex {
+    display: flex;
+    align-items: center;
+}
 
-  useEffect(() => {
-    // 검색어나 페이지가 바뀌면 url을 바꿔줌 => URL 쿼리를 읽어옴 => 상품 리스트 가져오기
-    navigate(`?page=${currentPage}&name=${searchQuery.name}`);
-    // 상품 리스트를 서버에서 가져오기 (API 호출 등)
-    // dispatch(getProductList(searchQuery)); // 여기에 실제 API 호출
-  }, [currentPage, searchQuery.name]);
+.locate-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
 
-  const deleteItem = (id) => {
-    // 아이템 삭제 처리
-    dispatch(deleteProduct(id));
-  };
+.stock {
+    margin-right: 10px;
+}
 
-  const openEditForm = (product) => {
-    // edit 모드로 설정 후 아이템 수정 다이얼로그 열기
-    setMode("edit");
-    dispatch(setSelectedProduct(product));
-    setShowDialog(true);
-  };
+.mt-2 {
+    margin-top: 20px;
+}
 
-  
+.form-container {
+    padding: 20px;
+}
 
-  const handleClickNewItem = () => {
-    // new 모드로 설정 후 다이얼로그 열기
-    setMode("new");
-    setShowDialog(true);
-  };
+.mr-1 {
+    margin-right: 10px;
+}
 
-  const handlePageClick = ({ selected }) => {
-    // 페이지 번호가 변경될 때 현재 페이지 상태 업데이트
-    setCurrentPage(selected + 1);
-  };
+.upload-image {
+    max-width: 458px;
+    width: 100%;
+}
 
-  return (
-    <div className="locate-center">
-      <Container>
-        <div className="mt-2">
-          <SearchBox
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            placeholder=" 검색"
-            field="name"
-          />
-        </div>
-        <Button className="mt-2 mb-2 add-new-item-btn" onClick={handleClickNewItem}>
-          Add New Item +
-        </Button>
+.display-center {
+    display: flex;
+    justify-content: center;
+}
 
-        <ProductTable
-          header={tableHeader}
-          data={productList}
-          deleteItem={deleteItem}
-          openEditForm={openEditForm}
-        />
-    <ReactPaginate
-    nextLabel=">"
-    previousLabel="<"
-    onPageChange={handlePageClick}
-    pageRangeDisplayed={5} 
-    marginPagesDisplayed={1} 
-    pageCount={30}
-    forcePage={currentPage - 1}  
-    renderOnZeroPageCount={null}
-    containerClassName="pagination"
-    pageClassName="page-item"
-    pageLinkClassName="page-link"
-    previousClassName="page-item"
-    previousLinkClassName="page-link arrow"
-    nextClassName="page-item"
-    nextLinkClassName="page-link arrow"
-    breakLabel="..."
-    breakClassName="page-item"
-    breakLinkClassName="page-link break"
-    activeClassName="active"
-    disableInitialCallback={true}
-/>
-      </Container>
+.error-message {
+    color: red;
+    font-size: 10pt;
+    padding-right: 10px;
+}
 
-      <NewItemDialog
-        mode={mode}
-        showDialog={showDialog}
-        setShowDialog={setShowDialog}
-      />
-    </div>
-  );
-};
+.add-new-item-btn {
+    background-color: #5d90ed;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
+}
 
-export default AdminProductPage;
+.add-new-item-btn:hover {
+    background-color: #3c5c97;
+}
+
+.create-new-product-btn {
+    background-color: #5d90ed;
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    font-size: 15px;
+    margin-right: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.create-new-product-btn:hover {
+    background-color: #3c5c97;
+}
+
+.form-label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-control:focus {
+    outline: none;
+    border: none;
+}
+
+.form-select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: white;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 15px;
+    margin: 0 auto;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 1.5rem 0;
+    padding: 0;
+    list-style: none;
+}
+
+.page-item {
+    margin: 0;
+    padding: 0;
+}
+
+.page-link,
+.page-link:focus,
+.page-link:hover,
+.page-item.active .page-link,
+.page-item.active .page-link:hover,
+.page-item.active .page-link:focus {
+    min-width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    color: #9CA3AF;
+    font-size: 16px;
+    border: none;
+    background: none;
+    box-shadow: none;
+    outline: none;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    cursor: pointer;
+}
+
+.page-item.active .page-link {
+    color: #000;
+    font-weight: 700;
+    font-size: 16px;
+    background: none;
+}
+
+.page-link.arrow {
+    color: #9CA3AF;
+    font-size: 16px;
+}
+
+.page-link.break {
+    color: #9CA3AF;
+    cursor: default;
+}
+
+.page-link:hover:not(.break) {
+    color: #000;
+}
+
+
+.create-new-product-btn {
+    background-color: #5d90ed !important; 
+    border: none;
+}
+
+.create-new-product-btn:hover {
+    background-color: #4267aa !important; 
+    border: none; 
+}
+
+
+.create-new-product-btn:focus,
+.create-new-product-btn:active {
+    background-color: #5d90ed !important;
+    box-shadow: none; 
+}
+
+.add-new-item-btn {
+    background-color: #5d90ed !important; 
+    border: none;
+}
+
+.add-new-item-btn:hover {
+    background-color: #4267aa !important; 
+    border: none; 
+}
+
+.add-new-item-btn:focus,
+.add-new-item-btn:active {
+    background-color: #5d90ed !important; 
+    box-shadow: none;
+}
+
+.gray-button {
+    margin-top: 4px;
+    background-color: grey;
+    color: white; 
+    border: none; 
+}
+
+.gray-button:hover {
+    background-color: #5a6268; 
+}
+
+
+
+@media screen and (max-width: 768px) {
+    .page-link,
+    .page-item.active .page-link {
+        min-width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+    
+    .container {
+        padding: 0 10px;
+    }
+}
