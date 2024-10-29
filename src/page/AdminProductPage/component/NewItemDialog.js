@@ -201,7 +201,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
               "Please write your product description here."
             }
             previewStyle="tab"
-            height="500px"
+            height="300px"
             initialEditType="wysiwyg"
             useCommandShortcut={true}
             toolbarItems={[
