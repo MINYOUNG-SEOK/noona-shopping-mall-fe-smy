@@ -48,8 +48,8 @@ export const createProduct = createAsyncThunk(
       return response.data;
     } catch (error) {
       const errorMessage = error.response?.data?.error?.includes("E11000")
-        ? "상품 생성 중 오류가 발생했습니다."
-        : error.response?.data?.error || "이미 존재하는 SKU입니다.";
+        ? "An error occurred."
+        : error.response?.data?.error || "SKU already exists.";
       return rejectWithValue(errorMessage);
     }
   }

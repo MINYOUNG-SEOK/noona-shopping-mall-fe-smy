@@ -204,6 +204,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
       </Modal.Header>
 
       <Form className="form-container" onSubmit={handleSubmit}>
+        {error && <div className="form-error">{error}</div>}
         <Row className="mb-3">
           <Form.Group as={Col} controlId="sku">
             <Form.Label>Sku</Form.Label>
@@ -214,7 +215,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
               value={formData.sku}
               isInvalid={!!errors.sku}
             />
-            {error && <div className="form-error">{error}</div>}
+            {errors.sku && <div className="form-error">{errors.sku}</div>}
           </Form.Group>
 
           <Form.Group as={Col} controlId="name">
