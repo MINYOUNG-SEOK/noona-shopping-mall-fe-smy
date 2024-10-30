@@ -15,7 +15,7 @@ export const loginWithEmail = createAsyncThunk(
       return response.data;
     } catch (error) {
       const errorMessage =
-        error.response?.data?.message || "이메일 혹은 비밀번호를 확인해주세요.";
+       error.response?.data?.message || "Please check your email or password.";
       return rejectWithValue(errorMessage);
     }
   }
