@@ -8,7 +8,9 @@ export const getProductList = createAsyncThunk(
   async (query, { rejectWithValue }) => {
     try {
       const response = await api.get("/product", { params: query });
-      return response.data;
+      if(response.status!==200) throw new Error(response.error)
+
+      return response.data.data;
     } catch (error) {
       return rejectWithValue(
         error.response.data.message || "Error fetching products."
@@ -116,19 +118,35 @@ const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+    // 상품 생성
+    .addCase(createProduct.pending, (state, action) => {
+      state.loading = true;
+    })
+    .addCase(createProduct.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.success = true;
+    })
+    .addCase(createProduct.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+      state.success = false;
+    })
+    // 상품 리스트
       .addCase(getProductList.pending, (state) => {
         state.loading = true;
-        state.error = "";
       })
       .addCase(getProductList.fulfilled, (state, action) => {
         state.loading = false;
-        state.productList = action.payload.products;
+        state.productList = action.payload;
         state.totalPageNum = action.payload.totalPageNum;
+        state.error = "";
       })
       .addCase(getProductList.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
+      // 상품 상세
       .addCase(getProductDetail.pending, (state) => {
         state.loading = true;
         state.error = "";
@@ -141,19 +159,8 @@ const productSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(createProduct.pending, (state) => {
-        state.loading = true;
-        state.error = "";
-      })
-      .addCase(createProduct.fulfilled, (state) => {
-        state.loading = false;
-        state.success = true;
-      })
-      .addCase(createProduct.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(deleteProduct.pending, (state) => {
+      // 상품 삭제
+      .addCase(deleteProduct.pending, (state,action) => {
         state.loading = true;
         state.error = "";
       })
@@ -168,6 +175,7 @@ const productSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      //상품 수정
       .addCase(editProduct.pending, (state) => {
         state.loading = true;
         state.error = "";
