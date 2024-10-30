@@ -24,7 +24,7 @@ const RegisterPage = () => {
     if (registrationError) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        email: "이미 가입된 유저입니다.",
+        email: "User already registered.",
       }));
     }
   }, [registrationError]);
@@ -38,25 +38,25 @@ const RegisterPage = () => {
 
     // Name 필드가 비어 있는지 확인
     if (!name.trim()) {
-      newErrors.name = "이름을 입력해주세요.";
+      newErrors.name = "Please enter your name.";
       hasErrors = true;
     }
 
     // 이메일 필드가 비어 있는지 확인
     if (!email.trim()) {
-      newErrors.email = "이메일을 입력해주세요.";
+      newErrors.email = "Please enter your email.";
       hasErrors = true;
     }
 
     // 비밀번호 필드가 비어 있는지 확인
     if (!password.trim()) {
-      newErrors.password = "비밀번호를 입력해주세요.";
+      newErrors.password = "Please enter your password.";
       hasErrors = true;
     }
 
     // 비밀번호 일치 여부 확인
     if (password !== confirmPassword) {
-      newErrors.confirmPassword = "비밀번호가 일치하지 않습니다.";
+      newErrors.confirmPassword = "Passwords do not match.";
       hasErrors = true;
     }
 
@@ -182,7 +182,7 @@ const RegisterPage = () => {
           </label>
           {policyError && (
             <div className="form-error">
-              서비스 이용약관 및 개인정보 보호정책에 동의해주세요.
+              Please agree to the Terms of Service and Privacy Policy.
             </div>
           )}
         </div>
