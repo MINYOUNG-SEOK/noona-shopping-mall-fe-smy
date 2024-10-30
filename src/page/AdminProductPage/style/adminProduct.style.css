@@ -231,6 +231,17 @@
     margin-left: 20px;
 }
 
+.responsive-btn-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .responsive-btn-container button {
+    margin-bottom: 5px !important;
+  }
+  .responsive-btn-container button:last-child {
+    margin-bottom: 0;
+  }
 
 
 @media screen and (max-width: 768px) {
@@ -245,4 +256,7 @@
     .container {
         padding: 0 10px;
     }
+
+    
 }
+
