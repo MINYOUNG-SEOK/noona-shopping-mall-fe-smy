@@ -63,6 +63,18 @@
     margin-left: -10px;
 }
 
+.error-text {
+    color: red;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-left: 0px;
+    font-size: 14px;
+}
+
+.input-invalid {
+    border: 1px solid red;
+}
+
 .forgot-password {
     font-size: 16px;
     text-align: right;
@@ -143,12 +155,6 @@
     text-decoration: underline;
 }
 
-.error-text {
-    color: red;
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 14px;
-}
 
 .error-message .alert-danger {
     color: red !important;
@@ -161,7 +167,6 @@
 .input-invalid {
     border: 1px solid red;
 }
-
 
 
 @media (max-width: 768px) {
