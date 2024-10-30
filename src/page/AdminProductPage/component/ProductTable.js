@@ -81,10 +81,11 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
                     alt="product"
                     style={{
                       display: "block",
-                      margin: "0 auto",
-                      height: "70px",
+                      margin: "5px auto",
+                      height: "100px",
+                      width: "100px",
                       objectFit: "cover",
-                    }} // 동일한 높이로 설정
+                    }}
                   />
                 </td>
                 <td style={{ verticalAlign: "middle", textAlign: "center" }}>
@@ -111,7 +112,7 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
                       size="sm"
                       variant="danger"
                       onClick={() => deleteItem(item._id)}
-                      style={{ width: "70px" }} // Delete 버튼의 너비 설정
+                      style={{ width: "70px" }}
                     >
                       Delete
                     </Button>
@@ -121,7 +122,7 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
                       style={{
                         backgroundColor: "#5d90ed",
                         borderColor: "#5d90ed",
-                        width: "70px", // Edit 버튼의 너비를 Delete와 동일하게 설정
+                        width: "70px",
                       }}
                     >
                       Edit
