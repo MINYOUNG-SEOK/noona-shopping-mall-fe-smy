@@ -63,11 +63,12 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
                   {currencyFormat(item.price)}
                 </td>
                 <td style={{ verticalAlign: "middle", textAlign: "center" }}>
-                  {Object.keys(item.stock).map((size, idx) => (
-                    <div key={idx}>
-                      {size}: {item.stock[size]}
-                    </div>
-                  ))}
+                  {item.stock &&
+                    Object.keys(item.stock).map((size, idx) => (
+                      <div key={idx}>
+                        {size}: {item.stock[size]}
+                      </div>
+                    ))}
                 </td>
                 <td
                   style={{

@@ -9,6 +9,7 @@ import {
   clearError,
   createProduct,
   editProduct,
+  getProductList,
 } from "../../../features/product/productSlice";
 import "@toast-ui/editor/dist/toastui-editor.css";
 
@@ -37,7 +38,11 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (success) setShowDialog(false);
+    if (success) {
+      dispatch(clearError());
+      dispatch(getProductList({ page: 1, name: "" }));
+      setShowDialog(false);
+    }
   }, [success]);
 
   useEffect(() => {

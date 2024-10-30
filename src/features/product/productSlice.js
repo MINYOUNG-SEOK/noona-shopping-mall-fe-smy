@@ -8,7 +8,7 @@ export const getProductList = createAsyncThunk(
   async (query, { rejectWithValue }) => {
     try {
       const response = await api.get("/product", { params: query });
-      if(response.status!==200) throw new Error(response.error)
+      if (response.status !== 200) throw new Error(response.error);
 
       return response.data.data;
     } catch (error) {
@@ -38,6 +38,7 @@ export const createProduct = createAsyncThunk(
   async (formData, { dispatch, rejectWithValue }) => {
     try {
       const response = await api.post("/product", formData);
+      dispatch(getProductList());
       dispatch(
         showToastMessage({
           message: "상품이 생성되었습니다.",
@@ -118,21 +119,23 @@ const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-    // 상품 생성
-    .addCase(createProduct.pending, (state, action) => {
-      state.loading = true;
-    })
-    .addCase(createProduct.fulfilled, (state, action) => {
-      state.loading = false;
-      state.error = "";
-      state.success = true;
-    })
-    .addCase(createProduct.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-      state.success = false;
-    })
-    // 상품 리스트
+      // 상품 생성
+      .addCase(createProduct.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(createProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = "";
+        state.success = true;
+        // 생성된 상품을 리스트에 추가
+        state.productList = [...state.productList, action.payload];
+      })
+      .addCase(createProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.success = false;
+      })
+      // 상품 리스트
       .addCase(getProductList.pending, (state) => {
         state.loading = true;
       })
@@ -160,7 +163,7 @@ const productSlice = createSlice({
         state.error = action.payload;
       })
       // 상품 삭제
-      .addCase(deleteProduct.pending, (state,action) => {
+      .addCase(deleteProduct.pending, (state, action) => {
         state.loading = true;
         state.error = "";
       })

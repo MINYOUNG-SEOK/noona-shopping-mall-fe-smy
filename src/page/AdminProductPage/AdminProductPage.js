@@ -17,7 +17,9 @@ const AdminProductPage = () => {
   const [query] = useSearchParams();
   const dispatch = useDispatch();
   const { productList, totalPageNum } = useSelector((state) => state.product);
-  const [currentPage, setCurrentPage] = useState(parseInt(query.get("page") || 1));
+  const [currentPage, setCurrentPage] = useState(
+    parseInt(query.get("page") || 1)
+  );
   const [showDialog, setShowDialog] = useState(false);
   const [searchQuery, setSearchQuery] = useState({
     page: currentPage,
@@ -42,7 +44,7 @@ const AdminProductPage = () => {
     // 검색어나 페이지가 바뀌면 url을 바꿔줌 => URL 쿼리를 읽어옴 => 상품 리스트 가져오기
     navigate(`?page=${currentPage}&name=${searchQuery.name}`);
     // 상품 리스트를 서버에서 가져오기 (API 호출 등)
-    // dispatch(getProductList(searchQuery)); // 여기에 실제 API 호출
+    dispatch(getProductList(searchQuery)); // 여기에 실제 API 호출
   }, [currentPage, searchQuery.name]);
 
   const deleteItem = (id) => {
@@ -68,8 +70,6 @@ const AdminProductPage = () => {
     setCurrentPage(selected + 1);
   };
 
-  
-
   return (
     <div className="locate-center">
       <Container>
@@ -81,7 +81,10 @@ const AdminProductPage = () => {
             field="name"
           />
         </div>
-        <Button className="mt-2 mb-2 add-new-item-btn" onClick={handleClickNewItem}>
+        <Button
+          className="mt-2 mb-2 add-new-item-btn"
+          onClick={handleClickNewItem}
+        >
           Add New Item +
         </Button>
 
@@ -95,10 +98,10 @@ const AdminProductPage = () => {
           nextLabel=">"
           previousLabel="<"
           onPageChange={handlePageClick}
-          pageRangeDisplayed={5} 
-          marginPagesDisplayed={1} 
+          pageRangeDisplayed={5}
+          marginPagesDisplayed={1}
           pageCount={30}
-          forcePage={currentPage - 1}  
+          forcePage={currentPage - 1}
           renderOnZeroPageCount={null}
           containerClassName="pagination"
           pageClassName="page-item"
