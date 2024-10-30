@@ -38,7 +38,7 @@ export const createProduct = createAsyncThunk(
       const response = await api.post("/product", formData);
       dispatch(
         showToastMessage({
-          message: "상품이 성공적으로 생성되었습니다.",
+          message: "상품이 생성되었습니다.",
           status: "success",
         })
       );
