@@ -22,7 +22,7 @@ export const CATEGORY = [
   "Accessories",
   "Bags",
 ];
-export const STATUS = ["active", "disactive"];
+export const STATUS = ["active", "Inactive"];
 export const SIZE = ["XS", "S", "M", "L", "XL"];
 export const TOGGLE_ITEM_DIALOG = "TOGGLE_ITEM_DIALOG";
 export const SEARCH_PRODUCT_REQUEST = " SEARCH_PRODUCT_REQUEST";
