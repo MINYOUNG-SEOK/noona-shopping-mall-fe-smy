@@ -34,6 +34,7 @@ const AdminProductPage = () => {
     "Stock",
     "Image",
     "Status",
+    "Created At",
     "",
   ];
 
@@ -66,6 +67,8 @@ const AdminProductPage = () => {
     // 페이지 번호가 변경될 때 현재 페이지 상태 업데이트
     setCurrentPage(selected + 1);
   };
+
+  
 
   return (
     <div className="locate-center">
