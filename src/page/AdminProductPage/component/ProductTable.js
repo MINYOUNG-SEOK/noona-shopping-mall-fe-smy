@@ -75,6 +75,8 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
                     padding: 0,
                     verticalAlign: "middle",
                     textAlign: "center",
+                    width: "120px", // 이미지의 너비에 맞게 조정
+                    height: "120px", // 이미지의 높이에 맞게 조정
                   }}
                 >
                   <img
@@ -82,13 +84,14 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
                     alt="product"
                     style={{
                       display: "block",
-                      margin: "5px auto",
-                      height: "100px",
-                      width: "100px",
+                      margin: "10px",
+                      height: "100px", // 이미지의 크기를 조정
+                      width: "100px", // 이미지의 크기를 조정
                       objectFit: "cover",
                     }}
                   />
                 </td>
+
                 <td style={{ verticalAlign: "middle", textAlign: "center" }}>
                   {item.status}
                 </td>
@@ -105,7 +108,7 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
                   style={{
                     verticalAlign: "middle",
                     textAlign: "center",
-                    maxWidth: "70px",
+                    Width: "50px",
                   }}
                 >
                   <div className="responsive-btn-container">
@@ -113,7 +116,9 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
                       size="sm"
                       variant="danger"
                       onClick={() => deleteItem(item._id)}
-                      style={{ width: "70px" }}
+                      style={{
+                        width: "60px",
+                      }}
                     >
                       Delete
                     </Button>
@@ -123,7 +128,7 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
                       style={{
                         backgroundColor: "#5d90ed",
                         borderColor: "#5d90ed",
-                        width: "70px",
+                        width: "60px",
                       }}
                     >
                       Edit
