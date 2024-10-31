@@ -136,7 +136,7 @@ const Navbar = ({ user }) => {
         <div className="navbar-search-box">
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="제품명으로 검색"
             onKeyPress={onCheckEnter}
             className="navbar-search-input"
           />
