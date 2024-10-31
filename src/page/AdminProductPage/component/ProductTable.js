@@ -28,11 +28,6 @@ const ProductTable = ({
   pageSize,
   totalProducts,
 }) => {
-  // 인덱스 역순으로 정렬
-  const sortedData = [...data].sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-  );
-
   return (
     <div className="overflow-x product-table-container">
       <Table striped bordered hover>
@@ -49,8 +44,8 @@ const ProductTable = ({
           </tr>
         </thead>
         <tbody>
-          {sortedData.length > 0 ? (
-            sortedData.map((item, index) => (
+          {data.length > 0 ? (
+            data.map((item, index) => (
               <tr key={index}>
                 <td style={{ verticalAlign: "middle", textAlign: "center" }}>
                   {totalProducts - ((currentPage - 1) * pageSize + index)}
