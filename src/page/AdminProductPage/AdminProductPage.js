@@ -14,15 +14,12 @@ import {
 
 const AdminProductPage = () => {
   const navigate = useNavigate();
-  const [query] = useSearchParams();
+  const { productList} = useSelector((state) => state.product);
+  const [query, setQuery] = useSearchParams();
   const dispatch = useDispatch();
-  const { productList, totalPageNum } = useSelector((state) => state.product);
-  const [currentPage, setCurrentPage] = useState(
-    parseInt(query.get("page") || 1)
-  );
   const [showDialog, setShowDialog] = useState(false);
   const [searchQuery, setSearchQuery] = useState({
-    page: currentPage,
+    page: query.get("page") || 1,
     name: query.get("name") || "",
   });
 
@@ -40,12 +37,18 @@ const AdminProductPage = () => {
     "",
   ];
 
+  // 검색어가 변경될 때마다 URL과 상태를 업데이트
   useEffect(() => {
-    // 검색어나 페이지가 바뀌면 url을 바꿔줌 => URL 쿼리를 읽어옴 => 상품 리스트 가져오기
-    navigate(`?page=${currentPage}&name=${searchQuery.name}`);
-    // 상품 리스트를 서버에서 가져오기 (API 호출 등)
-    dispatch(getProductList(searchQuery)); // 여기에 실제 API 호출
-  }, [currentPage, searchQuery.name]);
+    if (searchQuery.name === "") delete searchQuery.name;
+    const params = new URLSearchParams(searchQuery);
+    console.log("Updated URL Params:", params.toString());
+    navigate(`?${params.toString()}`, { replace: true });
+  }, [searchQuery, navigate]);
+
+  useEffect(() => {
+    console.log("Dispatching getProductList with Query:", searchQuery);
+    dispatch(getProductList({ ...searchQuery }));
+  }, [searchQuery, dispatch]);
 
   const deleteItem = (id) => {
     // 아이템 삭제 처리
@@ -67,8 +70,11 @@ const AdminProductPage = () => {
 
   const handlePageClick = ({ selected }) => {
     // 페이지 번호가 변경될 때 현재 페이지 상태 업데이트
-    setCurrentPage(selected + 1);
   };
+
+  // searchbox에서 검색어를 읽어온다 => 엔터를 치면 => searchQuery 객체가 업데이트 됨 name : 스트레이트 팬츠
+  // => searchQuery 객체 안에 아이템 기준으로 url을 새로 생성해서 호출 & NAME=스트레이트+팬츠
+  // => URL 쿼리 읽어오기 => URL 쿼리 기준으로 BE에 검색조건과 함께 호출한다
 
   return (
     <div className="locate-center">
@@ -77,7 +83,7 @@ const AdminProductPage = () => {
           <SearchBox
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
-            placeholder=" 검색"
+            placeholder="제품명으로 검색"
             field="name"
           />
         </div>
@@ -101,7 +107,6 @@ const AdminProductPage = () => {
           pageRangeDisplayed={5}
           marginPagesDisplayed={1}
           pageCount={30}
-          forcePage={currentPage - 1}
           renderOnZeroPageCount={null}
           containerClassName="pagination"
           pageClassName="page-item"
