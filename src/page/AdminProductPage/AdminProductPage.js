@@ -41,7 +41,7 @@ const AdminProductPage = () => {
   useEffect(() => {
     if (searchQuery.name === "") delete searchQuery.name;
     const params = new URLSearchParams(searchQuery);
-    console.log("Updated URL Params:", params.toString());
+    console.log("Updated URL Params:", decodeURIComponent(params.toString()));
     navigate(`?${params.toString()}`, { replace: true });
   }, [searchQuery, navigate]);
 
