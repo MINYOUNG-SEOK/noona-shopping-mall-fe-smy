@@ -19,7 +19,15 @@ function formatDate(dateString) {
   });
 }
 
-const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
+const ProductTable = ({
+  header,
+  data,
+  deleteItem,
+  openEditForm,
+  currentPage,
+  pageSize,
+  totalProducts,
+}) => {
   // 인덱스 역순으로 정렬
   const sortedData = [...data].sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
@@ -45,7 +53,7 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
             sortedData.map((item, index) => (
               <tr key={index}>
                 <td style={{ verticalAlign: "middle", textAlign: "center" }}>
-                  {sortedData.length - index}
+                  {totalProducts - ((currentPage - 1) * pageSize + index)}
                 </td>
                 <td style={{ verticalAlign: "middle", textAlign: "center" }}>
                   {item.sku}

@@ -15,6 +15,8 @@ import {
 const AdminProductPage = () => {
   const navigate = useNavigate();
   const { productList } = useSelector((state) => state.product);
+  const pageSize = 5;
+
   const [query, setQuery] = useSearchParams();
   const dispatch = useDispatch();
   const [showDialog, setShowDialog] = useState(false);
@@ -24,7 +26,8 @@ const AdminProductPage = () => {
   });
 
   const [mode, setMode] = useState("new");
-
+  const totalPageNum = useSelector((state) => state.product.totalPageNum);
+  const totalItemNum = useSelector((state) => state.product.totalItemNum);
   const tableHeader = [
     "#",
     "Sku",
@@ -102,6 +105,9 @@ const AdminProductPage = () => {
           data={productList}
           deleteItem={deleteItem}
           openEditForm={openEditForm}
+          currentPage={parseInt(searchQuery.page) || 1}
+          pageSize={pageSize}
+          totalProducts={totalItemNum}
         />
         <ReactPaginate
           nextLabel=">"
@@ -109,7 +115,7 @@ const AdminProductPage = () => {
           onPageChange={handlePageClick}
           pageRangeDisplayed={5}
           marginPagesDisplayed={1}
-          pageCount={100} // 전체 페이지 : 백엔드에서 가지고 와야함
+          pageCount={totalPageNum} // 전체 페이지 : 백엔드에서 가지고 와야함
           renderOnZeroPageCount={null}
           containerClassName="pagination"
           pageClassName="page-item"
