@@ -12,10 +12,11 @@ import {
   setSelectedProduct,
 } from "../../features/product/productSlice";
 
+const PAGE_SIZE = 5;
+
 const AdminProductPage = () => {
   const navigate = useNavigate();
   const { productList } = useSelector((state) => state.product);
-  const pageSize = 5;
 
   const [query, setQuery] = useSearchParams();
   const dispatch = useDispatch();
@@ -105,9 +106,9 @@ const AdminProductPage = () => {
           data={productList}
           deleteItem={deleteItem}
           openEditForm={openEditForm}
-          currentPage={parseInt(searchQuery.page) || 1}
-          pageSize={pageSize}
           totalProducts={totalItemNum}
+          currentPage={parseInt(searchQuery.page)}
+          pageSize={PAGE_SIZE}
         />
         <ReactPaginate
           nextLabel=">"

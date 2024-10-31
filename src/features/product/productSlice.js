@@ -145,7 +145,7 @@ const productSlice = createSlice({
       .addCase(getProductList.fulfilled, (state, action) => {
         state.loading = false;
         state.productList = action.payload.data;
-        state.totalPageNum = action.payload.totalPageNum;
+        state.totalPageNum = Math.ceil(action.payload.totalItemNum / 5); // 5는 PAGE_SIZE
         state.totalItemNum = action.payload.totalItemNum;
         state.error = "";
       })
