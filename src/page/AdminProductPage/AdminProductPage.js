@@ -14,7 +14,7 @@ import {
 
 const AdminProductPage = () => {
   const navigate = useNavigate();
-  const { productList} = useSelector((state) => state.product);
+  const { productList } = useSelector((state) => state.product);
   const [query, setQuery] = useSearchParams();
   const dispatch = useDispatch();
   const [showDialog, setShowDialog] = useState(false);
@@ -37,18 +37,20 @@ const AdminProductPage = () => {
     "",
   ];
 
+  // 상품 리스트 가져오기
+  useEffect(() => {
+    dispatch(getProductList({ ...searchQuery }));
+  }, [query]);
+
   // 검색어가 변경될 때마다 URL과 상태를 업데이트
   useEffect(() => {
-    if (searchQuery.name === "") delete searchQuery.name;
+    if (searchQuery.name === "") {
+      delete searchQuery.name;
+    }
     const params = new URLSearchParams(searchQuery);
-    console.log("Updated URL Params:", decodeURIComponent(params.toString()));
-    navigate(`?${params.toString()}`, { replace: true });
-  }, [searchQuery, navigate]);
-
-  useEffect(() => {
-    console.log("Dispatching getProductList with Query:", searchQuery);
-    dispatch(getProductList({ ...searchQuery }));
-  }, [searchQuery, dispatch]);
+    const queryString = params.toString();
+    navigate("?" + queryString);
+  }, [searchQuery]);
 
   const deleteItem = (id) => {
     // 아이템 삭제 처리
@@ -69,7 +71,8 @@ const AdminProductPage = () => {
   };
 
   const handlePageClick = ({ selected }) => {
-    // 페이지 번호가 변경될 때 현재 페이지 상태 업데이트
+    // 쿼리에 페이지 값 바꿔주기
+    setSearchQuery({ ...searchQuery, page: selected + 1 });
   };
 
   // searchbox에서 검색어를 읽어온다 => 엔터를 치면 => searchQuery 객체가 업데이트 됨 name : 스트레이트 팬츠
@@ -106,7 +109,7 @@ const AdminProductPage = () => {
           onPageChange={handlePageClick}
           pageRangeDisplayed={5}
           marginPagesDisplayed={1}
-          pageCount={30}
+          pageCount={100} // 전체 페이지 : 백엔드에서 가지고 와야함
           renderOnZeroPageCount={null}
           containerClassName="pagination"
           pageClassName="page-item"
