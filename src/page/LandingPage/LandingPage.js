@@ -1,43 +1,62 @@
 import React, { useEffect } from "react";
 import ProductCard from "./components/ProductCard";
-import { Row, Col, Container } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductList } from "../../features/product/productSlice";
+import "../LandingPage/LandingPage.style.css";
 
 const LandingPage = () => {
   const dispatch = useDispatch();
-
-  const productList = useSelector((state) => state.product.productList);
+  const { productList, loading } = useSelector((state) => state.product); // loading 상태 추가
   const [query] = useSearchParams();
   const name = query.get("name");
+
   useEffect(() => {
     dispatch(
       getProductList({
         name,
       })
     );
-  }, [query]);
+  }, [query, dispatch]);
+
+  if (loading) {
+    return (
+      <Container>
+        <div className="products-grid">
+          {[1, 2, 3, 4, 8].map((n) => (
+            <div key={n} className="product-skeleton">
+              <div className="skeleton-img"></div>
+              <div className="skeleton-text"></div>
+              <div className="skeleton-text short"></div>
+            </div>
+          ))}
+        </div>
+      </Container>
+    );
+  }
+
+  if (!productList.length) {
+    return (
+      <Container>
+        <div className="empty-product">
+          <h2>
+            {name
+              ? `'${name}'과 일치하는 상품이 없습니다.`
+              : "등록된 상품이 없습니다!"}
+          </h2>
+        </div>
+      </Container>
+    );
+  }
 
   return (
     <Container>
-      <Row>
-        {productList.length > 0 ? (
-          productList.map((item) => (
-            <Col md={3} sm={12} key={item._id}>
-              <ProductCard item={item} />
-            </Col>
-          ))
-        ) : (
-          <div className="text-align-center empty-bag">
-            {name === "" ? (
-              <h2>등록된 상품이 없습니다!</h2>
-            ) : (
-              <h2>{name}과 일치한 상품이 없습니다!`</h2>
-            )}
-          </div>
-        )}
-      </Row>
+      <div className="products-grid">
+        {productList.map((item) => (
+          <ProductCard key={item._id} item={item} />
+        ))}
+      </div>
     </Container>
   );
 };
