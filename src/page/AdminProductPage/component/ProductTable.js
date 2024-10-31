@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
+import { Spinner } from "react-bootstrap";
 import { currencyFormat } from "../../../utils/number";
 
 function formatDate(dateString) {
@@ -27,6 +28,7 @@ const ProductTable = ({
   currentPage,
   pageSize,
   totalProducts,
+  loading,
 }) => {
   return (
     <div className="overflow-x product-table-container">
@@ -44,7 +46,23 @@ const ProductTable = ({
           </tr>
         </thead>
         <tbody>
-          {data.length > 0 ? (
+          {loading ? (
+            // 로딩 중일 때 스피너 표시
+            <tr>
+              <td
+                colSpan={header.length}
+                style={{ textAlign: "center", padding: "2rem" }}
+              >
+                <Spinner
+                  animation="border"
+                  role="status"
+                  style={{ color: "#5d90ed", width: "2rem", height: "2rem" }}
+                >
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner>
+              </td>
+            </tr>
+          ) : data.length > 0 ? (
             data.map((item, index) => (
               <tr key={index}>
                 <td style={{ verticalAlign: "middle", textAlign: "center" }}>
@@ -78,8 +96,8 @@ const ProductTable = ({
                     padding: 0,
                     verticalAlign: "middle",
                     textAlign: "center",
-                    width: "120px", // 이미지의 너비에 맞게 조정
-                    height: "120px", // 이미지의 높이에 맞게 조정
+                    width: "120px",
+                    height: "120px",
                   }}
                 >
                   <img
@@ -88,13 +106,12 @@ const ProductTable = ({
                     style={{
                       display: "block",
                       margin: "10px",
-                      height: "100px", // 이미지의 크기를 조정
-                      width: "100px", // 이미지의 크기를 조정
+                      height: "100px",
+                      width: "100px",
                       objectFit: "cover",
                     }}
                   />
                 </td>
-
                 <td style={{ verticalAlign: "middle", textAlign: "center" }}>
                   {item.status}
                 </td>

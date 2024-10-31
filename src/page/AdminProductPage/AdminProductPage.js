@@ -16,7 +16,7 @@ const PAGE_SIZE = 5;
 
 const AdminProductPage = () => {
   const navigate = useNavigate();
-  const { productList } = useSelector((state) => state.product);
+  const { productList, loading } = useSelector((state) => state.product);
 
   const [query, setQuery] = useSearchParams();
   const dispatch = useDispatch();
@@ -109,6 +109,7 @@ const AdminProductPage = () => {
           totalProducts={totalItemNum}
           currentPage={parseInt(searchQuery.page)}
           pageSize={PAGE_SIZE}
+          loading={loading}
         />
         <ReactPaginate
           nextLabel=">"
