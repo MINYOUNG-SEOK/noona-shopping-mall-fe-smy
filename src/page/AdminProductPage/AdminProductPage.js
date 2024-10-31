@@ -11,6 +11,7 @@ import {
   deleteProduct,
   setSelectedProduct,
 } from "../../features/product/productSlice";
+import "../AdminProductPage/AdminProductPage.style.css";
 
 const PAGE_SIZE = 5;
 
