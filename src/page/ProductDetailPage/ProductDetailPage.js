@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Button, Dropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { ColorRing } from "react-loader-spinner";
+import { FadeLoader } from "react-spinners";
 import { currencyFormat } from "../../utils/number";
 import "./style/productDetail.style.css";
 import { getProductDetail } from "../../features/product/productSlice";
@@ -18,10 +18,11 @@ const ProductDetail = () => {
   const navigate = useNavigate();
 
   const addItemToCart = () => {
-    //사이즈를 아직 선택안했다면 에러
-    // 아직 로그인을 안한유저라면 로그인페이지로
+    // 사이즈를 아직 선택 안 했다면 에러
+    // 아직 로그인 안 한 유저라면 로그인 페이지로
     // 카트에 아이템 추가하기
   };
+
   const selectSize = (value) => {
     // 사이즈 추가하기
   };
@@ -30,18 +31,14 @@ const ProductDetail = () => {
     dispatch(getProductDetail(id));
   }, [id, dispatch]);
 
-  if (loading || !selectedProduct)
+  if (loading || !selectedProduct) {
     return (
-      <ColorRing
-        visible={true}
-        height="80"
-        width="80"
-        ariaLabel="blocks-loading"
-        wrapperStyle={{}}
-        wrapperClass="blocks-wrapper"
-        colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
-      />
+      <div className="loading-container">
+        <FadeLoader color="#333333" height={15} width={5} />
+      </div>
     );
+  }
+
   return (
     <Container className="product-detail-card">
       <Row>

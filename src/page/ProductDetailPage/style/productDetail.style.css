@@ -1,13 +1,20 @@
-
-.size-drop-down{
-    width:100%;
+.size-drop-down {
+    width: 100%;
 }
 
-.warning-message{
-    color:red;
+.warning-message {
+    color: red;
 }
 
-.product-info{
+.product-info {
     font-size: 20px;
     margin-bottom: 10px;
+}
+
+/* 로딩 스피너 컨테이너 스타일 */
+.loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }

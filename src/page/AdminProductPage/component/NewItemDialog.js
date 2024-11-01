@@ -88,6 +88,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
       newErrors.description = "Description is required.";
     }
 
+    // 가격 검사
     if (!formData.price || formData.price <= 0)
       newErrors.price = "Price must be greater than 0.";
     if (stock.length === 0) {

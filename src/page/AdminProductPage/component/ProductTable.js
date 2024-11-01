@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
-import { Spinner } from "react-bootstrap";
+import { FadeLoader } from "react-spinners";
 import { currencyFormat } from "../../../utils/number";
 
 function formatDate(dateString) {
@@ -47,19 +47,17 @@ const ProductTable = ({
         </thead>
         <tbody>
           {loading ? (
-            // 로딩 중일 때 스피너 표시
             <tr>
-              <td
-                colSpan={header.length}
-                style={{ textAlign: "center", padding: "2rem" }}
-              >
-                <Spinner
-                  animation="border"
-                  role="status"
-                  style={{ color: "#5d90ed", width: "2rem", height: "2rem" }}
+              <td colSpan={header.length} style={{ padding: "2rem" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
                 >
-                  <span className="visually-hidden">Loading...</span>
-                </Spinner>
+                  <FadeLoader color="#333333" height={15} width={5} />
+                </div>
               </td>
             </tr>
           ) : data.length > 0 ? (
