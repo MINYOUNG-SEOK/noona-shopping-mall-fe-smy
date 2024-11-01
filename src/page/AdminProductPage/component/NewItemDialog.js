@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Editor } from "@toast-ui/react-editor";
-import { Form, Modal, Button, Row, Col } from "react-bootstrap";
+import { Form, Modal, Button, Row, Col, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import CloudinaryUploadWidget from "../../../utils/CloudinaryUploadWidget";
 import { CATEGORY, STATUS, SIZE } from "../../../constants/product.constants";
@@ -53,10 +53,17 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
       if (mode === "edit") {
         setFormData(selectedProduct);
 
-        const sizeArray = Object.keys(selectedProduct.stock).map((size) => [
-          size,
-          selectedProduct.stock[size],
-        ]);
+        const sizeArray = Object.keys(selectedProduct.stock).map((size) => {
+          // SIZE 배열에 없는 사이즈는 커스텀 사이즈로 처리
+          const isCustom = !SIZE.includes(size.toUpperCase());
+          if (isCustom) {
+            setIsCustomSize((prev) => ({
+              ...prev,
+              [sizeArray.length]: true,
+            }));
+          }
+          return [size, selectedProduct.stock[size]];
+        });
         setStock(sizeArray);
 
         if (editorRef.current) {
@@ -67,6 +74,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
       } else {
         setFormData({ ...InitialFormData });
         setStock([]);
+        setIsCustomSize({});
       }
     }
   }, [showDialog, selectedProduct, mode]);
@@ -93,7 +101,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     if (!formData.price || formData.price <= 0)
       newErrors.price = "Price must be greater than 0.";
     if (stock.length === 0) {
-      newErrors.stock = "Please add stock information.";
+      newErrors.stock = "SIZE";
     } else {
       stock.forEach((item, index) => {
         if (!item[0]) {
@@ -141,6 +149,25 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   const deleteStock = (idx) => {
     const newStock = stock.filter((item, index) => index !== idx);
     setStock(newStock);
+    const newIsCustomSize = { ...isCustomSize };
+    delete newIsCustomSize[idx];
+    setIsCustomSize(newIsCustomSize);
+  };
+
+  const [isCustomSize, setIsCustomSize] = useState({});
+
+  const handleSizeTypeChange = (index, isCustom) => {
+    setIsCustomSize((prev) => ({
+      ...prev,
+      [index]: isCustom,
+    }));
+    if (isCustom) {
+      setStock((prevStock) => {
+        const newStock = [...prevStock];
+        newStock[index] = ["", newStock[index]?.[1] || ""];
+        return newStock;
+      });
+    }
   };
 
   const handleSizeChange = (value, index) => {
@@ -269,60 +296,63 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
           <div className="mt-2">
             {stock.map((item, index) => (
               <Row key={index} className="mb-2">
-                <Col sm={4}>
-                  <Form.Select
-                    onChange={(event) =>
-                      handleSizeChange(event.target.value, index)
-                    }
-                    value={
-                      item[0] === ""
-                        ? "custom"
-                        : SIZE.includes(item[0].toUpperCase())
-                        ? item[0]
-                        : "custom"
-                    }
-                    isInvalid={!!errors[`size-${index}`]}
-                  >
-                    <option value="" disabled>
-                      Please Choose...
-                    </option>
-                    {SIZE.map((sizeOption, idx) => (
-                      <option
-                        key={idx}
-                        value={sizeOption.toLowerCase()}
-                        disabled={stock.some(
-                          (stockItem) =>
-                            stockItem[0] === sizeOption.toLowerCase() &&
-                            stockItem !== item
-                        )}
+                <Col sm={6}>
+                  <InputGroup>
+                    <InputGroup.Text className="px-2">
+                      <Form.Check
+                        type="switch"
+                        id={`custom-switch-${index}`}
+                        label="Custom Size"
+                        checked={isCustomSize[index]}
+                        onChange={(e) =>
+                          handleSizeTypeChange(index, e.target.checked)
+                        }
+                        className="m-0"
+                      />
+                    </InputGroup.Text>
+                    {!isCustomSize[index] ? (
+                      <Form.Select
+                        value={item[0] || ""}
+                        onChange={(e) =>
+                          handleSizeChange(e.target.value, index)
+                        }
+                        isInvalid={!!errors[`size-${index}`]}
                       >
-                        {sizeOption}
-                      </option>
-                    ))}
-                    <option value="custom">직접 입력</option>
-                  </Form.Select>
-                  {/* 직접 입력 필드를 항상 표시하되, custom 선택시에만 보이도록 스타일 조정 */}
-                  <Form.Control
-                    className="mt-2"
-                    type="text"
-                    placeholder="사이즈 직접 입력"
-                    value={!SIZE.includes(item[0].toUpperCase()) ? item[0] : ""}
-                    onChange={(e) =>
-                      handleCustomSizeInput(e.target.value, index)
-                    }
-                    style={{
-                      display:
-                        item[0] === "" || !SIZE.includes(item[0].toUpperCase())
-                          ? "block"
-                          : "none",
-                    }}
-                  />
+                        <option value="" disabled>
+                          Please select
+                        </option>
+                        {SIZE.map((size, idx) => (
+                          <option
+                            key={idx}
+                            value={size.toLowerCase()}
+                            disabled={stock.some(
+                              (stockItem) =>
+                                stockItem[0] === size.toLowerCase() &&
+                                stockItem !== item
+                            )}
+                          >
+                            {size}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    ) : (
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter custom size"
+                        value={item[0] || ""}
+                        onChange={(e) =>
+                          handleSizeChange(e.target.value, index)
+                        }
+                        isInvalid={!!errors[`size-${index}`]}
+                      />
+                    )}
+                  </InputGroup>
                   {errors[`size-${index}`] && (
                     <div className="form-error">{errors[`size-${index}`]}</div>
                   )}
                 </Col>
 
-                <Col sm={6}>
+                <Col sm={4}>
                   <Form.Control
                     onChange={(event) =>
                       handleStockChange(event.target.value, index)
