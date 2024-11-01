@@ -5,6 +5,17 @@
     padding: 1rem 0;
 }
 
+.make-it-yours-title {
+    font-size: 2rem;
+    color: #333;
+    text-align: center;
+    margin: 30px 0 10px;
+    text-transform: uppercase;
+    font-weight: 10;
+    letter-spacing: 2px;
+}
+
+
 .empty-product {
     text-align: center;
     padding: 4rem 0;

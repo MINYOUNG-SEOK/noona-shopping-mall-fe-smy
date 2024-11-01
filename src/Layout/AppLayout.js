@@ -35,9 +35,7 @@ const AppLayout = ({ children }) => {
           <div className="sidebar-container">
             <Sidebar />
           </div>
-          <div className="content-container">
-            {children}
-          </div>
+          <div className="content-container">{children}</div>
         </div>
       ) : (
         <>

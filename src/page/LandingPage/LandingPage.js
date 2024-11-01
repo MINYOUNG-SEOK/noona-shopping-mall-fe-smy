@@ -3,8 +3,9 @@ import ProductCard from "./components/ProductCard";
 import { Container } from "react-bootstrap";
 import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import Banner from "../../common/component/Banner";
 import { getProductList } from "../../features/product/productSlice";
-import "../LandingPage/LandingPage.style.css"
+import "../LandingPage/LandingPage.style.css";
 
 const LandingPage = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const LandingPage = () => {
   if (loading) {
     return (
       <Container>
+        <Banner />
         <div className="products-grid">
           {[1, 2, 3, 4, 8].map((n) => (
             <div key={n} className="product-skeleton">
@@ -39,6 +41,7 @@ const LandingPage = () => {
   if (!productList.length) {
     return (
       <Container>
+        <Banner />
         <div className="empty-product">
           <h2>
             {name
@@ -52,6 +55,8 @@ const LandingPage = () => {
 
   return (
     <Container>
+      <Banner />
+      <div className="make-it-yours-title">MAKE IT YOURS!</div>
       <div className="products-grid">
         {productList.map((item) => (
           <ProductCard key={item._id} item={item} />
