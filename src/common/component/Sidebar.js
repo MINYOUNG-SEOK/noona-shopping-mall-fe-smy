@@ -12,6 +12,11 @@ const Sidebar = () => {
     navigate(url);
   };
 
+  const goToHome = () => {
+    setShow(false); 
+    navigate("/");
+  };
+
   const NavbarContent = () => {
     return (
       <div>
@@ -42,7 +47,7 @@ const Sidebar = () => {
 
       <Navbar bg="light" expand={false} className="mobile-sidebar-toggle">
         <Container fluid>
-          <img width={80} src="/image/logo.png" alt="logo.png" />
+          <img width={80} src="/image/logo.png" alt="logo.png" onClick={goToHome} style={{ cursor: "pointer" }} />
           <Navbar.Brand href="#"></Navbar.Brand>
           <Navbar.Toggle
             aria-controls={`offcanvasNavbar-expand`}
