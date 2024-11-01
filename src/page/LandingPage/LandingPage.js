@@ -4,7 +4,7 @@ import { Container } from "react-bootstrap";
 import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductList } from "../../features/product/productSlice";
-import './LandingPage.style.css';  
+import '/src/page/LandingPage/LandingPage.style.css';
 
 const LandingPage = () => {
   const dispatch = useDispatch();
