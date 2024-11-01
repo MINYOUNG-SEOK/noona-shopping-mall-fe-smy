@@ -53,14 +53,12 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
       if (mode === "edit") {
         setFormData(selectedProduct);
 
-        // 객체형태로 온 stock을 다시 배열로 세팅해주기
         const sizeArray = Object.keys(selectedProduct.stock).map((size) => [
           size,
           selectedProduct.stock[size],
         ]);
         setStock(sizeArray);
 
-        // Editor의 내용을 설정
         if (editorRef.current) {
           editorRef.current
             .getInstance()
@@ -98,6 +96,9 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
       newErrors.stock = "Please add stock information.";
     } else {
       stock.forEach((item, index) => {
+        if (!item[0]) {
+          newErrors[`size-${index}`] = "Size is required.";
+        }
         if (!item[1] || parseInt(item[1]) < 0) {
           newErrors[`stock-${index}`] =
             "Stock quantity must be greater than 0.";
@@ -134,7 +135,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   };
 
   const addStock = () => {
-    setStock([...stock, []]);
+    setStock([...stock, ["", ""]]);
   };
 
   const deleteStock = (idx) => {
@@ -144,18 +145,31 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
 
   const handleSizeChange = (value, index) => {
     setStock((prevStock) => {
-      const newStock = prevStock.map((item, idx) =>
-        idx === index ? [value, item[1]] : [...item]
-      );
+      const newStock = [...prevStock];
+      if (value === "custom") {
+        // 직접 입력 모드로 변경
+        newStock[index] = ["", newStock[index]?.[1] || ""];
+      } else {
+        // 미리 정의된 사이즈 선택
+        newStock[index] = [value, newStock[index]?.[1] || ""];
+      }
+      return newStock;
+    });
+  };
+
+  const handleCustomSizeInput = (value, index) => {
+    setStock((prevStock) => {
+      const newStock = [...prevStock];
+      // 직접 입력한 값을 그대로 사용
+      newStock[index] = [value, newStock[index]?.[1] || ""];
       return newStock;
     });
   };
 
   const handleStockChange = (value, index) => {
     setStock((prevStock) => {
-      const newStock = prevStock.map((item, idx) =>
-        idx === index ? [item[0], value] : [...item]
-      );
+      const newStock = [...prevStock];
+      newStock[index] = [newStock[index][0], value];
       return newStock;
     });
   };
@@ -254,14 +268,20 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
           </Button>
           <div className="mt-2">
             {stock.map((item, index) => (
-              <Row key={index}>
+              <Row key={index} className="mb-2">
                 <Col sm={4}>
                   <Form.Select
                     onChange={(event) =>
                       handleSizeChange(event.target.value, index)
                     }
-                    value={item[0] || ""}
-                    isInvalid={!!errors.stock}
+                    value={
+                      item[0] === ""
+                        ? "custom"
+                        : SIZE.includes(item[0].toUpperCase())
+                        ? item[0]
+                        : "custom"
+                    }
+                    isInvalid={!!errors[`size-${index}`]}
                   >
                     <option value="" disabled>
                       Please Choose...
@@ -279,8 +299,29 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
                         {sizeOption}
                       </option>
                     ))}
+                    <option value="custom">직접 입력</option>
                   </Form.Select>
+                  {/* 직접 입력 필드를 항상 표시하되, custom 선택시에만 보이도록 스타일 조정 */}
+                  <Form.Control
+                    className="mt-2"
+                    type="text"
+                    placeholder="사이즈 직접 입력"
+                    value={!SIZE.includes(item[0].toUpperCase()) ? item[0] : ""}
+                    onChange={(e) =>
+                      handleCustomSizeInput(e.target.value, index)
+                    }
+                    style={{
+                      display:
+                        item[0] === "" || !SIZE.includes(item[0].toUpperCase())
+                          ? "block"
+                          : "none",
+                    }}
+                  />
+                  {errors[`size-${index}`] && (
+                    <div className="form-error">{errors[`size-${index}`]}</div>
+                  )}
                 </Col>
+
                 <Col sm={6}>
                   <Form.Control
                     onChange={(event) =>

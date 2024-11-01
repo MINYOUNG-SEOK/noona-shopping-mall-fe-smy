@@ -89,9 +89,10 @@ export const editProduct = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      return rejectWithValue(
-        error.response.data.message || "Error updating product."
-      );
+      const errorMessage = error.response?.data?.error?.includes("E11000")
+        ? "An error occurred."
+        : error.response?.data?.error || "SKU already exists.";
+      return rejectWithValue(errorMessage);
     }
   }
 );
