@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import {
   faBars,
   faUser,
@@ -21,7 +22,7 @@ const Navbar = ({ user }) => {
   const { cartItemCount } = useSelector((state) => state.cart);
   const [showSearchBox, setShowSearchBox] = useState(false);
   const [showMenuList, setShowMenuList] = useState(false);
-  
+
   // 어드민 메뉴를 포함한 메뉴 리스트
   const getMenuList = () => {
     const baseMenuList = [
@@ -38,10 +39,10 @@ const Navbar = ({ user }) => {
 
     // 관리자인 경우 ADMIN 메뉴 추가
     if (user && user.level === "admin") {
-      baseMenuList.push({ 
-        name: "ADMIN PAGE", 
+      baseMenuList.push({
+        name: "ADMIN PAGE",
         path: "/admin/product?page=1",
-        isAdmin: true  
+        isAdmin: true,
       });
     }
 
@@ -85,7 +86,8 @@ const Navbar = ({ user }) => {
           <FontAwesomeIcon
             icon={faBars}
             className="hamburger-icon"
-            onClick={toggleMenuList}
+            onClick={toggleMenuList} 
+            style={{ fontSize: "22px", cursor: "pointer" }}
           />
           <Link to="/" className="navbar-logo">
             <img
@@ -138,9 +140,9 @@ const Navbar = ({ user }) => {
         <ul className="navbar-menu-list">
           {menuList.map((menu, index) => (
             <li key={index}>
-              <Link 
+              <Link
                 to={menu.path}
-                style={menu.isAdmin ? { color: 'rgb(93, 144, 237)' } : {}}
+                style={menu.isAdmin ? { color: "rgb(93, 144, 237)" } : {}}
               >
                 {menu.name}
               </Link>
@@ -151,14 +153,17 @@ const Navbar = ({ user }) => {
 
       {/* 모바일 메뉴 리스트 */}
       {showMenuList && (
-        <div className="mobile-menu-list">
-          <ul>
-            {menuList.map((menu, index) => (
+  <div className={`mobile-menu-list ${showMenuList ? "show" : ""}`}>
+    <div className="mobile-menu-close" onClick={toggleMenuList}>
+      <FontAwesomeIcon icon={faTimes} />
+    </div>
+    <ul>
+      {menuList.map((menu, index) => (
               <li key={index}>
-                <Link 
-                  to={menu.path} 
+                <Link
+                  to={menu.path}
                   onClick={toggleMenuList}
-                  style={menu.isAdmin ? { color: 'rgb(93, 144, 237)' } : {}}
+                  style={menu.isAdmin ? { color: "rgb(93, 144, 237)" } : {}}
                 >
                   {menu.name}
                 </Link>
