@@ -95,7 +95,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     } else {
       // 재고 검사
       stock.forEach((item, index) => {
-        if (!item[1] || parseInt(item[1]) <= 0) {
+        if (!item[1] || parseInt(item[1]) < 0) {
           newErrors[`stock-${index}`] =
             "Stock quantity must be greater than 0.";
         }
@@ -129,6 +129,9 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
       dispatch(createProduct({ ...updatedFormData, stock: totalStock }));
     } else {
       // 상품 수정하기
+      dispatch(
+        editProduct({ ...formData, stock: totalStock, id: selectedProduct._id })
+      );
     }
   };
 

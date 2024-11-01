@@ -185,18 +185,16 @@ const productSlice = createSlice({
       //상품 수정
       .addCase(editProduct.pending, (state) => {
         state.loading = true;
-        state.error = "";
       })
       .addCase(editProduct.fulfilled, (state, action) => {
         state.loading = false;
         state.success = true;
-        state.productList = state.productList.map((product) =>
-          product.id === action.payload.id ? action.payload : product
-        );
+        state.error = "";
       })
       .addCase(editProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        state.success = false;
       });
   },
 });
