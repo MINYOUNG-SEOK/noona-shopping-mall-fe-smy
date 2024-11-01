@@ -53,17 +53,24 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
       if (mode === "edit") {
         setFormData(selectedProduct);
 
-        const sizeArray = Object.keys(selectedProduct.stock).map((size) => {
-          // SIZE 배열에 없는 사이즈는 커스텀 사이즈로 처리
-          const isCustom = !SIZE.includes(size.toUpperCase());
-          if (isCustom) {
-            setIsCustomSize((prev) => ({
-              ...prev,
-              [sizeArray.length]: true,
-            }));
+        // 먼저 기존의 상태들을 초기화
+        setIsCustomSize({});
+
+        // stock 데이터 처리
+        const sizeArray = Object.keys(selectedProduct.stock).map(
+          (size, index) => {
+            // SIZE 배열에 없는 모든 값을 커스텀 사이즈로 처리
+            if (!SIZE.includes(size.toUpperCase())) {
+              setIsCustomSize((prev) => ({
+                ...prev,
+                [index]: true,
+              }));
+            }
+
+            return [size, selectedProduct.stock[size]];
           }
-          return [size, selectedProduct.stock[size]];
-        });
+        );
+
         setStock(sizeArray);
 
         if (editorRef.current) {
@@ -161,25 +168,24 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
       ...prev,
       [index]: isCustom,
     }));
-    if (isCustom) {
-      setStock((prevStock) => {
-        const newStock = [...prevStock];
-        newStock[index] = ["", newStock[index]?.[1] || ""];
-        return newStock;
-      });
-    }
+
+    setStock((prevStock) => {
+      const newStock = [...prevStock];
+      if (isCustom) {
+        // 커스텀 모드로 전환 시 현재 값 유지
+        newStock[index] = [newStock[index][0] || "", newStock[index][1] || ""];
+      } else {
+        // 일반 모드로 전환 시 값 초기화
+        newStock[index] = ["", newStock[index][1] || ""];
+      }
+      return newStock;
+    });
   };
 
   const handleSizeChange = (value, index) => {
     setStock((prevStock) => {
       const newStock = [...prevStock];
-      if (value === "custom") {
-        // 직접 입력 모드로 변경
-        newStock[index] = ["", newStock[index]?.[1] || ""];
-      } else {
-        // 미리 정의된 사이즈 선택
-        newStock[index] = [value, newStock[index]?.[1] || ""];
-      }
+      newStock[index] = [value.toLowerCase(), newStock[index]?.[1] || ""];
       return newStock;
     });
   };
