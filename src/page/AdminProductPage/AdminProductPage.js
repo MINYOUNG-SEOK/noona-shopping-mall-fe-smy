@@ -139,6 +139,7 @@ const AdminProductPage = () => {
         mode={mode}
         showDialog={showDialog}
         setShowDialog={setShowDialog}
+        currentPage={parseInt(searchQuery.page)}
       />
     </div>
   );

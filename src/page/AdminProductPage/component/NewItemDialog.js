@@ -24,7 +24,7 @@ const InitialFormData = {
   price: 0,
 };
 
-const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
+const NewItemDialog = ({ mode, showDialog, setShowDialog, currentPage }) => {
   const { error, success, selectedProduct } = useSelector(
     (state) => state.product
   );
@@ -40,10 +40,10 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   useEffect(() => {
     if (success) {
       dispatch(clearError());
-      dispatch(getProductList({ page: 1, name: "" }));
+      dispatch(getProductList({ page: currentPage, name: "" }));
       setShowDialog(false);
     }
-  }, [success]);
+  }, [success, currentPage]);
 
   useEffect(() => {
     if (error || !success) {
