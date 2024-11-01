@@ -27,14 +27,14 @@ const Navbar = ({ user }) => {
   const getMenuList = () => {
     const baseMenuList = [
       { name: "BEST", path: "#" },
-      { name: "WOMEN", path: "#" },
-      { name: "MEN", path: "#" },
-      { name: "INTERIOR", path: "#" },
-      { name: "KITCHEN", path: "#" },
-      { name: "DIGITAL", path: "#" },
-      { name: "BEAUTY", path: "#" },
-      { name: "FOOD", path: "#" },
-      { name: "KIDS", path: "#" },
+      { name: "TOP", path: "#" },
+      { name: "DRESS", path: "#" },
+      { name: "PANTS", path: "#" },
+      { name: "OUTERWEAR", path: "#" },
+      { name: "SKIRTS", path: "#" },
+      { name: "SHOES", path: "#" },
+      { name: "ACCESSORIES", path: "#" },
+      { name: "BAGS", path: "#" },
     ];
 
     // 관리자인 경우 ADMIN 메뉴 추가
@@ -86,7 +86,7 @@ const Navbar = ({ user }) => {
           <FontAwesomeIcon
             icon={faBars}
             className="hamburger-icon"
-            onClick={toggleMenuList} 
+            onClick={toggleMenuList}
             style={{ fontSize: "22px", cursor: "pointer" }}
           />
           <Link to="/" className="navbar-logo">
@@ -153,12 +153,12 @@ const Navbar = ({ user }) => {
 
       {/* 모바일 메뉴 리스트 */}
       {showMenuList && (
-  <div className={`mobile-menu-list ${showMenuList ? "show" : ""}`}>
-    <div className="mobile-menu-close" onClick={toggleMenuList}>
-      <FontAwesomeIcon icon={faTimes} />
-    </div>
-    <ul>
-      {menuList.map((menu, index) => (
+        <div className={`mobile-menu-list ${showMenuList ? "show" : ""}`}>
+          <div className="mobile-menu-close" onClick={toggleMenuList}>
+            <FontAwesomeIcon icon={faTimes} />
+          </div>
+          <ul>
+            {menuList.map((menu, index) => (
               <li key={index}>
                 <Link
                   to={menu.path}

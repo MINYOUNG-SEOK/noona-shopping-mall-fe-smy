@@ -52,49 +52,51 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     if (showDialog) {
       if (mode === "edit") {
         setFormData(selectedProduct);
+
         // 객체형태로 온 stock을 다시 배열로 세팅해주기
         const sizeArray = Object.keys(selectedProduct.stock).map((size) => [
           size,
           selectedProduct.stock[size],
         ]);
         setStock(sizeArray);
+
+        // Editor의 내용을 설정
+        if (editorRef.current) {
+          editorRef.current
+            .getInstance()
+            .setMarkdown(selectedProduct.description || "");
+        }
       } else {
         setFormData({ ...InitialFormData });
         setStock([]);
       }
     }
-  }, [showDialog]);
+  }, [showDialog, selectedProduct, mode]);
 
   const handleClose = () => {
-    // 모든걸 초기화시키고;
     setFormData({ ...InitialFormData });
     setStock([]);
     setStockError(false);
-    // 다이얼로그 닫아주기
     setShowDialog(false);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // 필수 필드 검사
     const newErrors = {};
     if (!formData.name) newErrors.name = "Product name is required.";
     if (!formData.sku) newErrors.sku = "SKU is required.";
 
-    // Editor의 내용을 가져오기
     const description = editorRef.current.getInstance().getMarkdown();
     if (!description || description.trim() === "") {
       newErrors.description = "Description is required.";
     }
 
-    // 가격 검사
     if (!formData.price || formData.price <= 0)
       newErrors.price = "Price must be greater than 0.";
     if (stock.length === 0) {
       newErrors.stock = "Please add stock information.";
     } else {
-      // 재고 검사
       stock.forEach((item, index) => {
         if (!item[1] || parseInt(item[1]) < 0) {
           newErrors[`stock-${index}`] =
@@ -104,32 +106,22 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     }
     if (!formData.category.length)
       newErrors.category = "Please select at least one category.";
-
-    // 이미지 필드 검사
     if (!formData.image)
       newErrors.image = "Please upload an image for the product.";
 
     setErrors(newErrors);
 
-    // 오류가 있으면 반환하여 제출 방지
     if (Object.keys(newErrors).length > 0) return;
 
-    // 재고를 배열에서 객체로 바꿔주기
     const totalStock = stock.reduce((total, item) => {
       return { ...total, [item[0]]: parseInt(item[1]) };
     }, {});
 
-    console.log("formData", formData);
-    console.log("formData", stock);
-    console.log("formData", totalStock);
-
     const updatedFormData = { ...formData, description };
 
     if (mode === "new") {
-      // 새 상품 만들기
       dispatch(createProduct({ ...updatedFormData, stock: totalStock }));
     } else {
-      // 상품 수정하기
       dispatch(
         editProduct({ ...formData, stock: totalStock, id: selectedProduct._id })
       );
@@ -137,24 +129,20 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   };
 
   const handleChange = (event) => {
-    // form에 데이터 넣어주기
     const { id, value } = event.target;
     setFormData({ ...formData, [id]: value });
   };
 
   const addStock = () => {
-    // 재고 타입 추가 시 배열에 새 배열 추가
     setStock([...stock, []]);
   };
 
   const deleteStock = (idx) => {
-    // 재고 삭제하기
     const newStock = stock.filter((item, index) => index !== idx);
     setStock(newStock);
   };
 
   const handleSizeChange = (value, index) => {
-    // 재고 수량 변환하기
     setStock((prevStock) => {
       const newStock = prevStock.map((item, idx) =>
         idx === index ? [value, item[1]] : [...item]
@@ -165,7 +153,6 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
 
   const handleStockChange = (value, index) => {
     setStock((prevStock) => {
-      // 재고 사이즈 변환하기
       const newStock = prevStock.map((item, idx) =>
         idx === index ? [item[0], value] : [...item]
       );
@@ -174,7 +161,6 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   };
 
   const onHandleCategory = (event) => {
-    // 카테고리가 이미 추가되어있으면 제거
     if (formData.category.includes(event.target.value)) {
       const newCategory = formData.category.filter(
         (item) => item !== event.target.value
@@ -184,7 +170,6 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
         category: [...newCategory],
       });
     } else {
-      // 아니면 새로 추가
       setFormData({
         ...formData,
         category: [...formData.category, event.target.value],
@@ -193,18 +178,15 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   };
 
   const uploadImage = (secureUrl) => {
-    console.log("Uploaded image URL:", secureUrl);
     setFormData({ ...formData, image: secureUrl });
   };
 
   return (
     <Modal show={showDialog} onHide={handleClose}>
       <Modal.Header closeButton>
-        {mode === "new" ? (
-          <Modal.Title>Create New Product</Modal.Title>
-        ) : (
-          <Modal.Title>Edit Product</Modal.Title>
-        )}
+        <Modal.Title>
+          {mode === "new" ? "Create New Product" : "Edit Product"}
+        </Modal.Title>
       </Modal.Header>
 
       <Form className="form-container" onSubmit={handleSubmit}>
