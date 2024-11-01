@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import ProductCard from "./components/ProductCard";
-import "../LandingPage/LandingPage.style.css"
 import { Container } from "react-bootstrap";
 import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductList } from "../../features/product/productSlice";
+import "../LandingPage/LandingPage.style.css"
 
 const LandingPage = () => {
   const dispatch = useDispatch();
