@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { currencyFormat } from "../../../utils/number";
 import { FiHeart } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
-import "./ProductCard.style.css";
+import './ProductCard.style.css'; 
 
 const ProductCard = ({ item }) => {
   const navigate = useNavigate();
