@@ -21,31 +21,17 @@ const Navbar = ({ user }) => {
   const { cartItemCount } = useSelector((state) => state.cart);
   const [showSearchBox, setShowSearchBox] = useState(false);
   const [showMenuList, setShowMenuList] = useState(false);
-  
-  const getMenuList = () => {
-    const baseMenuList = [
-      { name: "BEST", path: "#" },
-      { name: "WOMEN", path: "#" },
-      { name: "MEN", path: "#" },
-      { name: "INTERIOR", path: "#" },
-      { name: "KITCHEN", path: "#" },
-      { name: "DIGITAL", path: "#" },
-      { name: "BEAUTY", path: "#" },
-      { name: "FOOD", path: "#" },
-      { name: "KIDS", path: "#" },
-    ];
-
-      // 관리자인 경우 ADMIN 메뉴 추가
-      if (user && user.level === "admin") {
-        baseMenuList.push({ 
-          name: "ADMIN PAGE", 
-          path: "/admin/product?page=1",
-          isAdmin: true  
-        });
-      }
-  
-      return baseMenuList;
-    };
+  const menuList = [
+    "BEST",
+    "WOMEN",
+    "MEN",
+    "INTERIOR",
+    "KITCHEN",
+    "DIGITAL",
+    "BEAUTY",
+    "FOOD",
+    "KIDS",
+  ];
 
   let navigate = useNavigate();
 
@@ -74,8 +60,6 @@ const Navbar = ({ user }) => {
   const goBack = () => {
     navigate(-1);
   };
-
-  const menuList = getMenuList();
 
   return (
     <div className="navbar-container">
@@ -132,37 +116,21 @@ const Navbar = ({ user }) => {
         </div>
       </div>
 
-      {/* PC 메뉴 리스트 */}
       <div className="navbar-bottom">
         <ul className="navbar-menu-list">
           {menuList.map((menu, index) => (
             <li key={index}>
-                            <Link 
-                to={menu.path}
-                style={menu.isAdmin ? { color: 'rgb(93, 144, 237)' } : {}}
-              >
-                {menu.name}
-              </Link>
-
+              <a href="#">{menu}</a>
             </li>
           ))}
         </ul>
-      </div>
 
-      {/* 모바일 메뉴 리스트 */}
-      {showMenuList && (
-        <div className="mobile-menu-list">
-          <ul>
-            {menuList.map((menu, index) => (
-              <li key={index}>
-                <Link to={menu.path} onClick={toggleMenuList}>
-                  {menu.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+        {user && user.level === "admin" && (
+          <Link to="/admin/product?page=1" className="link-area">
+            Admin page
+          </Link>
+        )}
+      </div>
 
       {showSearchBox && (
         <div className="navbar-search-box">
@@ -189,6 +157,10 @@ const Navbar = ({ user }) => {
           <FontAwesomeIcon icon={faHeart} />
           <span>MY LIKES</span>
         </div>
+        {/* <div onClick={() => navigate("/cart")} className="navbar-icon">
+              <FontAwesomeIcon icon={faShoppingBag} />
+              <span style={{ cursor: "pointer" }}>{`SHOPPING BAG(${cartItemCount || 0})`}</span>
+            </div> */}
         {user ? (
           <div onClick={handleLogout} className="navbar-icon">
             <FontAwesomeIcon icon={faSignOutAlt} />
