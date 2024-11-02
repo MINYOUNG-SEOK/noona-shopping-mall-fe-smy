@@ -139,7 +139,11 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog, currentPage }) => {
       dispatch(createProduct({ ...updatedFormData, stock: totalStock }));
     } else {
       dispatch(
-        editProduct({ ...formData, stock: totalStock, id: selectedProduct._id })
+        editProduct({
+          ...updatedFormData,
+          stock: totalStock,
+          id: selectedProduct._id,
+        })
       );
     }
   };
@@ -185,7 +189,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog, currentPage }) => {
   const handleSizeChange = (value, index) => {
     setStock((prevStock) => {
       const newStock = [...prevStock];
-      newStock[index] = [value.toLowerCase(), newStock[index]?.[1] || ""];
+      newStock[index] = [value, newStock[index]?.[1] || ""];
       return newStock;
     });
   };
