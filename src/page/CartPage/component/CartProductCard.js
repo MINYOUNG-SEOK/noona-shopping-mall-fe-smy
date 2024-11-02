@@ -1,65 +1,116 @@
 import React from "react";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Row, Col, Form } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Row, Col, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { currencyFormat } from "../../../utils/number";
-import { updateQty, deleteCartItem } from "../../../features/cart/cartSlice";
-const CartProductCard = ({ item }) => {
+import { updateQty } from "../../../features/cart/cartSlice";
+import "../style/cart.style.css";
+
+const CartProductCard = ({
+  item,
+  isHeader,
+  onSelectAll,
+  checked,
+  onSelect,
+  allSelected,
+}) => {
   const dispatch = useDispatch();
 
   const handleQtyChange = (id, value) => {
-    dispatch(updateQty({ id, value }));
+    if (value >= 1) dispatch(updateQty({ id, value }));
   };
 
-  const deleteCart = (id) => {
-    dispatch(deleteCartItem(id));
+  const GRID_LAYOUT = {
+    checkbox: { xs: 1, md: 1 },
+    info: { xs: 6, md: 6 },
+    quantity: { xs: 2, md: 2 },
+    price: { xs: 3, md: 3 },
   };
 
   return (
-    <div className="product-card-cart">
-      <Row>
-        <Col md={2} xs={12}>
-          <img src={item.productId.image} width={112} alt="product" />
-        </Col>
-        <Col md={10} xs={12}>
-          <div className="display-flex space-between">
-            <h3>{item.productId.name}</h3>
-            <button className="trash-button">
-              <FontAwesomeIcon
-                icon={faTrash}
-                width={24}
-                onClick={() => deleteCart(item._id)}
+    <div className="cart-page-product-card">
+      {isHeader && (
+        <div className="cart-page-header">
+          <Row className="align-items-center g-0">
+            <Col xs={GRID_LAYOUT.checkbox.xs} className="text-center">
+              <input
+                type="checkbox"
+                className="cart-page-all-check-checkbox"
+                onChange={onSelectAll}
+                checked={allSelected}
               />
+            </Col>
+            <Col
+              xs={GRID_LAYOUT.info.xs}
+              className="cart-page-header-title text-center"
+            >
+              상품 정보
+            </Col>
+            <Col
+              xs={GRID_LAYOUT.quantity.xs}
+              className="cart-page-header-title text-center"
+            >
+              수량
+            </Col>
+            <Col
+              xs={GRID_LAYOUT.price.xs}
+              className="cart-page-header-title text-center"
+            >
+              주문금액
+            </Col>
+          </Row>
+        </div>
+      )}
+      <Row className="g-0 cart-page-product-container">
+        <Col {...GRID_LAYOUT.checkbox} className="cart-page-checkbox-container">
+          <input
+            type="checkbox"
+            className="cart-page-checkbox"
+            checked={checked}
+            onChange={onSelect}
+          />
+        </Col>
+        <Col {...GRID_LAYOUT.info}>
+          <Row className="g-0">
+            <Col xs={12} className="cart-page-product-info-container">
+              <img
+                src={item.productId.image}
+                alt="product"
+                className="cart-page-product-image"
+              />
+              <div className="cart-page-product-details">
+                <h5 className="cart-page-product-name">
+                  {item.productId.name}
+                </h5>
+                <div className="cart-page-product-price">
+                  ₩ {currencyFormat(item.productId.price)}
+                </div>
+                <div className="cart-page-product-options">
+                  옵션: [SIZE]{item.size}
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </Col>
+        <Col
+          {...GRID_LAYOUT.quantity}
+          className="d-flex justify-content-center"
+        >
+          <div className="cart-page-quantity-buttons">
+            <button onClick={() => handleQtyChange(item._id, item.qty - 1)}>
+              -
+            </button>
+            <span>{item.qty}</span>
+            <button onClick={() => handleQtyChange(item._id, item.qty + 1)}>
+              +
             </button>
           </div>
-
-          <div>
-            <strong>₩ {currencyFormat(item.productId.price)}</strong>
+        </Col>
+        <Col {...GRID_LAYOUT.price} className="text-center">
+          <div className="cart-page-order-price">
+            ₩ {currencyFormat(item.productId.price * item.qty)}
           </div>
-          <div>Size: {item.size}</div>
-          <div>Total: ₩ {currencyFormat(item.productId.price * item.qty)}</div>
-          <div>
-            Quantity:
-            <Form.Select
-              onChange={(event) =>
-                handleQtyChange(item._id, event.target.value)
-              }
-              required
-              defaultValue={item.qty}
-              className="qty-dropdown"
-            >
-              <option value={1}>1</option>
-              <option value={2}>2</option>
-              <option value={3}>3</option>
-              <option value={4}>4</option>
-              <option value={5}>5</option>
-              <option value={6}>6</option>
-              <option value={7}>7</option>
-              <option value={8}>8</option>
-              <option value={9}>9</option>
-              <option value={10}>10</option>
-            </Form.Select>
+          <div className="cart-page-button-container">
+            <Button className="cart-page-purchase-button">구매하기</Button>
           </div>
         </Col>
       </Row>
