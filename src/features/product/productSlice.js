@@ -60,7 +60,7 @@ export const deleteProduct = createAsyncThunk(
   "products/deleteProduct",
   async (id, { dispatch, rejectWithValue }) => {
     try {
-      await api.delete(`/product/${id}`);
+      await api.patch(`/product/${id}/delete`);
       dispatch(
         showToastMessage({
           message: "Product deleted successfully.",

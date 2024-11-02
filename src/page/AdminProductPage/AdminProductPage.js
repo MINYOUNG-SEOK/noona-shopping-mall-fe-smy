@@ -59,7 +59,10 @@ const AdminProductPage = () => {
 
   const deleteItem = (id) => {
     // 아이템 삭제 처리
-    dispatch(deleteProduct(id));
+    const isConfirmed = window.confirm("정말로 삭제하시겠습니까?");
+    if (isConfirmed) {
+      dispatch(deleteProduct(id));
+    }
   };
 
   const openEditForm = (product) => {
