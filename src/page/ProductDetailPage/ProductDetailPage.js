@@ -4,6 +4,8 @@ import { Container, Row, Col, Button, Dropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { FadeLoader } from "react-spinners";
 import { currencyFormat } from "../../utils/number";
+import { FiHeart } from "react-icons/fi";
+import { FaHeart } from "react-icons/fa";
 import "./style/productDetail.style.css";
 import { getProductDetail } from "../../features/product/productSlice";
 import { addToCart } from "../../features/cart/cartSlice";
@@ -16,16 +18,16 @@ const ProductDetail = () => {
   const [sizeError, setSizeError] = useState(false);
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (selectedProduct) {
-      console.log("Selected Product:", selectedProduct);
-    }
-  }, [selectedProduct]);
+  const [isWished, setIsWished] = useState(false);
 
   useEffect(() => {
     dispatch(getProductDetail(id));
   }, [id, dispatch]);
+
+  const handleWishClick = (e) => {
+    e.stopPropagation();
+    setIsWished(!isWished);
+  };
 
   const addItemToCart = () => {
     if (!size) {
@@ -56,31 +58,50 @@ const ProductDetail = () => {
     <Container className="product-detail-card">
       <Row>
         <Col sm={6}>
-          <img src={selectedProduct.image} className="w-100" alt="image" />
+          <img
+            src={selectedProduct.image}
+            className="w-100 product-detail-image"
+            alt="image"
+          />
         </Col>
         <Col className="product-info-area" sm={6}>
-          <div className="product-info">{selectedProduct.name}</div>
-          <div className="product-info">
+          <div className="product-detail-separator"></div>
+          <div className="product-detail-title">
+            <div>{selectedProduct.name}</div>
+            <button
+              className="product-detail-wishlist-btn"
+              onClick={handleWishClick}
+            >
+              {isWished ? (
+                <FaHeart size={24} className="heart-filled" />
+              ) : (
+                <FiHeart size={24} strokeWidth={2.5} />
+              )}
+            </button>
+          </div>
+          <div className="product-info product-price">
             ₩ {currencyFormat(selectedProduct.price)}
           </div>
-          <div className="product-info">{selectedProduct.description}</div>
+          <div className="product-info product-description">
+            {selectedProduct.description}
+          </div>
 
           <Dropdown
-            className="drop-down size-drop-down"
+            className="size-dropdown"
             title={size}
             align="start"
             onSelect={(value) => selectSize(value)}
           >
             <Dropdown.Toggle
-              className="size-drop-down"
-              variant={sizeError ? "outline-danger" : "outline-dark"}
-              id="dropdown-basic"
-              align="start"
+              className={`product-detail-dropdown-toggle ${
+                sizeError ? "error" : ""
+              }`}
+              variant="outline-secondary"
             >
-              {size === "" ? "사이즈 선택" : size.toUpperCase()}
+              {size === "" ? "옵션을 선택하세요 " : size.toUpperCase()}
             </Dropdown.Toggle>
 
-            <Dropdown.Menu className="size-drop-down">
+            <Dropdown.Menu className="size-dropdown-menu">
               {selectedProduct.stock &&
                 Object.keys(selectedProduct.stock).map((item, index) =>
                   selectedProduct.stock[item] > 0 ? (
@@ -95,12 +116,25 @@ const ProductDetail = () => {
                 )}
             </Dropdown.Menu>
           </Dropdown>
-          <div className="warning-message">
-            {sizeError && "사이즈를 선택해주세요."}
+
+          <div className="button-group">
+            <Button
+              variant="light"
+              className="add-to-cart"
+              onClick={addItemToCart}
+            >
+              장바구니 담기
+            </Button>
+            <Button
+              variant="dark"
+              className="buy-now"
+              onClick={() => {
+                /* 구매 로직 추가 */
+              }}
+            >
+              바로 구매하기
+            </Button>
           </div>
-          <Button variant="dark" className="add-button" onClick={addItemToCart}>
-            추가
-          </Button>
         </Col>
       </Row>
     </Container>

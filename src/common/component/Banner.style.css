@@ -1,8 +1,7 @@
 .banner-container {
     width: 100%;
     max-width: 1200px;
-    margin: 10px auto 40px auto;
-    padding: 20px 0;
+    margin: 20px auto 100px auto;
     box-sizing: border-box;
 }
 
@@ -59,6 +58,7 @@
 @media (max-width: 768px) {
     .banner-container {
         padding: 10px 0;
+        margin-bottom: 70px;
     }
 
     .banner-text {
@@ -79,6 +79,11 @@
 }
 
 @media (max-width: 480px) {
+    .banner-container {
+        margin-top: 10px;
+        margin-bottom: 50px;
+    }
+
     .banner-text h2 {
         font-size: 0.9rem;
     }

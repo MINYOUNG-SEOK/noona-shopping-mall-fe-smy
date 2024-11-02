@@ -11,10 +11,234 @@
     margin-bottom: 10px;
 }
 
-/* 로딩 스피너 컨테이너 스타일 */
 .loading-container {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
+}
+
+.product-detail-separator {
+    border-top: 2.5px solid black;
+    margin-bottom: 20px;
+}
+
+.product-detail-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.product-price {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.product-detail-wishlist-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.product-detail-wishlist-btn .heart-filled {
+    color: #ff4646;
+}
+
+.product-description {
+    margin-bottom: 38px;
+}
+
+.product-detail-dropdown-toggle {
+    width: 100%;
+    height: 50px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: white;
+    color: #333;
+    border: 2px solid #ddd;
+    outline: none;
+    text-align: left;
+    padding-left: 15px;
+}
+
+.product-detail-dropdown-toggle:hover,
+.product-detail-dropdown-toggle:focus,
+.product-detail-dropdown-toggle.show {
+    background-color: white !important;
+    color: #333 !important;
+    border: 2px solid #ddd !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
+.product-detail-dropdown-toggle.error {
+    border-color: #ff4646;
+}
+
+.size-dropdown-menu {
+    width: 100%;
+    font-size: 16px;
+}
+
+.button-group {
+    display: flex;
+    margin-top: 15px;
+}
+
+.add-to-cart {
+    flex: 1;
+    height: 50px;
+    font-weight: bold;
+    border: 2px solid #ddd;
+    background-color: white;
+    color: #333;
+    cursor: pointer;
+}
+
+.add-to-cart:hover,
+.add-to-cart:focus,
+.add-to-cart.show {
+    background-color: white !important;
+    border: 2px solid #ddd !important;
+}
+
+.buy-now {
+    flex: 1;
+    height: 50px;
+    font-weight: bold;
+    background-color: black;
+    color: white;
+    margin-left: 10px;
+    border: 2px solid black;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.buy-now:hover,
+.buy-now:focus,
+.buy-now.show {
+    background-color: #ff4800 !important;
+    border: 2px solid #ff4800 !important;
+    box-shadow: none;
+    color: white;
+}
+
+.product-detail-card {
+    padding-top: 50px;
+    overflow-y: auto;
+    max-height: 100vh;
+}
+
+.product-detail-image {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.product-info-area {
+    padding: auto 20px;
+    margin-bottom: 80px;
+}
+
+@media (max-width: 992px) {
+    .product-detail-card {
+        padding-top: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .product-detail-card {
+        margin-top: 10px;
+        overflow-y: auto;
+        max-height: 100vh;
+    }
+
+    .product-detail-title {
+        font-size: 18px;
+    }
+
+    .product-price {
+        font-size: 18px;
+    }
+
+    .product-info {
+        font-size: 16px;
+    }
+
+    .product-detail-dropdown-toggle {
+        height: 45px;
+        font-size: 15px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        margin-top: 10px;
+    }
+
+    .add-to-cart,
+    .buy-now {
+        width: 100%;
+        margin: 5px 0;
+        height: 45px;
+    }
+
+
+    .product-detail-wishlist-btn {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 575px) {
+    .product-detail-separator {
+        border-color: white;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .product-detail-card {
+        overflow-y: auto;
+        max-height: 100vh;
+    }
+
+    .product-detail-title {
+        font-size: 16px;
+    }
+
+    .product-price {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .product-description {
+        margin-bottom: 20px;
+    }
+
+    .product-detail-dropdown-toggle {
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        margin-top: 8px;
+    }
+
+    .add-to-cart,
+    .buy-now {
+        width: 100%;
+        margin: 5px 0;
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .product-detail-wishlist-btn {
+        font-size: 18px;
+    }
 }
