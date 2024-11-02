@@ -1,21 +1,24 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { showToastMessage } from "../common/uiSlice";
 import api from "../../utils/api";
-import { initialCart } from "../cart/cartSlice";
+import { initialCart, getCartList } from "../cart/cartSlice";
 
 export const loginWithEmail = createAsyncThunk(
   "user/loginWithEmail",
-  async ({ email, password }, { rejectWithValue }) => {
+  async ({ email, password }, { dispatch, rejectWithValue }) => {
     try {
       const response = await api.post("/auth/login", { email, password });
       // 로그인 성공시 토큰 저장 1. session storage 2. session storage
       if (response.data.token) {
         sessionStorage.setItem("token", response.data.token);
       }
+
+      dispatch(getCartList());
+
       return response.data;
     } catch (error) {
       const errorMessage =
-       error.response?.data?.message || "Please check your email or password.";
+        error.response?.data?.message || "Please check your email or password.";
       return rejectWithValue(errorMessage);
     }
   }
@@ -41,9 +44,12 @@ export const loginWithGoogle = createAsyncThunk(
 
 export const loginWithToken = createAsyncThunk(
   "user/loginWithToken",
-  async (_, { rejectWithValue }) => {
+  async (_, { dispatch, rejectWithValue }) => {
     try {
       const response = await api.get("/user/me");
+
+      dispatch(getCartList());
+
       return response.data;
     } catch (error) {
       return rejectWithValue(error.error);
@@ -93,6 +99,8 @@ export const logout = createAsyncThunk(
     try {
       // 로컬 스토리지의 토큰 제거
       sessionStorage.removeItem("token");
+
+      dispatch(initialCart());
 
       dispatch(
         showToastMessage({
@@ -165,6 +173,7 @@ const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(logout.fulfilled, (state) => {
+        state.cartList = [];
         state.user = null;
         state.loading = false;
         state.loginError = null;

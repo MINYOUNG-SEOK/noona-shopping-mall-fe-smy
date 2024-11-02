@@ -14,7 +14,7 @@ const initialState = {
 // Async thunk actions
 export const addToCart = createAsyncThunk(
   "cart/addToCart",
-  async ({ id, size }, { rejectWithValue, dispatch }) => {
+  async ({ id, size }, { rejectWithValue, getState, dispatch }) => {
     try {
       const response = await api.post("/cart", { productId: id, size, qty: 1 });
       if (response.status !== 200) throw new Error(response.error);
@@ -68,7 +68,14 @@ export const updateQty = createAsyncThunk(
 
 export const getCartQty = createAsyncThunk(
   "cart/getCartQty",
-  async (_, { rejectWithValue, dispatch }) => {}
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/cart/count");
+      return response.data.count;
+    } catch (error) {
+      return rejectWithValue(error.error);
+    }
+  }
 );
 
 const cartSlice = createSlice({
@@ -93,9 +100,8 @@ const cartSlice = createSlice({
       .addCase(addToCart.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
-    // 장바구니 목록
-    builder
+      })
+      // 장바구니 목록
       .addCase(getCartList.pending, (state) => {
         state.loading = true;
       })
@@ -103,8 +109,21 @@ const cartSlice = createSlice({
         state.loading = false;
         state.error = "";
         state.cartList = action.payload;
+        state.cartItemCount = action.payload.length;
       })
       .addCase(getCartList.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getCartQty.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getCartQty.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = "";
+        state.cartItemCount = action.payload;
+      })
+      .addCase(getCartQty.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
