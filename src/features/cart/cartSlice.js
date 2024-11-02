@@ -28,7 +28,7 @@ export const addToCart = createAsyncThunk(
     } catch (error) {
       dispatch(
         showToastMessage({
-          message: "장바구니 추가에 실패하였습니다.",
+          message: "이미 장바구니에 있는 아이템입니다.",
           status: "error",
         })
       );
