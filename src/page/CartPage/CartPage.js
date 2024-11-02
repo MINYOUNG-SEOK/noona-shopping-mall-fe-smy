@@ -19,6 +19,10 @@ const CartPage = () => {
     dispatch(getCartList());
   }, [dispatch]);
 
+  useEffect(() => {
+    setSelectedItems(cartList.map((item) => item._id));
+  }, [cartList]);
+
   // 전체 선택/해제 핸들러
   const handleSelectAll = (e) => {
     if (e.target.checked) {

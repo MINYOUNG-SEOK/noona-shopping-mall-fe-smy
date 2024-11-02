@@ -10,7 +10,7 @@ const CartProductCard = ({
   item,
   isHeader,
   onSelectAll,
-  checked,
+  checked = true,
   onSelect,
   allSelected,
   onDelete,
