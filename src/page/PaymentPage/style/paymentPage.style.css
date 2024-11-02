@@ -114,12 +114,8 @@
     .operator-circle {
         width: 20px;
         height: 20px;
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         margin: 0;
-    }
-
-    .count-text {
-        font-size: 0.7rem;
     }
 
     .continue-shopping-btn,
@@ -143,16 +139,16 @@
         gap: 4px;
     }
 
+    .summary-header span:first-child {
+        font-size: 0.8rem;
+    }
+
     .operator-circle {
         width: 18px;
         height: 18px;
         font-size: 0.75rem;
     }
 
-    .count-text {
-        font-size: 0.7rem;
-        margin-top: 3px;
-    }
 
     .button-container {
         margin-bottom: 70px;
@@ -166,3 +162,5 @@
     }
 
 }
+
+

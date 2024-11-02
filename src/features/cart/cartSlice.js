@@ -139,7 +139,7 @@ const cartSlice = createSlice({
         item.qty = value;
       }
     },
-    // 새로운 액션: 낙관적 업데이트용
+
     setOptimisticCartList: (state, action) => {
       state.cartList = action.payload;
       state.cartItemCount = action.payload.length;

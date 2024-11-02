@@ -49,7 +49,7 @@ const CartProductCard = ({
             </Col>
             <Col
               xs={GRID_LAYOUT.info.xs}
-              className="cart-page-header-title text-center"
+              className="cart-page-header-title text-center cart-page-header-title-details "
             >
               상품 정보
             </Col>
