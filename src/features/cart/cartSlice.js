@@ -24,7 +24,7 @@ export const addToCart = createAsyncThunk(
           status: "success",
         })
       );
-      return response.data; // TODO
+      return response.data.cartItemQty;
     } catch (error) {
       dispatch(
         showToastMessage({
@@ -39,7 +39,21 @@ export const addToCart = createAsyncThunk(
 
 export const getCartList = createAsyncThunk(
   "cart/getCartList",
-  async (_, { rejectWithValue, dispatch }) => {}
+  async (_, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await api.get("/cart");
+      if (response.status !== 200) throw new Error(response.error);
+      return response.data.data;
+    } catch (error) {
+      dispatch(
+        showToastMessage({
+          message: "장바구니 목록을 불러오는데 실패했습니다.",
+          status: "error",
+        })
+      );
+      return rejectWithValue(error.error);
+    }
+  }
 );
 
 export const deleteCartItem = createAsyncThunk(
@@ -74,9 +88,23 @@ const cartSlice = createSlice({
       .addCase(addToCart.fulfilled, (state, action) => {
         state.loading = false;
         state.error = "";
-        //TODO
+        state.cartItemCount = action.payload;
       })
       .addCase(addToCart.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+    // 장바구니 목록
+    builder
+      .addCase(getCartList.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getCartList.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = "";
+        state.cartList = action.payload;
+      })
+      .addCase(getCartList.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

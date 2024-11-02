@@ -38,7 +38,7 @@ const ProductDetail = () => {
       navigate("/login");
       return;
     }
-    dispatch(addToCart({ ProductId: id, size }));
+    dispatch(addToCart({ id: id, size }));
   };
 
   const selectSize = (value) => {
