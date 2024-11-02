@@ -17,19 +17,32 @@ const ProductDetail = () => {
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
 
-  const addItemToCart = () => {
-    // 사이즈를 아직 선택 안 했다면 에러
-    // 아직 로그인 안 한 유저라면 로그인 페이지로
-    // 카트에 아이템 추가하기
-  };
-
-  const selectSize = (value) => {
-    // 사이즈 추가하기
-  };
+  useEffect(() => {
+    if (selectedProduct) {
+      console.log("Selected Product:", selectedProduct);
+    }
+  }, [selectedProduct]);
 
   useEffect(() => {
     dispatch(getProductDetail(id));
   }, [id, dispatch]);
+
+  const addItemToCart = () => {
+    if (!size) {
+      setSizeError(true);
+      return;
+    }
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    dispatch(addToCart({ ProductId: id, size }));
+  };
+
+  const selectSize = (value) => {
+    setSize(value);
+    setSizeError(false);
+  };
 
   if (loading || !selectedProduct) {
     return (
@@ -68,7 +81,7 @@ const ProductDetail = () => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu className="size-drop-down">
-              {Object.keys(selectedProduct.stock).length > 0 &&
+              {selectedProduct.stock &&
                 Object.keys(selectedProduct.stock).map((item, index) =>
                   selectedProduct.stock[item] > 0 ? (
                     <Dropdown.Item eventKey={item} key={index}>
