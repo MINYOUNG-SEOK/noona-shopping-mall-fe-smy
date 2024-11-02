@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import CartProductCard from "./component/CartProductCard";
 import OrderReceipt from "../PaymentPage/component/OrderReceipt";
 import "./style/cart.style.css";
-import { getCartList } from "../../features/cart/cartSlice";
+import {
+  getCartList,
+  deleteCartItem,
+  updateQty,
+} from "../../features/cart/cartSlice";
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -35,6 +39,15 @@ const CartPage = () => {
     });
   };
 
+  const handleDelete = async (itemId) => {
+    try {
+      await dispatch(deleteCartItem(itemId));
+      dispatch(getCartList());
+    } catch (error) {
+      console.error("Failed to delete item:", error);
+    }
+  };
+
   return (
     <Container>
       <Row>
@@ -49,6 +62,7 @@ const CartPage = () => {
                 checked={selectedItems.includes(item._id)}
                 onSelect={() => handleSelectItem(item._id)}
                 allSelected={selectedItems.length === cartList.length}
+                onDelete={handleDelete}
               />
             ))
           ) : (

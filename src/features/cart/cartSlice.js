@@ -58,12 +58,48 @@ export const getCartList = createAsyncThunk(
 
 export const deleteCartItem = createAsyncThunk(
   "cart/deleteCartItem",
-  async (id, { rejectWithValue, dispatch }) => {}
+  async (id, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await api.delete(`/cart/${id}`);
+      if (response.status !== 200) throw new Error(response.error);
+      dispatch(
+        showToastMessage({
+          message: "상품이 삭제되었습니다.",
+          status: "success",
+        })
+      );
+      dispatch(getCartList()); // 장바구니 목록 다시 불러오기
+      return id;
+    } catch (error) {
+      dispatch(
+        showToastMessage({
+          message: "상품 삭제에 실패했습니다.",
+          status: "error",
+        })
+      );
+      return rejectWithValue(error.error);
+    }
+  }
 );
 
 export const updateQty = createAsyncThunk(
   "cart/updateQty",
-  async ({ id, value }, { rejectWithValue }) => {}
+  async ({ id, value }, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await api.put(`/cart/${id}`, { qty: value });
+      if (response.status !== 200) throw new Error(response.error);
+      dispatch(getCartList()); // 장바구니 목록 다시 불러오기
+      return response.data;
+    } catch (error) {
+      dispatch(
+        showToastMessage({
+          message: "수량 변경에 실패했습니다.",
+          status: "error",
+        })
+      );
+      return rejectWithValue(error.error);
+    }
+  }
 );
 
 export const getCartQty = createAsyncThunk(
@@ -124,6 +160,34 @@ const cartSlice = createSlice({
         state.cartItemCount = action.payload;
       })
       .addCase(getCartQty.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // 장바구니 삭제
+      .addCase(deleteCartItem.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteCartItem.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = "";
+        state.cartList = state.cartList.filter(
+          (item) => item._id !== action.payload
+        );
+        state.cartItemCount = state.cartList.length;
+      })
+      .addCase(deleteCartItem.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // 장바구니 수량 업데이트
+      .addCase(updateQty.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateQty.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = "";
+      })
+      .addCase(updateQty.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

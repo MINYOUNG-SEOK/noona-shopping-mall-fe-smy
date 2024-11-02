@@ -1,6 +1,7 @@
 import React from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
+import { IoCloseOutline } from "react-icons/io5";
 import { currencyFormat } from "../../../utils/number";
 import { updateQty } from "../../../features/cart/cartSlice";
 import "../style/cart.style.css";
@@ -12,6 +13,7 @@ const CartProductCard = ({
   checked,
   onSelect,
   allSelected,
+  onDelete,
 }) => {
   const dispatch = useDispatch();
 
@@ -24,6 +26,12 @@ const CartProductCard = ({
     info: { xs: 6, md: 6 },
     quantity: { xs: 2, md: 2 },
     price: { xs: 3, md: 3 },
+  };
+
+  const handleDelete = () => {
+    if (onDelete) {
+      onDelete(item._id);
+    }
   };
 
   return (
@@ -78,9 +86,18 @@ const CartProductCard = ({
                 className="cart-page-product-image"
               />
               <div className="cart-page-product-details">
-                <h5 className="cart-page-product-name">
-                  {item.productId.name}
-                </h5>
+                <div className="cart-page-product-header">
+                  <h5 className="cart-page-product-name">
+                    {item.productId.name}
+                  </h5>
+                  <button
+                    className="cart-page-delete-button"
+                    onClick={handleDelete}
+                    aria-label="상품 삭제"
+                  >
+                    <IoCloseOutline size={16} />
+                  </button>
+                </div>
                 <div className="cart-page-product-price">
                   ₩ {currencyFormat(item.productId.price)}
                 </div>
