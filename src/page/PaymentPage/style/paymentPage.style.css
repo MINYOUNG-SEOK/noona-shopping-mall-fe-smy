@@ -62,7 +62,7 @@
     grid-template-columns: 1fr 1fr;
     gap: 10px;
     margin-top: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 50px;
 }
 
 .continue-shopping-btn,
@@ -87,27 +87,82 @@
     background-color: #333;
 }
 
-.receipt-notice {
-    color: #666;
-    font-size: 0.9rem;
-    line-height: 1.6;
-}
-
-.receipt-return-policy {
-    margin-top: 10px;
-}
 
 @media screen and (max-width: 768px) {
+    .receipt-container {
+        padding: 20px;
+    }
+
+    .price-summary {
+        padding: 20px 30px;
+    }
+
     .summary-row {
-        flex-direction: column;
-        gap: 20px;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .summary-header {
+        font-size: 0.9rem;
+        gap: 6px;
+    }
+
+    .summary-header span:first-child {
+        font-size: 0.9rem;
     }
 
     .operator-circle {
-        margin: 10px 0;
+        width: 20px;
+        height: 20px;
+        font-size: 0.8rem;
+        margin: 0;
+    }
+
+    .count-text {
+        font-size: 0.7rem;
+    }
+
+    .continue-shopping-btn,
+    .checkout-btn {
+        padding: 12px 0;
+        font-size: 0.9rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .receipt-container {
+        padding: 15px;
+    }
+
+    .price-summary {
+        padding: 15px 20px;
+    }
+
+    .summary-header {
+        font-size: 0.8rem;
+        gap: 4px;
+    }
+
+    .operator-circle {
+        width: 18px;
+        height: 18px;
+        font-size: 0.75rem;
+    }
+
+    .count-text {
+        font-size: 0.7rem;
+        margin-top: 3px;
     }
 
     .button-container {
-        grid-template-columns: 1fr;
+        margin-bottom: 70px;
+        gap: 8px;
     }
+
+    .continue-shopping-btn,
+    .checkout-btn {
+        padding: 10px 0;
+        font-size: 0.8rem;
+    }
+
 }
