@@ -58,7 +58,12 @@ export const getCartList = createAsyncThunk(
 
 export const deleteCartItem = createAsyncThunk(
   "cart/deleteCartItem",
-  async (id, { rejectWithValue, dispatch }) => {
+  async (id, { rejectWithValue, dispatch, getState }) => {
+    const previousCartList = getState().cart.cartList;
+    const updatedCartList = previousCartList.filter((item) => item._id !== id);
+
+    dispatch(setOptimisticCartList(updatedCartList));
+
     try {
       const response = await api.delete(`/cart/${id}`);
       if (response.status !== 200) throw new Error(response.error);
@@ -68,15 +73,19 @@ export const deleteCartItem = createAsyncThunk(
           status: "success",
         })
       );
-      dispatch(getCartList()); // 장바구니 목록 다시 불러오기
+
       return id;
     } catch (error) {
+      // 요청 실패 시 상태 복구
+      dispatch(setOptimisticCartList(previousCartList));
+
       dispatch(
         showToastMessage({
           message: "상품 삭제에 실패했습니다.",
           status: "error",
         })
       );
+
       return rejectWithValue(error.error);
     }
   }
@@ -84,13 +93,15 @@ export const deleteCartItem = createAsyncThunk(
 
 export const updateQty = createAsyncThunk(
   "cart/updateQty",
-  async ({ id, value }, { rejectWithValue, dispatch }) => {
+  async ({ id, value }, { dispatch, rejectWithValue, getState }) => {
+    dispatch(updateCartItemQty({ id, value }));
+
     try {
       const response = await api.put(`/cart/${id}`, { qty: value });
       if (response.status !== 200) throw new Error(response.error);
-      dispatch(getCartList()); // 장바구니 목록 다시 불러오기
       return response.data;
     } catch (error) {
+      dispatch(getCartList());
       dispatch(
         showToastMessage({
           message: "수량 변경에 실패했습니다.",
@@ -121,7 +132,18 @@ const cartSlice = createSlice({
     initialCart: (state) => {
       state.cartItemCount = 0;
     },
-    // You can still add reducers here for non-async actions if necessary
+    updateCartItemQty: (state, action) => {
+      const { id, value } = action.payload;
+      const item = state.cartList.find((item) => item._id === id);
+      if (item) {
+        item.qty = value;
+      }
+    },
+    // 새로운 액션: 낙관적 업데이트용
+    setOptimisticCartList: (state, action) => {
+      state.cartList = action.payload;
+      state.cartItemCount = action.payload.length;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -195,4 +217,5 @@ const cartSlice = createSlice({
 });
 
 export default cartSlice.reducer;
-export const { initialCart } = cartSlice.actions;
+export const { initialCart, updateCartItemQty, setOptimisticCartList } =
+  cartSlice.actions;

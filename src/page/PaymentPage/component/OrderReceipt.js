@@ -16,9 +16,6 @@ const OrderReceipt = ({ selectedItems, totalSelectedPrice }) => {
             <span>총 주문금액</span>
             <div className="price-count">
               <span>{currencyFormat(totalSelectedPrice)}원</span>
-              <span className="count-text">
-                총 {selectedItems?.length || 0}개
-              </span>
             </div>
           </div>
 
