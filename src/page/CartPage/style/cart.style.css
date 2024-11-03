@@ -70,6 +70,17 @@
     font-size: 1rem;
     font-weight: bold;
     margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* Show a maximum of 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: calc(1.2em * 2);
+    /* Adjust based on font size and line height */
+    line-height: 1.2;
+    word-break: break-word;
+    /* Break long words to fit within the box */
 }
 
 .cart-page-product-price {
@@ -94,7 +105,7 @@
     display: inline-flex;
     align-items: center;
     border: 1px solid #ddd;
-    margin: 0;
+    overflow: hidden;
 }
 
 .cart-page-quantity-buttons button {
@@ -102,6 +113,7 @@
     background: none;
     padding: 8px 12px;
     cursor: pointer;
+    border-radius: 0 !important;
 }
 
 .cart-page-quantity-buttons button:first-child {
@@ -182,8 +194,101 @@
     background-color: #eaeaea;
 }
 
+.cart-page-delete-selected-container {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 20px;
+}
+
+.delete-selected-button {
+    background-color: white;
+    color: #666666;
+    border: 1px solid #666666;
+    padding: 8px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 0;
+    outline: none;
+    box-shadow: none;
+}
+
+.delete-selected-button:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+}
+
+.delete-selected-button:focus,
+.delete-selected-button:active {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    box-shadow: none;
+}
+
+.button-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.continue-shopping-btn,
+.checkout-btn {
+    padding: 15px 0;
+    font-size: 1rem;
+    border-radius: 0;
+    width: 100%;
+}
+
+.continue-shopping-btn {
+    background-color: #fff;
+    border: 1px solid #000;
+}
+
+.checkout-btn {
+    background-color: #000;
+    border: none;
+}
+
+.checkout-btn:hover {
+    background-color: #333;
+}
+
+/* 모든 버튼에 보더 반경 적용 */
+button,
+.cart-page-purchase-button,
+.delete-selected-button,
+.continue-shopping-btn,
+.checkout-btn {
+    border-radius: 5px !important;
+}
+
+/* 카드와 박스에 보더 반경 적용 */
+.cart-page-product-card,
+.cart-page-quantity-buttons,
+.cart-page-product-image,
+.cart-page-delete-button,
+.cart-page-delete-selected-container,
+.button-container {
+    border-radius: 5px;
+}
+
 
 @media screen and (max-width: 768px) {
+
+    .continue-shopping-btn,
+    .checkout-btn {
+        padding: 12px 0;
+        font-size: 0.9rem;
+    }
+
+    .delete-selected-button {
+        padding: 6px 20px;
+        font-size: 0.9rem;
+    }
+
     .cart-page-delete-button {
         width: 22px;
         height: 22px;
@@ -196,6 +301,26 @@
 }
 
 @media screen and (max-width: 480px) {
+    .button-container {
+        gap: 8px;
+        margin-bottom: 70px;
+    }
+
+    .continue-shopping-btn,
+    .checkout-btn {
+        padding: 10px 0;
+        font-size: 0.8rem;
+    }
+
+    .delete-selected-button {
+        padding: 4px 16px;
+        font-size: 0.8rem;
+    }
+
+    .cart-page-delete-selected-container {
+        margin-top: 15px;
+    }
+
     .cart-page-delete-button {
         width: 20px;
         height: 20px;
@@ -257,8 +382,6 @@
         display: inline-flex;
         align-items: center;
         border: 1px solid #ddd;
-        padding: 0px;
-        margin: 0;
     }
 
     .cart-page-quantity-buttons button {
@@ -319,6 +442,7 @@
         border: 1px solid #ddd;
         padding: 0px;
         margin: 0;
+
     }
 
     .cart-page-quantity-buttons button {
@@ -335,17 +459,11 @@
     }
 
     .cart-page-product-name {
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        /* 최대 3줄까지 표시 */
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
         font-size: 0.9rem;
-        /* 모바일 화면에서 폰트 크기 조정 */
-        line-height: 1.4;
-        /* 줄 간격 조정 */
-        max-height: calc(1.4em * 3);
-        /* 최대 높이 설정 (3줄) */
+        /* Adjust font size for smaller screens */
+        -webkit-line-clamp: 1;
+        /* Show a maximum of 1 line on mobile */
+        max-height: 1.2em;
+        /* Adjust based on font size and line height */
     }
 }

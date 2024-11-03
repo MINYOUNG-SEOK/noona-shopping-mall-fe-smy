@@ -104,15 +104,13 @@ const Login = () => {
             onChange={(event) => setPassword(event.target.value)}
             className={errors.password ? "input-invalid" : ""}
           />
-          {errors.password && <div className="error-text">{errors.password}</div>}
+          {errors.password && (
+            <div className="error-text">{errors.password}</div>
+          )}
         </Form.Group>
 
         <div className="error-and-forgot-password">
-          {loginError && (
-            <div className="error-text">
-              {loginError}
-            </div>
-          )}
+          {loginError && <div className="error-text">{loginError}</div>}
           <Link to="/forgot-password" className="forgot-password">
             Forgot password?
           </Link>
@@ -124,8 +122,7 @@ const Login = () => {
 
         <div className="display-space-between login-button-area">
           <div className="sign-up-link">
-            You don’t have an account?{" "}
-            <Link to="/register">Sign up here</Link>
+            You don’t have an account? <Link to="/register">Sign up here</Link>
           </div>
         </div>
       </Form>

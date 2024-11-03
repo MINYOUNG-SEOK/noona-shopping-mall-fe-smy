@@ -57,37 +57,6 @@
     font-size: 0.9rem;
 }
 
-.button-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 30px;
-    margin-bottom: 50px;
-}
-
-.continue-shopping-btn,
-.checkout-btn {
-    padding: 15px 0;
-    font-size: 1rem;
-    border-radius: 0;
-    width: 100%;
-}
-
-.continue-shopping-btn {
-    background-color: #fff;
-    border: 1px solid #000;
-}
-
-.checkout-btn {
-    background-color: #000;
-    border: none;
-}
-
-.checkout-btn:hover {
-    background-color: #333;
-}
-
-
 @media screen and (max-width: 768px) {
     .receipt-container {
         padding: 20px;
@@ -118,11 +87,6 @@
         margin: 0;
     }
 
-    .continue-shopping-btn,
-    .checkout-btn {
-        padding: 12px 0;
-        font-size: 0.9rem;
-    }
 }
 
 @media screen and (max-width: 480px) {
@@ -150,17 +114,6 @@
     }
 
 
-    .button-container {
-        margin-bottom: 70px;
-        gap: 8px;
-    }
 
-    .continue-shopping-btn,
-    .checkout-btn {
-        padding: 10px 0;
-        font-size: 0.8rem;
-    }
 
 }
-
-
