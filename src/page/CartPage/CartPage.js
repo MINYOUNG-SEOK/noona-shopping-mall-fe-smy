@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import CartProductCard from "./component/CartProductCard";
 import OrderReceipt from "../PaymentPage/component/OrderReceipt";
 import "./style/cart.style.css";
@@ -17,9 +19,11 @@ const CartPage = () => {
   const location = useLocation();
   const { cartList, totalPrice } = useSelector((state) => state.cart);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(getCartList());
+    setIsLoading(true);
+    dispatch(getCartList()).finally(() => setIsLoading(false));
   }, [dispatch]);
 
   useEffect(() => {
@@ -77,7 +81,15 @@ const CartPage = () => {
     <Container>
       <Row>
         <Col xs={12}>
-          {cartList.length > 0 ? (
+          {isLoading ? (
+            <div>
+              {[...Array(3)].map((_, index) => (
+                <div key={index} className="skeleton-item">
+                  <Skeleton height={100} style={{ marginBottom: 20 }} />
+                </div>
+              ))}
+            </div>
+          ) : cartList.length > 0 ? (
             <>
               {cartList.map((item, index) => (
                 <CartProductCard
@@ -112,7 +124,7 @@ const CartPage = () => {
       </Row>
 
       {/* 상품 리스트 하단에 주문 내역 추가 */}
-      {cartList.length > 0 && (
+      {cartList.length > 0 && !isLoading && (
         <Row className="mt-4">
           <Col xs={12}>
             <OrderReceipt
