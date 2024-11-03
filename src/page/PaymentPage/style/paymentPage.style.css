@@ -1,6 +1,6 @@
 .receipt-container {
     background-color: #fff;
-    padding: 30px;
+    padding: 20px;
     margin-top: 20px;
 }
 
@@ -59,7 +59,7 @@
 
 @media screen and (max-width: 768px) {
     .receipt-container {
-        padding: 20px;
+        padding: 10px;
     }
 
     .price-summary {
@@ -91,7 +91,7 @@
 
 @media screen and (max-width: 480px) {
     .receipt-container {
-        padding: 15px;
+        padding: 0;
     }
 
     .price-summary {

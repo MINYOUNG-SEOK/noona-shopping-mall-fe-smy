@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Button, Dropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { FadeLoader } from "react-spinners";
+import Skeleton from "react-loading-skeleton";
 import { currencyFormat } from "../../utils/number";
 import { FiHeart } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
@@ -48,9 +48,41 @@ const ProductDetail = () => {
 
   if (loading || !selectedProduct) {
     return (
-      <div className="loading-container">
-        <FadeLoader color="#333333" height={15} width={5} />
-      </div>
+      <Container className="product-detail-card">
+        <Row>
+          <Col sm={6}>
+            <Skeleton height={400} width="100%" />
+          </Col>
+          <Col sm={6}>
+            <Skeleton
+              height={30}
+              width="70%"
+              style={{ marginBottom: "10px" }}
+            />
+            <Skeleton
+              height={20}
+              width="50%"
+              style={{ marginBottom: "10px" }}
+            />
+            <Skeleton
+              height={20}
+              width="80%"
+              style={{ marginBottom: "10px" }}
+            />
+            <Skeleton
+              height={20}
+              width="90%"
+              style={{ marginBottom: "20px" }}
+            />
+            <Skeleton
+              height={40}
+              width="100%"
+              style={{ marginBottom: "10px" }}
+            />
+            <Skeleton height={40} width="100%" />
+          </Col>
+        </Row>
+      </Container>
     );
   }
 
