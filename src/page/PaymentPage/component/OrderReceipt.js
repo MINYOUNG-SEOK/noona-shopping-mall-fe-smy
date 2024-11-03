@@ -45,13 +45,15 @@ const OrderReceipt = ({ selectedItems, totalSelectedPrice }) => {
         >
           CONTINUE SHOPPING
         </Button>
-        <Button
-          variant="dark"
-          className="checkout-btn"
-          onClick={() => navigate("/payment")}
-        >
-          CHECK OUT
-        </Button>
+        {location.pathname.includes("/cart") && selectedItems.length > 0 && (
+          <Button
+            variant="dark"
+            className="checkout-btn"
+            onClick={() => navigate("/payment")}
+          >
+            CHECK OUT
+          </Button>
+        )}
       </div>
     </div>
   );
