@@ -3,15 +3,15 @@
     max-width: 1200px;
     margin: 20px auto 100px auto;
     box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 5px;
 }
 
 .banner-item {
     position: relative;
-    width: 100%;
+    width: 50%;
+    float: left;
     overflow: hidden;
-    padding: 0;
-    box-sizing: border-box;
-    text-align: center;
 }
 
 .banner-image {
@@ -20,6 +20,7 @@
     object-fit: cover;
     max-height: 600px;
     object-position: top;
+    border-radius: 0;
 }
 
 .banner-text {

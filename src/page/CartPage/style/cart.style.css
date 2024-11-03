@@ -72,15 +72,12 @@
     margin-bottom: 8px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
-    /* Show a maximum of 2 lines */
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
     max-height: calc(1.2em * 2);
-    /* Adjust based on font size and line height */
     line-height: 1.2;
     word-break: break-word;
-    /* Break long words to fit within the box */
 }
 
 .cart-page-product-price {
@@ -157,7 +154,6 @@
     background-color: #333 !important;
 }
 
-/* 삭제 버튼 */
 .cart-page-product-header {
     display: flex;
     justify-content: space-between;
@@ -256,7 +252,6 @@
     background-color: #333;
 }
 
-/* 모든 버튼에 보더 반경 적용 */
 button,
 .cart-page-purchase-button,
 .delete-selected-button,
@@ -265,7 +260,6 @@ button,
     border-radius: 5px !important;
 }
 
-/* 카드와 박스에 보더 반경 적용 */
 .cart-page-product-card,
 .cart-page-quantity-buttons,
 .cart-page-product-image,
@@ -273,6 +267,10 @@ button,
 .cart-page-delete-selected-container,
 .button-container {
     border-radius: 5px;
+}
+
+.empty-bag {
+    margin-top: 50px;
 }
 
 

@@ -112,26 +112,34 @@ const CartPage = () => {
       </Row>
 
       {/* 상품 리스트 하단에 주문 내역 추가 */}
-      <Row className="mt-4">
-        <Col xs={12}>
-          <OrderReceipt
-            selectedItems={selectedItems}
-            totalSelectedPrice={cartList
-              .filter((item) => selectedItems.includes(item._id))
-              .reduce((sum, item) => sum + item.productId.price * item.qty, 0)}
-          />
-        </Col>
-      </Row>
+      {cartList.length > 0 && (
+        <Row className="mt-4">
+          <Col xs={12}>
+            <OrderReceipt
+              selectedItems={selectedItems}
+              totalSelectedPrice={cartList
+                .filter((item) => selectedItems.includes(item._id))
+                .reduce(
+                  (sum, item) => sum + item.productId.price * item.qty,
+                  0
+                )}
+            />
+          </Col>
+        </Row>
+      )}
 
       <Row className="mt-4">
         <Col xs={12} className="button-container">
-          <Button
-            variant="outline-dark"
-            className="continue-shopping-btn"
-            onClick={() => navigate("/")}
-          >
-            CONTINUE SHOPPING
-          </Button>
+          {cartList.length > 0 && (
+            <Button
+              variant="outline-dark"
+              className="continue-shopping-btn"
+              onClick={() => navigate("/")}
+            >
+              CONTINUE SHOPPING
+            </Button>
+          )}
+
           {location.pathname.includes("/cart") && selectedItems.length > 0 && (
             <Button
               variant="dark"
