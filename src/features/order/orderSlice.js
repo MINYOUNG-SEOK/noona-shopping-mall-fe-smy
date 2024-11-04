@@ -3,7 +3,6 @@ import { getCartQty } from "../cart/cartSlice";
 import api from "../../utils/api";
 import { showToastMessage } from "../common/uiSlice";
 
-// Define initial state
 const initialState = {
   orderList: [],
   orderNum: "",
@@ -23,7 +22,7 @@ export const createOrder = createAsyncThunk(
       dispatch(
         showToastMessage({
           message: "주문이 완료되었습니다.",
-          status: "success", // type이 아닌 status 사용
+          status: "success",
         })
       );
 
@@ -35,7 +34,7 @@ export const createOrder = createAsyncThunk(
       dispatch(
         showToastMessage({
           message: errorMessage,
-          status: "error", // type이 아닌 status 사용
+          status: "error",
         })
       );
 

@@ -117,8 +117,8 @@ export const getCartQty = createAsyncThunk(
   "cart/getCartQty",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get("/cart/count");
-      return response.data.count;
+      const response = await api.get("/cart");
+      return response.data.data.length;
     } catch (error) {
       return rejectWithValue(error.error);
     }
