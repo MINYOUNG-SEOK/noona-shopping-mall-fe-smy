@@ -189,7 +189,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog, currentPage }) => {
   const handleSizeChange = (value, index) => {
     setStock((prevStock) => {
       const newStock = [...prevStock];
-      newStock[index] = [value, newStock[index]?.[1] || ""];
+      newStock[index] = [value.toLowerCase(), newStock[index]?.[1] || ""];
       return newStock;
     });
   };

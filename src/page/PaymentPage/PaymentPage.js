@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
-import LoadingSpinner from "../../common/component/Spinner";
+
 import PaymentForm from "./component/PaymentForm";
 import "./style/paymentPage.style.css";
 import { cc_expires_format, currencyFormat } from "../../utils/number";
@@ -44,18 +44,18 @@ const PaymentPage = () => {
       const {
         firstName,
         lastName,
-        contact,
+        contact: phone,
         address,
         city,
-        zip,
+        zip: postalCode,
         deliveryMessage,
       } = shipInfo;
 
       dispatch(
         createOrder({
           totalPrice,
-          shipTo: { address, city, zip },
-          contact: { firstName, lastName, contact },
+          shipTo: { address, city, postalCode },
+          contact: { firstName, lastName, phone },
           deliveryMessage,
           orderList: selectedItems.map((item) => ({
             productId: item.productId._id,
@@ -108,7 +108,16 @@ const PaymentPage = () => {
   }, [orderNum, navigate]);
 
   if (isLoading || orderLoading) {
-    return <LoadingSpinner />;
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "100vh" }}
+      >
+        <div className="spinner-border text-dark" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
   }
 
   return (

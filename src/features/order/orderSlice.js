@@ -13,16 +13,33 @@ const initialState = {
   totalPageNum: 1,
 };
 
-// Async thunks
 export const createOrder = createAsyncThunk(
   "order/createOrder",
   async (payload, { dispatch, rejectWithValue }) => {
     try {
       const response = await api.post("/order", payload);
       if (response.status !== 200) throw new Error(response.error);
+
+      dispatch(
+        showToastMessage({
+          message: "주문이 완료되었습니다.",
+          status: "success", // type이 아닌 status 사용
+        })
+      );
+
       return response.data.orderNum;
     } catch (error) {
-      return rejectWithValue(error.error);
+      // 에러 메시지 처리
+      const errorMessage = error.error || "주문 처리 중 오류가 발생했습니다.";
+
+      dispatch(
+        showToastMessage({
+          message: errorMessage,
+          status: "error", // type이 아닌 status 사용
+        })
+      );
+
+      return rejectWithValue(errorMessage);
     }
   }
 );
