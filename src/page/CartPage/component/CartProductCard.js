@@ -126,9 +126,9 @@ const CartProductCard = ({
           <div className="cart-page-order-price">
             ₩ {currencyFormat(item.productId.price * item.qty)}
           </div>
-          <div className="cart-page-button-container">
+          {/* <div className="cart-page-button-container">
             <Button className="cart-page-purchase-button">구매하기</Button>
-          </div>
+          </div> */}
         </Col>
       </Row>
     </div>
