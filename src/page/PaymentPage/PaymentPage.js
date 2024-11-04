@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
-import OrderReceipt from "./component/OrderReceipt";
+import LoadingSpinner from "../../common/component/Spinner";
 import PaymentForm from "./component/PaymentForm";
 import "./style/paymentPage.style.css";
 import { cc_expires_format, currencyFormat } from "../../utils/number";
@@ -13,8 +13,11 @@ const PaymentPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [isLoading, setIsLoading] = useState(false);
   const { selectedItems = [], totalPrice = 0 } = location.state || {};
-  const { orderNum } = useSelector((state) => state.order);
+  const { orderNum, loading: orderLoading } = useSelector(
+    (state) => state.order
+  );
 
   const [cardValue, setCardValue] = useState({
     cvc: "",
@@ -34,44 +37,39 @@ const PaymentPage = () => {
     deliveryMessage: "",
   });
 
-  useEffect(() => {
-    if (!selectedItems || selectedItems.length === 0) {
-      navigate("/cart");
-    }
-  }, [selectedItems, navigate]);
-
-  useEffect(() => {
-    if (orderNum) {
-      navigate(`/order-complete/${orderNum}`);
-    }
-  }, [orderNum, navigate]);
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const {
-      firstName,
-      lastName,
-      contact,
-      address,
-      city,
-      zip,
-      deliveryMessage,
-    } = shipInfo;
-
-    dispatch(
-      createOrder({
-        totalPrice,
-        shipTo: { address, city, zip },
-        contact: { firstName, lastName, contact },
+    setIsLoading(true);
+    try {
+      const {
+        firstName,
+        lastName,
+        contact,
+        address,
+        city,
+        zip,
         deliveryMessage,
-        orderList: selectedItems.map((item) => ({
-          productId: item.productId._id,
-          price: item.productId.price,
-          qty: item.qty,
-          size: item.size,
-        })),
-      })
-    );
+      } = shipInfo;
+
+      dispatch(
+        createOrder({
+          totalPrice,
+          shipTo: { address, city, zip },
+          contact: { firstName, lastName, contact },
+          deliveryMessage,
+          orderList: selectedItems.map((item) => ({
+            productId: item.productId._id,
+            price: item.productId.price,
+            qty: item.qty,
+            size: item.size,
+          })),
+        })
+      );
+    } catch (error) {
+      console.error("결제 처리 중 오류 발생:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleFormChange = (event) => {
@@ -95,6 +93,23 @@ const PaymentPage = () => {
   const handleInputFocus = (e) => {
     setCardValue({ ...cardValue, focus: e.target.name });
   };
+
+  useEffect(() => {
+    if (!selectedItems || selectedItems.length === 0) {
+      navigate("/cart");
+    }
+  }, [selectedItems, navigate]);
+
+  // 주문번호가 생성되면 완료 페이지로 리다이렉트
+  useEffect(() => {
+    if (orderNum) {
+      navigate(`/order-complete/${orderNum}`);
+    }
+  }, [orderNum, navigate]);
+
+  if (isLoading || orderLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Container className="payment-page-container mt-4">
@@ -261,8 +276,9 @@ const PaymentPage = () => {
                   variant="dark"
                   type="submit"
                   className="checkout-button"
+                  disabled={isLoading || orderLoading}
                 >
-                  CHECK OUT
+                  {isLoading || orderLoading ? "처리중..." : "CHECK OUT"}
                 </Button>
               </div>
             </div>
