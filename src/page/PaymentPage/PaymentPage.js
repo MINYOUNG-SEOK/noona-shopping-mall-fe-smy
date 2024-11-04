@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import OrderReceipt from "./component/OrderReceipt";
 import PaymentForm from "./component/PaymentForm";
@@ -10,6 +10,12 @@ import { createOrder } from "../../features/order/orderSlice";
 
 const PaymentPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  // location.state에서 선택된 상품과 총 가격을 받아옴
+  const { selectedItems = [], totalPrice = 0 } = location.state || {};
+  
   const { orderNum } = useSelector((state) => state.order);
   const [cardValue, setCardValue] = useState({
     cvc: "",
@@ -18,7 +24,7 @@ const PaymentPage = () => {
     name: "",
     number: "",
   });
-  const navigate = useNavigate();
+  
   const [firstLoading, setFirstLoading] = useState(true);
   const [shipInfo, setShipInfo] = useState({
     firstName: "",
@@ -29,23 +35,33 @@ const PaymentPage = () => {
     zip: "",
   });
 
-  const { cartList, totalPrice } = useSelector((state) => state.cart);
+  useEffect(() => {
+    // 선택된 상품이 없으면 장바구니 페이지로 리다이렉트
+    if (!selectedItems || selectedItems.length === 0) {
+      navigate("/cart");
+    }
+  }, [selectedItems, navigate]);
 
   useEffect(() => {
-    // 오더번호를 받으면 어디로 갈까?
-  }, [orderNum]);
+    if (orderNum) {
+      // 주문 완료 후 처리할 로직
+      // 예: 주문 완료 페이지로 이동
+      navigate(`/order-complete/${orderNum}`);
+    }
+  }, [orderNum, navigate]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // 오더 생성하기
     const { firstName, lastName, contact, address, city, zip } = shipInfo;
+    
+    // 선택된 상품들만 주문 생성
     dispatch(
       createOrder({
         totalPrice,
         shipTo: { address, city, zip },
         contact: { firstName, lastName, contact },
-        orderList: cartList.map((item) => {
+        orderList: selectedItems.map((item) => {
           return {
             productId: item.productId._id,
             price: item.productId.price,
@@ -58,13 +74,11 @@ const PaymentPage = () => {
   };
 
   const handleFormChange = (event) => {
-    //shipInfo에 값 넣어주기
     const { name, value } = event.target;
     setShipInfo({ ...shipInfo, [name]: value });
   };
 
   const handlePaymentInfoChange = (event) => {
-    //카드정보 넣어주기
     const { name, value } = event.target;
     if (name === "expiry") {
       let newValue = cc_expires_format(value);
@@ -80,10 +94,6 @@ const PaymentPage = () => {
   const handleInputFocus = (e) => {
     setCardValue({ ...cardValue, focus: e.target.name });
   };
-
-  if (cartList?.length === 0) {
-    navigate("/cart");
-  } // 주문할 아이템이 없다면 주문하기로 안넘어가게 막음
 
   return (
     <Container>
@@ -156,7 +166,7 @@ const PaymentPage = () => {
                 </Row>
                 <div className="mobile-receipt-area">
                   <OrderReceipt
-                    selectedItems={cartList}
+                    selectedItems={selectedItems}
                     totalSelectedPrice={totalPrice}
                   />
                 </div>
@@ -181,7 +191,10 @@ const PaymentPage = () => {
           </div>
         </Col>
         <Col lg={5} className="receipt-area">
-          {/* <OrderReceipt  /> */}
+          <OrderReceipt
+            selectedItems={selectedItems}
+            totalSelectedPrice={totalPrice}
+          />
         </Col>
       </Row>
     </Container>
