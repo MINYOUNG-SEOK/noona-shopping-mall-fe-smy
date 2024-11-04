@@ -1,18 +1,17 @@
 .payment-page-container {
+    width: 100%;
     max-width: 1200px;
+    padding: 0 15px;
     margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    /* 화면 중앙 정렬 */
 }
 
 .sticky-summary {
     position: sticky;
     top: 20px;
-    /* 스크롤 시 고정되는 위치 */
-    max-width: 320px;
+    height: fit-content;
+    align-self: flex-start;
+    max-width: 500px;
     margin-left: auto;
-    /* 오른쪽 정렬 */
 }
 
 .info-sections {
@@ -21,7 +20,7 @@
 
 
 .order-summary {
-    padding: 20px;
+    padding: 10px;
     border-radius: 5px;
     padding-bottom: 15px;
 }
@@ -199,9 +198,7 @@
 .selected-items-section {
     margin-bottom: 20px;
     padding-bottom: 10px;
-    /* 밑줄과 콘텐츠 사이의 간격 */
     border-bottom: 1px solid #000;
-    /* 밑줄 색상과 굵기 */
 }
 
 
@@ -221,8 +218,7 @@
 .summary-title {
     font-size: 1.2rem;
     font-weight: bold;
-    margin-bottom: 10px;
-    padding-bottom: 20px;
+    padding-bottom: 15px;
     border-bottom: 1px solid #ddd;
 }
 
@@ -285,8 +281,68 @@
 
 /* PaymentForm CSS END */
 
+@media screen and (max-width: 991px) {
+    .sticky-summary {
+        max-width: 100%;
+        position: static;
+    }
 
+    .checkout-button-container {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(255, 255, 255, 0.95);
+        padding: 16px 24px;
+        box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.08);
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
 
+    .receipt-and-button-area {
+        padding: 0;
+        margin-bottom: 100px;
+        border: none;
+    }
+
+    .checkout-button {
+        margin: 0;
+        padding: 16px;
+        border-radius: 12px;
+        background: linear-gradient(145deg, #000000, #1a1a1a);
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .checkout-button:active {
+        transform: scale(0.98);
+    }
+
+    .order-summary {
+        border-radius: 16px;
+        margin-bottom: 16px;
+        padding: 0;
+    }
+
+    .payment-page-container {
+        padding: 0 20px;
+    }
+
+    .payment-info {
+        margin-bottom: 10px;
+    }
+
+    .summary-item {
+        padding: 8px 0;
+    }
+
+    .shipping-info-title {
+        margin-top: 0;
+    }
+}
 
 @media screen and (max-width: 768px) {
     .receipt-container {
@@ -361,6 +417,14 @@
     .payment-title {
         font-size: 1.1rem;
     }
+
+    .summary-title {
+        font-size: 1.1rem;
+    }
+
+    .summary-item {
+        font-size: 0.9rem;
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -404,6 +468,10 @@
     .payment-title {
         font-size: 1.1rem;
     }
+
+
+
+
 
 
 }
