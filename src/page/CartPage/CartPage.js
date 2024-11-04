@@ -17,142 +17,172 @@ const CartPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { cartList, totalPrice } = useSelector((state) => state.cart);
-  const [selectedItems, setSelectedItems] = useState([]);
+  const { cartList } = useSelector((state) => state.cart);
+  const [unselectedItems, setUnselectedItems] = useState(new Set());
   const [isLoading, setIsLoading] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(false);
 
+  // 초기 장바구니 데이터 로드
   useEffect(() => {
-    setIsLoading(true);
-    dispatch(getCartList()).finally(() => setIsLoading(false));
+    const fetchCartList = async () => {
+      setIsLoading(true);
+      try {
+        await dispatch(getCartList());
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCartList();
   }, [dispatch]);
 
+  // 장바구니 데이터가 처음 로드될 때만 초기화
   useEffect(() => {
-    setSelectedItems(cartList.map((item) => item._id));
-  }, [cartList]);
+    if (cartList.length > 0 && !isInitialized) {
+      setUnselectedItems(new Set());
+      setIsInitialized(true);
+    }
+  }, [cartList, isInitialized]);
 
-  // 전체 선택/해제 핸들러
+  const getSelectedItems = () => {
+    return cartList
+      .filter(item => !unselectedItems.has(item._id))
+      .map(item => item._id);
+  };
+
   const handleSelectAll = (e) => {
     if (e.target.checked) {
-      setSelectedItems(cartList.map((item) => item._id));
+      setUnselectedItems(new Set());
     } else {
-      setSelectedItems([]);
+      setUnselectedItems(new Set(cartList.map(item => item._id)));
     }
   };
 
-  // 개별 아이템 선택/해제 핸들러
   const handleSelectItem = (itemId) => {
-    setSelectedItems((prev) => {
-      if (prev.includes(itemId)) {
-        return prev.filter((id) => id !== itemId);
+    setUnselectedItems(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(itemId)) {
+        newSet.delete(itemId);
       } else {
-        return [...prev, itemId];
+        newSet.add(itemId);
       }
+      return newSet;
     });
   };
 
-  // 개별 아이템 삭제 핸들러
   const handleDelete = async (itemId) => {
     try {
       await dispatch(deleteCartItem(itemId));
-      dispatch(getCartList());
+      setUnselectedItems(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(itemId);
+        return newSet;
+      });
+      await dispatch(getCartList());
     } catch (error) {
       console.error("Failed to delete item:", error);
     }
   };
 
-  // 선택된 아이템 삭제 핸들러
   const handleDeleteSelected = async () => {
-    const failedItems = [];
-
+    const selectedItems = getSelectedItems();
     for (const itemId of selectedItems) {
       try {
         await dispatch(deleteCartItem(itemId));
       } catch (error) {
         console.error(`Failed to delete item with ID: ${itemId}`, error);
-        failedItems.push(itemId);
       }
     }
-
-    setSelectedItems(failedItems);
-    dispatch(getCartList());
+    setUnselectedItems(new Set());
+    await dispatch(getCartList());
   };
+
+  const calculateTotalSelectedPrice = () => {
+    return cartList
+      .filter(item => !unselectedItems.has(item._id))
+      .reduce((sum, item) => sum + item.productId.price * item.qty, 0);
+  };
+
+  if (isLoading) {
+    return (
+      <Container>
+        <Row>
+          <Col xs={12}>
+            {[...Array(3)].map((_, index) => (
+              <div key={index} className="skeleton-item">
+                <Skeleton height={100} style={{ marginBottom: 20 }} />
+              </div>
+            ))}
+          </Col>
+        </Row>
+      </Container>
+    );
+  }
+
+  if (cartList.length === 0) {
+    return (
+      <Container>
+        <Row>
+          <Col xs={12}>
+            <div className="text-align-center empty-bag">
+              <h2>카트가 비어있습니다.</h2>
+              <div>상품을 담아주세요!</div>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    );
+  }
 
   return (
     <Container>
       <Row>
         <Col xs={12}>
-          {isLoading ? (
-            <div>
-              {[...Array(3)].map((_, index) => (
-                <div key={index} className="skeleton-item">
-                  <Skeleton height={100} style={{ marginBottom: 20 }} />
-                </div>
-              ))}
-            </div>
-          ) : cartList.length > 0 ? (
-            <>
-              {cartList.map((item, index) => (
-                <CartProductCard
-                  item={item}
-                  key={item._id}
-                  isHeader={index === 0}
-                  onSelectAll={handleSelectAll}
-                  checked={selectedItems.includes(item._id)}
-                  onSelect={() => handleSelectItem(item._id)}
-                  allSelected={selectedItems.length === cartList.length}
-                  onDelete={() => handleDelete(item._id)}
-                />
-              ))}
+          {cartList.map((item, index) => (
+            <CartProductCard
+              key={item._id}
+              item={item}
+              isHeader={index === 0}
+              onSelectAll={handleSelectAll}
+              checked={!unselectedItems.has(item._id)}
+              onSelect={() => handleSelectItem(item._id)}
+              allSelected={unselectedItems.size === 0}
+              onDelete={() => handleDelete(item._id)}
+            />
+          ))}
 
-              {/* 선택상품 삭제 버튼 */}
-              <div className="cart-page-delete-selected-container">
-                <Button
-                  className="delete-selected-button"
-                  onClick={handleDeleteSelected}
-                >
-                  선택상품 삭제
-                </Button>
-              </div>
-            </>
-          ) : (
-            <div className="text-align-center empty-bag">
-              <h2>카트가 비어있습니다.</h2>
-              <div>상품을 담아주세요!</div>
-            </div>
-          )}
+          <div className="cart-page-delete-selected-container">
+            <Button
+              className="delete-selected-button"
+              onClick={handleDeleteSelected}
+              disabled={getSelectedItems().length === 0}
+            >
+              선택상품 삭제
+            </Button>
+          </div>
         </Col>
       </Row>
 
-      {/* 상품 리스트 하단에 주문 내역 추가 */}
-      {cartList.length > 0 && !isLoading && (
-        <Row className="mt-4">
-          <Col xs={12}>
-            <OrderReceipt
-              selectedItems={selectedItems}
-              totalSelectedPrice={cartList
-                .filter((item) => selectedItems.includes(item._id))
-                .reduce(
-                  (sum, item) => sum + item.productId.price * item.qty,
-                  0
-                )}
-            />
-          </Col>
-        </Row>
-      )}
+      <Row className="mt-4">
+        <Col xs={12}>
+          <OrderReceipt
+            selectedItems={getSelectedItems()}
+            totalSelectedPrice={calculateTotalSelectedPrice()}
+          />
+        </Col>
+      </Row>
 
       <Row className="mt-4">
         <Col xs={12} className="button-container">
-          {cartList.length > 0 && (
-            <Button
-              variant="outline-dark"
-              className="continue-shopping-btn"
-              onClick={() => navigate("/")}
-            >
-              CONTINUE SHOPPING
-            </Button>
-          )}
+          <Button
+            variant="outline-dark"
+            className="continue-shopping-btn"
+            onClick={() => navigate("/")}
+          >
+            CONTINUE SHOPPING
+          </Button>
 
-          {location.pathname.includes("/cart") && selectedItems.length > 0 && (
+          {location.pathname.includes("/cart") && getSelectedItems().length > 0 && (
             <Button
               variant="dark"
               className="checkout-btn"
