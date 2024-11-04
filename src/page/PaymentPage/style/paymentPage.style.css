@@ -1,7 +1,41 @@
-.receipt-container {
-    background-color: #fff;
-    padding: 20px;
+
+
+.shipping-info-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 2px solid #000;
+    padding-top: 20px; 
     margin-top: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .shipping-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .info-icon {
+    font-size: 0.9rem;
+    color: #666;
+    background-color: #f2f2f2;
+    border-radius: 50%;
+    padding: 2px 6px;
+    display: inline-block;
+  }
+  
+  .required-note {
+    font-size: 0.85rem;
+    color: #e74c3c;
+  }
+  
+  .receipt-container {
+    background-color: #fff;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .price-summary {
@@ -56,6 +90,108 @@
     justify-content: center;
     font-size: 0.9rem;
 }
+
+.shipping-info-title, .payment-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+
+  .form-label-required {
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  
+  .required-asterisk {
+    color: #e74c3c;
+    margin-left: 2px; 
+  }
+
+  .delivery-message {
+    margin-top: 15px;
+    margin-bottom: 20px; 
+  }
+
+  .delivery-message::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 4px; 
+    background-color: #000;
+    margin-top: 30px; 
+    margin-bottom: 25px;
+}
+  
+  .delivery-message .form-label-required {
+    font-weight: 500;
+    margin-bottom: 5px; 
+  }
+  
+  .delivery-message .form-control {
+    resize: none; 
+    border: 1px solid #ccc; 
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .selected-items-section {
+    margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: transparent;
+    border: none; 
+}
+  
+.selected-item-image {
+    width: 150px;
+    height: 150px; 
+    object-fit: cover; 
+    border-radius: 5px;
+}
+  
+  .selected-item-details {
+    padding-left: 15px;
+  }
+  
+  .selected-item-name {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  .selected-item-option,
+  .selected-item-price {
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .form-label-required {
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  
+  .required-asterisk {
+    color: #e74c3c;
+    margin-left: 2px;
+  }
+
+  .shipping-title {
+    margin-bottom: 15px; 
+}
+
+/* PaymentForm CSS START */
+.form-area {
+    margin-top: 15px;
+}
+
+.payment-input {
+    margin-bottom: 15px;
+    padding: 10px;
+}
+/* PaymentForm CSS END */
+
+  
 
 @media screen and (max-width: 768px) {
     .receipt-container {
