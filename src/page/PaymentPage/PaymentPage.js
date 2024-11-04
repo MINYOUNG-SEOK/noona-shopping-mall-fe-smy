@@ -164,7 +164,7 @@ const PaymentPage = () => {
                     />
                   </Form.Group>
                 </Row>
-                <div className="mobile-receipt-area">
+                <div className="receipt-area">
                   <OrderReceipt
                     selectedItems={selectedItems}
                     totalSelectedPrice={totalPrice}
@@ -190,12 +190,12 @@ const PaymentPage = () => {
             </div>
           </div>
         </Col>
-        <Col lg={5} className="receipt-area">
+        {/* <Col lg={5} className="mobile-receipt-area">
           <OrderReceipt
             selectedItems={selectedItems}
             totalSelectedPrice={totalPrice}
           />
-        </Col>
+        </Col> */}
       </Row>
     </Container>
   );
