@@ -52,6 +52,7 @@
 
 .product-description {
     margin-bottom: 38px;
+    font-size: 18px;
 }
 
 .product-detail-dropdown-toggle {
@@ -170,7 +171,7 @@
     }
 
     .product-info {
-        font-size: 18px;
+        font-size: 16px;
     }
 
     .product-detail-dropdown-toggle {
@@ -220,6 +221,7 @@
 
     .product-description {
         margin-bottom: 20px;
+        font-size: 14px;
     }
 
     .product-detail-dropdown-toggle {
