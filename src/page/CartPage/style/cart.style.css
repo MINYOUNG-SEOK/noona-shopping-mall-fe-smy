@@ -196,6 +196,10 @@
     margin-top: 20px;
 }
 
+.delete-selected-button:disabled {
+    display: none;
+}
+
 .delete-selected-button {
     background-color: white;
     color: #666666;
@@ -331,7 +335,6 @@ button,
 }
 
 
-/* TODO*/
 @media screen and (max-width: 768px) {
     .cart-page-header-title {
         font-size: 0.9rem;
@@ -458,10 +461,7 @@ button,
 
     .cart-page-product-name {
         font-size: 0.9rem;
-        /* Adjust font size for smaller screens */
         -webkit-line-clamp: 1;
-        /* Show a maximum of 1 line on mobile */
         max-height: 1.2em;
-        /* Adjust based on font size and line height */
     }
 }
