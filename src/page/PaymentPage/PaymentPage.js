@@ -48,7 +48,15 @@ const PaymentPage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const { firstName, lastName, contact, address, city, zip, deliveryMessage } = shipInfo;
+    const {
+      firstName,
+      lastName,
+      contact,
+      address,
+      city,
+      zip,
+      deliveryMessage,
+    } = shipInfo;
 
     dispatch(
       createOrder({
@@ -89,25 +97,21 @@ const PaymentPage = () => {
   };
 
   return (
-    <Container
-    className="custom-container d-flex justify-content-center mt-4"
-    style={{ minHeight: "100vh" }}
-  >
-      <Row className="justify-content-center w-100">
-        <Col lg={7} md={10} sm={12}>
-          <div className="shipping-info-title text-center">
-            <h2 className="shipping-title">배송 정보</h2>
-            <span className="required-note">*표시는 필수입력 항목</span>
-          </div>
-
-       
-
-       
-
-          {/* 배송 정보 폼 */}
+    <Container className="payment-page-container mt-4">
+      <Row className="justify-content-center">
+        <Col lg={8} md={12}>
           <Form onSubmit={handleSubmit}>
-            <Row className="mb-3">
-              <Form.Group as={Col} controlId="lastName">
+            {/* 배송 정보, 상품 정보, 결제 정보 */}
+            <div className="info-sections">
+            <div className="shipping-info">
+              <div className="shipping-info-title">
+                <h2 className="shipping-title">배송 정보</h2>
+                <p className="required-note">*표시는 필수입력 항목</p>
+                </div>
+                {/* 배송 정보 입력 폼 */}
+                <Row className="mb-3">
+                <Form.Group as={Col} controlId="lastName">
+                  
                 <Form.Label className="form-label-required">
                   성<span className="required-asterisk">*</span>
                 </Form.Label>
@@ -172,16 +176,14 @@ const PaymentPage = () => {
                 <Form.Label className="form-label-required">
                   Zip<span className="required-asterisk">*</span>
                 </Form.Label>
-                <Form.Control
-                  onChange={handleFormChange}
-                  required
-                  name="zip"
-                />
+                <Form.Control onChange={handleFormChange} required name="zip" />
               </Form.Group>
             </Row>
 
             <Form.Group className="mb-3 delivery-message">
-              <Form.Label className="form-label-required">배송 메시지</Form.Label>
+              <Form.Label className="form-label-required">
+                배송 메시지
+              </Form.Label>
               <Form.Control
                 as="textarea"
                 rows={3}
@@ -192,58 +194,67 @@ const PaymentPage = () => {
               />
             </Form.Group>
 
-         {/* 주문 상품 정보 섹션 */}
-         <div className="selected-items-section mb-4">
-            <h2 className="shipping-title">
-              상품 정보 / 총 {selectedItems.length}개
-            </h2>
-            {selectedItems.map((item) => (
-              <div key={item.productId._id} className="selected-item mb-3">
-                <Row className="align-items-center">
-                  <Col xs={3}>
-                    <img
-                      src={item.productId.image}
-                      alt={item.productId.name}
-                      className="selected-item-image"
-                    />
-                  </Col>
-                  <Col xs={9}>
-                    <div className="selected-item-details">
-                      <h5 className="selected-item-name">{item.productId.name}</h5>
-                      <p className="selected-item-option">옵션: [SIZE] {item.size}</p>
-                      <p className="selected-item-price">₩ {currencyFormat(item.productId.price * item.qty)}</p>
-                    </div>
-                  </Col>
-                </Row>
               </div>
-            ))}
-          </div>
+              
 
-             {/* 총 주문 금액 영역 */}
-             <div className="receipt-area">
-            <OrderReceipt
-              selectedItems={selectedItems}
-              totalSelectedPrice={totalPrice}
-            />
-          </div>
+              <div className="selected-items-section">
+                <h2 className="shipping-title">상품 정보 / 총 {selectedItems.length}개</h2>
+                {selectedItems.map((item) => (
+                  <div key={item.productId._id} className="selected-item mb-3">
+                    <div className="selected-item-container">
+                      <img
+                        src={item.productId.image}
+                        alt={item.productId.name}
+                        className="selected-item-image"
+                      />
+                      <div className="selected-item-details">
+                        <h5 className="selected-item-name">{item.productId.name}</h5>
+                        <p className="selected-item-option">옵션: [SIZE] {item.size}</p>
+                        <p className="selected-item-price">
+                          {item.qty}개 / ₩ {currencyFormat(item.productId.price * item.qty)}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
 
-            <div>
-              <h2 className="payment-title">결제 정보</h2>
-              <PaymentForm
-                cardValue={cardValue}
-                handleInputFocus={handleInputFocus}
-                handlePaymentInfoChange={handlePaymentInfoChange}
-              />
+              <div className="payment-info">
+                <h2 className="payment-title">결제 정보</h2>
+                <PaymentForm
+                  cardValue={cardValue}
+                  handleInputFocus={handleInputFocus}
+                  handlePaymentInfoChange={handlePaymentInfoChange}
+                />
+              </div>
             </div>
-
-            <Button
-              variant="dark"
-              className="payment-button pay-button"
-              type="submit"
-            >
-              결제하기
-            </Button>
           </Form>
+        </Col>
+
+        {/* 고정된 주문 요약 영역 */}
+        <Col lg={4} md={12} className="sticky-summary">
+          <div className="receipt-and-button-area">
+            <div className="order-summary">
+              <h3 className="summary-title">결제금액</h3>
+              <div className="summary-item">
+                <span>총 상품 금액</span>
+                <span>₩{currencyFormat(totalPrice)}</span>
+              </div>
+              <div className="summary-item">
+                <span>배송비</span>
+                <span>무료</span>
+              </div>
+              <div className="summary-item total">
+                <span>총 결제 금액</span>
+                <span className="total-amount">₩{currencyFormat(totalPrice)}</span>
+              </div>
+            </div>
+            <div className="checkout-button-container">
+            <Button variant="dark" className="checkout-button">
+              CHECK OUT
+            </Button>
+            </div>
+          </div>
         </Col>
       </Row>
     </Container>
