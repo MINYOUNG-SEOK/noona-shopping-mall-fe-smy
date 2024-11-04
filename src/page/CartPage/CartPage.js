@@ -22,7 +22,6 @@ const CartPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // 초기 장바구니 데이터 로드
   useEffect(() => {
     const fetchCartList = async () => {
       setIsLoading(true);
@@ -36,7 +35,6 @@ const CartPage = () => {
     fetchCartList();
   }, [dispatch]);
 
-  // 장바구니 데이터가 처음 로드될 때만 초기화
   useEffect(() => {
     if (cartList.length > 0 && !isInitialized) {
       setUnselectedItems(new Set());
@@ -48,6 +46,10 @@ const CartPage = () => {
     return cartList
       .filter(item => !unselectedItems.has(item._id))
       .map(item => item._id);
+  };
+
+  const getSelectedItemsData = () => {
+    return cartList.filter(item => !unselectedItems.has(item._id));
   };
 
   const handleSelectAll = (e) => {
@@ -101,6 +103,16 @@ const CartPage = () => {
     return cartList
       .filter(item => !unselectedItems.has(item._id))
       .reduce((sum, item) => sum + item.productId.price * item.qty, 0);
+  };
+
+  const handleCheckout = () => {
+    const selectedItems = getSelectedItemsData();
+    navigate("/payment", {
+      state: {
+        selectedItems,
+        totalPrice: calculateTotalSelectedPrice()
+      }
+    });
   };
 
   if (isLoading) {
@@ -186,7 +198,7 @@ const CartPage = () => {
             <Button
               variant="dark"
               className="checkout-btn"
-              onClick={() => navigate("/payment")}
+              onClick={handleCheckout}
             >
               CHECK OUT
             </Button>
