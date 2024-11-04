@@ -1,38 +1,66 @@
+.payment-page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    /* 화면 중앙 정렬 */
+}
 
+.sticky-summary {
+    position: sticky;
+    top: 20px;
+    /* 스크롤 시 고정되는 위치 */
+    max-width: 320px;
+    margin-left: auto;
+    /* 오른쪽 정렬 */
+}
+
+.info-sections {
+    width: 100%;
+}
+
+
+.order-summary {
+    padding: 20px;
+    border-radius: 5px;
+    padding-bottom: 15px;
+}
 
 .shipping-info-title {
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-top: 2px solid #000;
-    padding-top: 20px; 
+    padding-top: 20px;
     margin-top: 20px;
     margin-bottom: 30px;
-  }
-  
-  .shipping-title {
+}
+
+.shipping-title {
     font-size: 1.2rem;
     font-weight: bold;
     display: flex;
     align-items: center;
     gap: 5px;
-  }
-  
-  .info-icon {
-    font-size: 0.9rem;
-    color: #666;
-    background-color: #f2f2f2;
-    border-radius: 50%;
-    padding: 2px 6px;
-    display: inline-block;
-  }
-  
-  .required-note {
+    margin-bottom: 15px;
+}
+
+.required-note {
     font-size: 0.85rem;
     color: #e74c3c;
-  }
-  
-  .receipt-container {
+}
+
+.form-label-required {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.required-asterisk {
+    color: #e74c3c;
+    margin-left: 2px;
+}
+
+.receipt-container {
     background-color: #fff;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -91,94 +119,159 @@
     font-size: 0.9rem;
 }
 
-.shipping-info-title, .payment-title {
+.shipping-info-title,
+.payment-title {
     font-size: 1.2rem;
     font-weight: bold;
     display: flex;
     align-items: center;
     gap: 5px;
     margin-bottom: 10px;
-  }
+}
 
-  .form-label-required {
+.form-label-required {
     font-weight: 500;
     font-size: 0.9rem;
-  }
-  
-  .required-asterisk {
+}
+
+.required-asterisk {
     color: #e74c3c;
-    margin-left: 2px; 
-  }
+    margin-left: 2px;
+}
 
-  .delivery-message {
+.delivery-message {
     margin-top: 15px;
-    margin-bottom: 20px; 
-  }
+    margin-bottom: 20px;
+}
 
-  .delivery-message::after {
+.delivery-message::after {
     content: "";
     display: block;
     width: 100%;
-    height: 4px; 
+    height: 3px;
     background-color: #000;
-    margin-top: 30px; 
+    margin-top: 30px;
     margin-bottom: 25px;
 }
-  
-  .delivery-message .form-label-required {
+
+.delivery-message .form-label-required {
     font-weight: 500;
-    margin-bottom: 5px; 
-  }
-  
-  .delivery-message .form-control {
-    resize: none; 
-    border: 1px solid #ccc; 
+    margin-bottom: 5px;
+}
+
+.delivery-message .form-control {
+    resize: none;
+    border: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px;
-  }
-
-  .selected-items-section {
-    margin-bottom: 20px;
-    border-radius: 5px;
-    background-color: transparent;
-    border: none; 
 }
-  
+
+.selected-item-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
 .selected-item-image {
     width: 150px;
-    height: 150px; 
-    object-fit: cover; 
+    height: 150px;
+    object-fit: cover;
     border-radius: 5px;
 }
-  
-  .selected-item-details {
-    padding-left: 15px;
-  }
-  
-  .selected-item-name {
-    font-size: 1rem;
+
+.selected-item-details {
+    flex-grow: 1;
+}
+
+.selected-item-name {
+    font-size: 1.1rem;
     font-weight: bold;
-  }
-  
-  .selected-item-option,
-  .selected-item-price {
+    margin-bottom: 5px;
+}
+
+.selected-item-option,
+.selected-item-price {
     font-size: 0.9rem;
     color: #666;
-  }
-  
-  .form-label-required {
-    font-weight: 500;
-    font-size: 0.9rem;
-  }
-  
-  .required-asterisk {
-    color: #e74c3c;
-    margin-left: 2px;
-  }
-
-  .shipping-title {
-    margin-bottom: 15px; 
+    margin: 2px 0;
 }
+
+.selected-items-section {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    /* 밑줄과 콘텐츠 사이의 간격 */
+    border-bottom: 1px solid #000;
+    /* 밑줄 색상과 굵기 */
+}
+
+
+.receipt-and-button-area {
+    border: 3px solid black;
+    padding: 20px;
+    margin-top: 20px;
+    background-color: #fff;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 5px;
+}
+
+
+
+.summary-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+    padding: 8px 0;
+}
+
+.summary-item.total {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #e74c3c;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.total-amount {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+
+.checkout-button-container {
+    border-top: 1px solid #ddd;
+}
+
+.checkout-button {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    background-color: #000;
+    border: none;
+    color: #fff;
+    margin-top: 20px;
+}
+
+.checkout-button:hover {
+    background-color: #333;
+}
+
+.payment-info {
+    padding-bottom: 20px;
+    border-bottom: 1px solid black;
+    margin-bottom: 50px;
+}
+
 
 /* PaymentForm CSS START */
 .form-area {
@@ -189,9 +282,11 @@
     margin-bottom: 15px;
     padding: 10px;
 }
+
 /* PaymentForm CSS END */
 
-  
+
+
 
 @media screen and (max-width: 768px) {
     .receipt-container {
@@ -223,6 +318,49 @@
         margin: 0;
     }
 
+    .selected-item-image {
+        width: 120px;
+        height: 120px;
+    }
+
+    .selected-item-name {
+        font-size: 1rem;
+    }
+
+    .selected-item-option,
+    .selected-item-price {
+        font-size: 0.8rem;
+    }
+
+
+
+    .shipping-title {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+
+    .required-note {
+        font-size: 0.8rem;
+        color: #e74c3c;
+    }
+
+    .form-label-required {
+        font-weight: 500;
+        font-size: 0.8rem;
+    }
+
+    .required-asterisk {
+        color: #e74c3c;
+        margin-left: 2px;
+    }
+
+    .delivery-message .form-control::placeholder {
+        font-size: 0.8rem;
+    }
+
+    .payment-title {
+        font-size: 1.1rem;
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -249,7 +387,23 @@
         font-size: 0.75rem;
     }
 
+    .selected-item-image {
+        width: 100px;
+        height: 100px;
+    }
 
+    .selected-item-name {
+        font-size: 0.9rem;
+    }
+
+    .selected-item-option,
+    .selected-item-price {
+        font-size: 0.7rem;
+    }
+
+    .payment-title {
+        font-size: 1.1rem;
+    }
 
 
 }
