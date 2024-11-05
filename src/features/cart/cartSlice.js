@@ -129,6 +129,9 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    setCartItemCount: (state, action) => {
+      state.cartItemCount = action.payload;
+    },
     initialCart: (state) => {
       state.cartItemCount = 0;
     },
@@ -221,5 +224,9 @@ const cartSlice = createSlice({
 });
 
 export default cartSlice.reducer;
-export const { initialCart, updateCartItemQty, setOptimisticCartList } =
-  cartSlice.actions;
+export const {
+  initialCart,
+  updateCartItemQty,
+  setOptimisticCartList,
+  setCartItemCount,
+} = cartSlice.actions;

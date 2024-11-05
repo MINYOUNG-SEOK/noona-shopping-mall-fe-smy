@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getCartQty } from "../cart/cartSlice";
+import { getCartQty, setCartItemCount } from "../cart/cartSlice";
 import api from "../../utils/api";
 import { showToastMessage } from "../common/uiSlice";
 
@@ -18,6 +18,9 @@ export const createOrder = createAsyncThunk(
     try {
       const response = await api.post("/order", payload);
       if (response.status !== 200) throw new Error(response.error);
+
+      // 남은 장바구니 개수로 업데이트
+      dispatch(setCartItemCount(response.data.cartItemCount));
 
       dispatch(
         showToastMessage({
