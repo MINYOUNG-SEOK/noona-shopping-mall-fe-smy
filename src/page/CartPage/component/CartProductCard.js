@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { IoCloseOutline } from "react-icons/io5";
@@ -16,10 +16,16 @@ const CartProductCard = ({
   onDelete,
 }) => {
   const dispatch = useDispatch();
+  const [isUpdating, setIsUpdating] = useState(false);
 
-  const handleQtyChange = (id, value) => {
-    if (value >= 1) {
-      dispatch(updateQty({ id, value }));
+  const handleQtyChange = async (id, value) => {
+    if (isUpdating || value < 1) return;
+
+    setIsUpdating(true);
+    try {
+      await dispatch(updateQty({ id, value })).unwrap();
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -115,11 +121,20 @@ const CartProductCard = ({
           className="d-flex justify-content-center"
         >
           <div className="cart-page-quantity-buttons">
-            <button onClick={() => handleQtyChange(item._id, item.qty - 1)}>
+            <button
+              onClick={() => handleQtyChange(item._id, item.qty - 1)}
+              disabled={isUpdating}
+              className={isUpdating ? "quantity-button-disabled" : ""}
+            >
               -
             </button>
+
             <span>{item.qty}</span>
-            <button onClick={() => handleQtyChange(item._id, item.qty + 1)}>
+            <button
+              onClick={() => handleQtyChange(item._id, item.qty + 1)}
+              disabled={isUpdating}
+              className={isUpdating ? "quantity-button-disabled" : ""}
+            >
               +
             </button>
           </div>
