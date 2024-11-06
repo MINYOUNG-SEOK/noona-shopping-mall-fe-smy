@@ -9,6 +9,8 @@ const ToastMessage = () => {
   const { toastMessage } = useSelector((state) => state.ui);
   useEffect(() => {
     if (toastMessage) {
+      console.log("Toast Message received:", toastMessage); // 추가
+
       const { message, status } = toastMessage;
       if (
         message !== "" &&

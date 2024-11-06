@@ -18,7 +18,9 @@ const CartProductCard = ({
   const dispatch = useDispatch();
 
   const handleQtyChange = (id, value) => {
-    if (value >= 1) dispatch(updateQty({ id, value }));
+    if (value >= 1) {
+      dispatch(updateQty({ id, value }));
+    }
   };
 
   const GRID_LAYOUT = {

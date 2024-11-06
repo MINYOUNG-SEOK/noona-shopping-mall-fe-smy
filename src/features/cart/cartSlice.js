@@ -93,22 +93,28 @@ export const deleteCartItem = createAsyncThunk(
 
 export const updateQty = createAsyncThunk(
   "cart/updateQty",
-  async ({ id, value }, { dispatch, rejectWithValue, getState }) => {
+  async ({ id, value }, { dispatch, getState }) => {
+    // 현재 카트 상태 저장
+    const previousCartList = getState().cart.cartList;
+
+    // Optimistic Update: 즉시 UI 업데이트
     dispatch(updateCartItemQty({ id, value }));
 
     try {
       const response = await api.put(`/cart/${id}`, { qty: value });
-      if (response.status !== 200) throw new Error(response.error);
       return response.data;
     } catch (error) {
-      dispatch(getCartList());
+      // 에러 발생시 이전 상태로 복구
+      dispatch(setOptimisticCartList(previousCartList));
+
       dispatch(
         showToastMessage({
-          message: "수량 변경에 실패했습니다.",
+          message: error.error || "수량 변경에 실패했습니다.",
           status: "error",
         })
       );
-      return rejectWithValue(error.error);
+
+      throw error;
     }
   }
 );
