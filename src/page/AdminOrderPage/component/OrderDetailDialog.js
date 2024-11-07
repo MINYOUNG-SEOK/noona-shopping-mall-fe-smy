@@ -112,11 +112,11 @@ const OrderDetailDialog = ({ open, handleClose }) => {
                       "No Image"
                     )}
                   </td>
-                  <td>{item._id}</td>
-                  <td>{item.productId.name}</td>
-                  <td>{currencyFormat(item.price)}</td>
-                  <td>{item.qty}</td>
-                  <td>{currencyFormat(item.price * item.qty)}</td>
+                    <td className="text-center align-middle">{item._id}</td>
+                  <td className="text-center align-middle">{item.productId.name}</td>
+                  <td className="text-center align-middle">{currencyFormat(item.price)}</td>
+                  <td className="text-center align-middle">{item.qty}</td>
+                  <td className="text-center align-middle">{currencyFormat(item.price * item.qty)}</td>
                 </tr>
               ))}
               <tr>
