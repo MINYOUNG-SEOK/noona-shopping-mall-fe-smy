@@ -86,8 +86,9 @@ const OrderDetailDialog = ({ open, handleClose }) => {
           >
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Product</th>
+                <th>Image</th>
+                <th>Product ID</th>
+                <th>Product Name</th>
                 <th>Unit Price</th>
                 <th>Quantity</th>
                 <th>Total Price</th>
@@ -96,6 +97,21 @@ const OrderDetailDialog = ({ open, handleClose }) => {
             <tbody>
               {selectedOrder.items.map((item) => (
                 <tr key={item._id}>
+                  <td>
+                    {item.productId.image ? (
+                      <img
+                        src={item.productId.image}
+                        alt={item.productId.name}
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          objectFit: "cover",
+                        }}
+                      />
+                    ) : (
+                      "No Image"
+                    )}
+                  </td>
                   <td>{item._id}</td>
                   <td>{item.productId.name}</td>
                   <td>{currencyFormat(item.price)}</td>

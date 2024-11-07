@@ -86,3 +86,8 @@
     background-color: #4a79c4;
     border-color: #4a79c4;
 }
+
+.admin-order-detail-dialog__table th {
+    vertical-align: middle;
+    text-align: center;
+}
