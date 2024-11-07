@@ -4,91 +4,150 @@ import { useDispatch, useSelector } from "react-redux";
 import { ORDER_STATUS } from "../../../constants/order.constants";
 import { currencyFormat } from "../../../utils/number";
 import { updateOrder } from "../../../features/order/orderSlice";
+import "../style/adminOrder.style.css";
+
+const formatDateTime = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleString("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  });
+};
 
 const OrderDetailDialog = ({ open, handleClose }) => {
   const selectedOrder = useSelector((state) => state.order.selectedOrder);
-  const [orderStatus, setOrderStatus] = useState(selectedOrder.status);
+  const [orderStatus, setOrderStatus] = useState(selectedOrder?.status || "");
   const dispatch = useDispatch();
 
   const handleStatusChange = (event) => {
     setOrderStatus(event.target.value);
   };
-  const submitStatus = () => {
+
+  const submitStatus = (event) => {
+    event.preventDefault();
     dispatch(updateOrder({ id: selectedOrder._id, status: orderStatus }));
     handleClose();
   };
 
   if (!selectedOrder) {
-    return <></>;
+    return null;
   }
+
   return (
-    <Modal show={open} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Order Detail</Modal.Title>
+    <Modal
+      show={open}
+      onHide={handleClose}
+      centered
+      dialogClassName="admin-order-detail-dialog"
+    >
+      <Modal.Header closeButton className="admin-order-detail-dialog__header">
+        <Modal.Title>Order Details</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <p>예약번호: {selectedOrder.orderNum}</p>
-        <p>주문날짜: {selectedOrder.createdAt.slice(0, 10)}</p>
-        <p>이메일: {selectedOrder.userId.email}</p>
-        <p>
-          주소:{selectedOrder.shipTo.address + " " + selectedOrder.shipTo.city}
-        </p>
-        <p>
-          연락처:
-          {`${
-            selectedOrder.contact.firstName + selectedOrder.contact.lastName
-          } ${selectedOrder.contact.contact}`}
-        </p>
-        <p>주문내역</p>
-        <div className="overflow-x">
-          <Table>
+      <Modal.Body className="admin-order-detail-dialog__body">
+        <div className="admin-order-detail-dialog__info">
+          <p>
+            <strong>Order Number : </strong> {selectedOrder.orderNum}
+          </p>
+          <p>
+            <strong>Order Date : </strong>{" "}
+            {formatDateTime(selectedOrder.createdAt)}
+          </p>
+          <p>
+            <strong>Email : </strong> {selectedOrder.userId.email}
+          </p>
+          <p>
+            <strong>Address : </strong>
+            {`${selectedOrder.shipTo.address}, ${selectedOrder.shipTo.city} (${
+              selectedOrder.shipTo.postalCode || "No Postal Code"
+            })`}
+          </p>
+          <p>
+            <strong>Contact : </strong>
+            {`${selectedOrder.contact.firstName} ${selectedOrder.contact.lastName} (${selectedOrder.contact.phone})`}
+          </p>
+          {/* <p>
+            <strong>Delivery Message:</strong>{" "}
+            {selectedOrder.deliveryMessage || "No message provided"}
+          </p> */}
+        </div>
+        <h5 className="admin-order-detail-dialog__section-title">
+          Order Items
+        </h5>
+        <div className="admin-order-detail-dialog__items">
+          <Table
+            bordered
+            responsive
+            className="admin-order-detail-dialog__table"
+          >
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Name</th>
+                <th>Product</th>
                 <th>Unit Price</th>
-                <th>Qty</th>
-                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
               </tr>
             </thead>
             <tbody>
-              {selectedOrder.items.length > 0 &&
-                selectedOrder.items.map((item) => (
-                  <tr key={item._id}>
-                    <td>{item._id}</td>
-                    <td>{item.productId.name}</td>
-                    <td>{currencyFormat(item.price)}</td>
-                    <td>{item.qty}</td>
-                    <td>{currencyFormat(item.price * item.qty)}</td>
-                  </tr>
-                ))}
+              {selectedOrder.items.map((item) => (
+                <tr key={item._id}>
+                  <td>{item._id}</td>
+                  <td>{item.productId.name}</td>
+                  <td>{currencyFormat(item.price)}</td>
+                  <td>{item.qty}</td>
+                  <td>{currencyFormat(item.price * item.qty)}</td>
+                </tr>
+              ))}
               <tr>
-                <td colSpan={4}>총계:</td>
-                <td>{currencyFormat(selectedOrder.totalPrice)}</td>
+                <td colSpan={4} className="text-end">
+                  <strong>Order Total :</strong>
+                </td>
+                <td>
+                  <strong>{currencyFormat(selectedOrder.totalPrice)}</strong>
+                </td>
               </tr>
             </tbody>
           </Table>
         </div>
-        <Form onSubmit={submitStatus}>
+        <Form
+          onSubmit={submitStatus}
+          className="admin-order-detail-dialog__form"
+        >
           <Form.Group as={Col} controlId="status">
-            <Form.Label>Status</Form.Label>
-            <Form.Select value={orderStatus} onChange={handleStatusChange}>
-              {ORDER_STATUS.map((item, idx) => (
-                <option key={idx} value={item.toLowerCase()}>
-                  {item}
+            <Form.Label>
+              <strong>Status</strong>
+            </Form.Label>
+            <Form.Select
+              value={orderStatus}
+              onChange={handleStatusChange}
+              className="admin-order-detail-dialog__status-select"
+            >
+              {ORDER_STATUS.map((status, idx) => (
+                <option key={idx} value={status.toLowerCase()}>
+                  {status}
                 </option>
               ))}
             </Form.Select>
           </Form.Group>
-          <div className="order-button-area">
+          <div className="admin-order-detail-dialog__actions">
             <Button
-              variant="light"
+              variant="secondary"
               onClick={handleClose}
-              className="order-button"
+              className="admin-order-detail-dialog__close-btn"
             >
-              닫기
+              Close
             </Button>
-            <Button type="submit">저장</Button>
+            <Button
+              type="submit"
+              className="admin-order-detail-dialog__save-btn"
+            >
+              Save
+            </Button>
           </div>
         </Form>
       </Modal.Body>

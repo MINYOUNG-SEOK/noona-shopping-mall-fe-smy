@@ -1,3 +1,88 @@
 .modal-dialog {
     max-width: 700px;
 }
+
+.admin-order-detail-dialog {
+    max-width: 700px;
+}
+
+.admin-order-detail-dialog__header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.admin-order-detail-dialog__body {
+    padding: 20px;
+}
+
+.admin-order-detail-dialog__info {
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #333;
+}
+
+.admin-order-detail-dialog__info p {
+    margin: 0;
+}
+
+.admin-order-detail-dialog__section-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 20px 0 10px;
+    color: #5d90ed;
+}
+
+.admin-order-detail-dialog__items {
+    margin-bottom: 20px;
+}
+
+.admin-order-detail-dialog__table {
+    font-size: 14px;
+    border-color: #dee2e6;
+}
+
+.admin-order-detail-dialog__table th {
+    background-color: #f1f5ff;
+    color: #333;
+    text-align: center;
+}
+
+.admin-order-detail-dialog__table td {
+    text-align: center;
+}
+
+.admin-order-detail-dialog__form {
+    margin-top: 20px;
+}
+
+.admin-order-detail-dialog__status-select {
+    width: 100%;
+    border-color: #5d90ed;
+}
+
+.admin-order-detail-dialog__actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.admin-order-detail-dialog__close-btn,
+.admin-order-detail-dialog__save-btn {
+    width: 48%;
+}
+
+.admin-order-detail-dialog__close-btn {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.admin-order-detail-dialog__save-btn {
+    background-color: #5d90ed;
+    border-color: #5d90ed;
+    color: #fff;
+}
+
+.admin-order-detail-dialog__save-btn:hover {
+    background-color: #4a79c4;
+    border-color: #4a79c4;
+}
