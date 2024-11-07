@@ -10,7 +10,7 @@ const OrderCompletePage = () => {
   if (orderNum === "") {
     console.log("주문 실패 화면 표시");
     return (
-      <Container className="confirmation-page">
+      <Container className="order-complete-page">
         <h1>주문 실패</h1>
         <div>
           메인페이지로 돌아가세요
@@ -22,11 +22,12 @@ const OrderCompletePage = () => {
 
   console.log("주문 성공 화면 표시");
   return (
-    <Container className="confirmation-page">
+    <Container className="order-complete-page">
       <h2>
-        고객님의 주문이 <span className="highlight">완료</span>되었습니다.
+        고객님의 주문이 <span className="order-complete-highlight">완료</span>
+        되었습니다.
       </h2>
-      <div className="order-number">주문번호: {orderNum}</div>
+      <div className="order-complete-number">주문번호: {orderNum}</div>
       <div>
         주문하신 내역은 <Link to={"/account/purchase"}>MY ORDERS</Link>{" "}
         페이지에서 확인하실 수 있습니다.
