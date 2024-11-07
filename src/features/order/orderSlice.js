@@ -40,7 +40,6 @@ export const createOrder = createAsyncThunk(
           status: "error",
         })
       );
-
       return rejectWithValue(errorMessage);
     }
   }

@@ -1,0 +1,58 @@
+.confirmation-page {
+    text-align: center;
+    padding: 2rem;
+    max-width: 600px;
+    margin: auto;
+}
+
+h2 {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+h2 .highlight {
+    color: #5d90ed;
+}
+
+.order-number {
+    display: inline-block;
+    background-color: #f2f2f2;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.text-align-center {
+    margin-top: 1.5rem;
+}
+
+.confirmation-page a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.confirmation-page a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .confirmation-page {
+        margin-top: 70px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .order-number {
+        font-size: 1rem;
+        padding: 0.4rem 0.8rem;
+    }
+}

@@ -14,6 +14,7 @@ const PaymentPage = () => {
   const location = useLocation();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [firstLoading, setFirstLoading] = useState(true);
   const { selectedItems = [], totalPrice = 0 } = location.state || {};
   const { orderNum, loading: orderLoading } = useSelector(
     (state) => state.order
@@ -102,8 +103,14 @@ const PaymentPage = () => {
 
   // 주문번호가 생성되면 완료 페이지로 리다이렉트
   useEffect(() => {
-    if (orderNum) {
-      navigate(`/order-complete/${orderNum}`);
+    // 오더번호를 받으면 어디로 갈까?
+    if (firstLoading) {
+      // useEffect가 처음 호출 될 때 오더 성공페이지로 넘어가는 것을 막기
+      setFirstLoading(false);
+    } else {
+      if (orderNum !== "") {
+        navigate("/payment/success");
+      }
     }
   }, [orderNum, navigate]);
 
