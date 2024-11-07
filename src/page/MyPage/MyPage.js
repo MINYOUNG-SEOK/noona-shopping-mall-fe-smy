@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import OrderStatusCard from "./component/OrderStatusCard";
 import { getOrder } from "../../features/order/orderSlice";
 import "./style/orderStatus.style.css";
@@ -15,13 +17,12 @@ const MyPage = () => {
 
   if (loading) {
     return (
-      <Container
-        className="d-flex justify-content-center align-items-center"
-        style={{ height: "50vh" }}
-      >
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
+      <Container>
+        {[...Array(3)].map((_, index) => (
+          <div key={index} className="skeleton-item">
+            <Skeleton height={100} style={{ marginBottom: 20 }} />
+          </div>
+        ))}
       </Container>
     );
   }
