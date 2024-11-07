@@ -29,8 +29,8 @@ const OrderCompletePage = () => {
       </h2>
       <div className="order-complete-number">주문번호: {orderNum}</div>
       <div>
-        주문하신 내역은 <Link to={"/account/purchase"}>MY ORDERS</Link>{" "}
-        페이지에서 확인하실 수 있습니다.
+        주문하신 내역은 <Link to={"/account/purchase"}>MY ORDERS</Link> 페이지에서
+        확인하실 수 있습니다.
       </div>
     </Container>
   );

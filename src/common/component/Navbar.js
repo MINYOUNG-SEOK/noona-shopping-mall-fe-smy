@@ -100,7 +100,10 @@ const Navbar = ({ user }) => {
 
         <div className="navbar-right">
           <div className="navbar-icons">
-            <div onClick={() => navigate("/mypage")} className="navbar-icon">
+            <div
+              onClick={() => navigate("/account/purchase")}
+              className="navbar-icon"
+            >
               <FontAwesomeIcon icon={faUser} />
               <span style={{ cursor: "pointer" }}>MY ORDERS</span>
             </div>
