@@ -5,11 +5,11 @@ import { showToastMessage } from "../common/uiSlice";
 
 const initialState = {
   orderList: [],
-  orderNum: "",
-  selectedOrder: {},
-  error: "",
+  selectedOrder: null,
+  error: null,
   loading: false,
   totalPageNum: 1,
+  totalItemNum: 0,
 };
 
 // 주문 생성
@@ -150,6 +150,7 @@ const orderSlice = createSlice({
         state.error = "";
         state.orderList = action.payload.orders;
         state.totalPageNum = action.payload.totalPageNum;
+        state.totalItemNum = action.payload.totalOrders;
       })
       .addCase(getOrderList.rejected, (state, action) => {
         state.loading = false;

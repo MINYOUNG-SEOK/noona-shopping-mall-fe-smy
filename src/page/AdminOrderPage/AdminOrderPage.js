@@ -12,14 +12,18 @@ import {
 } from "../../features/order/orderSlice";
 import "./style/adminOrder.style.css";
 
+const PAGE_SIZE = 3;
+
 const AdminOrderPage = () => {
   const navigate = useNavigate();
   const [query] = useSearchParams();
   const dispatch = useDispatch();
-  const { orderList, totalPageNum } = useSelector((state) => state.order);
+  const { orderList, totalPageNum, loading, totalItemNum } = useSelector(
+    (state) => state.order
+  );
   const [searchQuery, setSearchQuery] = useState({
     page: query.get("page") || 1,
-    ordernum: query.get("ordernum") || "",
+    orderNum: query.get("orderNum") || "",
   });
   const [open, setOpen] = useState(false);
 
@@ -39,8 +43,8 @@ const AdminOrderPage = () => {
   }, [query]);
 
   useEffect(() => {
-    if (searchQuery.ordernum === "") {
-      delete searchQuery.ordernum;
+    if (searchQuery.orderNum === "") {
+      delete searchQuery.orderNum;
     }
     const params = new URLSearchParams(searchQuery);
     const queryString = params.toString();
@@ -69,35 +73,40 @@ const AdminOrderPage = () => {
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
             placeholder="오더번호"
-            field="ordernum"
+            field="orderNum"
           />
         </div>
-
         <OrderTable
           header={tableHeader}
           data={orderList}
           openEditForm={openEditForm}
+          totalOrders={totalItemNum}
+          currentPage={parseInt(searchQuery.page)}
+          pageSize={PAGE_SIZE}
+          loading={loading}
         />
+
         <ReactPaginate
-          nextLabel="next >"
+          nextLabel=">"
+          previousLabel="<"
           onPageChange={handlePageClick}
           pageRangeDisplayed={5}
+          marginPagesDisplayed={1}
           pageCount={totalPageNum}
-          forcePage={searchQuery.page - 1}
-          previousLabel="< previous"
           renderOnZeroPageCount={null}
+          containerClassName="pagination"
           pageClassName="page-item"
           pageLinkClassName="page-link"
           previousClassName="page-item"
-          previousLinkClassName="page-link"
+          previousLinkClassName="page-link arrow"
           nextClassName="page-item"
-          nextLinkClassName="page-link"
+          nextLinkClassName="page-link arrow"
           breakLabel="..."
           breakClassName="page-item"
-          breakLinkClassName="page-link"
-          containerClassName="pagination"
+          breakLinkClassName="page-link break"
           activeClassName="active"
-          className="display-center list-style-none"
+          disableInitialCallback={true}
+          forcePage={searchQuery.page - 1}
         />
       </Container>
 

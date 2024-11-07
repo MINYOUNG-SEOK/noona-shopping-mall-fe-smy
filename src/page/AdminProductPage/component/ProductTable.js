@@ -6,7 +6,6 @@ import { currencyFormat } from "../../../utils/number";
 
 function formatDate(dateString) {
   const date = new Date(dateString);
-  // 날짜가 유효하지 않은 경우, "Invalid Date" 메시지 반환
   if (isNaN(date.getTime())) {
     return "Invalid Date";
   }
