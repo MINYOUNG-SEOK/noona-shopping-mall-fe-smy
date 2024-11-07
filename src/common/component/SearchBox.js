@@ -12,6 +12,7 @@ const SearchBox = ({ searchQuery, setSearchQuery, placeholder, field }) => {
       setSearchQuery({ ...searchQuery, page: 1, [field]: event.target.value });
     }
   };
+
   return (
     <div className="search-box">
       <FontAwesomeIcon icon={faSearch} />

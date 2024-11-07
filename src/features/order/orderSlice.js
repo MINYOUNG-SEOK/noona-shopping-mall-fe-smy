@@ -64,12 +64,44 @@ export const getOrder = createAsyncThunk(
 
 export const getOrderList = createAsyncThunk(
   "order/getOrderList",
-  async (query, { rejectWithValue, dispatch }) => {}
+  async (query, { rejectWithValue }) => {
+    try {
+      const queryString = new URLSearchParams(query).toString();
+      const response = await api.get(`order/admin/orders?${queryString}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.error || "Failed to get orders"
+      );
+    }
+  }
 );
 
 export const updateOrder = createAsyncThunk(
   "order/updateOrder",
-  async ({ id, status }, { dispatch, rejectWithValue }) => {}
+  async ({ id, status }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.put(`order/admin/orders/${id}`, { status });
+
+      dispatch(
+        showToastMessage({
+          message: "주문 상태가 성공적으로 업데이트되었습니다.",
+          status: "success",
+        })
+      );
+
+      return response.data.order;
+    } catch (error) {
+      dispatch(
+        showToastMessage({
+          message:
+            error.response?.data?.error || "주문 상태 업데이트에 실패했습니다.",
+          status: "error",
+        })
+      );
+      return rejectWithValue(error.response?.data?.error);
+    }
+  }
 );
 
 // Order slice
@@ -108,6 +140,38 @@ const orderSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         state.orderList = [];
+      })
+      .addCase(getOrderList.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(getOrderList.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = "";
+        state.orderList = action.payload.orders;
+        state.totalPageNum = action.payload.totalPageNum;
+      })
+      .addCase(getOrderList.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.orderList = [];
+      })
+      .addCase(updateOrder.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(updateOrder.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = "";
+        // 업데이트된 주문으로 목록 갱신
+        const updatedOrder = action.payload;
+        state.orderList = state.orderList.map((order) =>
+          order._id === updatedOrder._id ? updatedOrder : order
+        );
+      })
+      .addCase(updateOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
