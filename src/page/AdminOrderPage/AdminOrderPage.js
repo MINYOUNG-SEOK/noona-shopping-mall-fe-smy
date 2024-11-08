@@ -68,11 +68,11 @@ const AdminOrderPage = () => {
   return (
     <div className="locate-center">
       <Container>
-        <div className="mt-2 display-center mb-2">
-          <SearchBox
+      <div className="mt-2 mb-2" style={{ display: 'flex', justifyContent: 'flex-start' }}>
+      <SearchBox
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
-            placeholder="오더번호"
+            placeholder="주문번호로 검색"
             field="orderNum"
           />
         </div>
