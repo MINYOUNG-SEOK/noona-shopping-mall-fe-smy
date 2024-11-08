@@ -212,7 +212,7 @@ const PaymentPage = () => {
                   </Form.Group>
                 </Row>
 
-                <Form.Group className="mb-3 delivery-message">
+                {/* <Form.Group className="mb-3 delivery-message">
                   <Form.Label className="form-label-required">
                     배송 메시지
                   </Form.Label>
@@ -224,7 +224,7 @@ const PaymentPage = () => {
                     name="deliveryMessage"
                     value={shipInfo.deliveryMessage}
                   />
-                </Form.Group>
+                </Form.Group> */}
               </div>
 
               <div className="selected-items-section">
