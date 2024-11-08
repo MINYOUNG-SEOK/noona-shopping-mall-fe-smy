@@ -120,7 +120,7 @@ const OrderDetailDialog = ({ open, handleClose }) => {
                 </tr>
               ))}
               <tr>
-                <td colSpan={4} className="text-end">
+                <td colSpan={5} className="text-end">
                   <strong>Order Total :</strong>
                 </td>
                 <td>
