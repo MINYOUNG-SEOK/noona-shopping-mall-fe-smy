@@ -109,7 +109,7 @@ const Navbar = ({ user }) => {
             </div>
             <div onClick={() => navigate("/favorites")} className="navbar-icon">
               <FontAwesomeIcon icon={faHeart} />
-              <span style={{ cursor: "pointer" }}>MY LIKE</span>
+              <span style={{ cursor: "pointer" }}>MY LIKES</span>
             </div>
             <div onClick={() => navigate("/cart")} className="navbar-icon">
               <FontAwesomeIcon icon={faShoppingBag} />

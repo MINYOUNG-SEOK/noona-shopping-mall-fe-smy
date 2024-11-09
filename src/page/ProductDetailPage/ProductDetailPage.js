@@ -9,6 +9,7 @@ import { FaHeart } from "react-icons/fa";
 import "./style/productDetail.style.css";
 import { getProductDetail } from "../../features/product/productSlice";
 import { addToCart } from "../../features/cart/cartSlice";
+import { toggleWish, getWishList } from "../../features/wishes/wishSlice";
 
 const ProductDetail = () => {
   const dispatch = useDispatch();
@@ -18,15 +19,18 @@ const ProductDetail = () => {
   const [sizeError, setSizeError] = useState(false);
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
-  const [isWished, setIsWished] = useState(false);
+  const { wishList } = useSelector((state) => state.wishes);
+
+  const isWished = wishList.some((wishItem) => wishItem._id === id);
 
   useEffect(() => {
     dispatch(getProductDetail(id));
+    dispatch(getWishList());
   }, [id, dispatch]);
 
   const handleWishClick = (e) => {
     e.stopPropagation();
-    setIsWished(!isWished);
+    dispatch(toggleWish(id));
   };
 
   const addItemToCart = () => {

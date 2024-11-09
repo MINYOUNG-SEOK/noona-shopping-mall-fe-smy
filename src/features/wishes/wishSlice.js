@@ -20,12 +20,14 @@ export const getWishList = createAsyncThunk(
 // 위시리스트 추가/제거
 export const toggleWish = createAsyncThunk(
   "wishes/toggleWish",
-  async (productId, { rejectWithValue }) => {
+  async (productId, thunkAPI) => {
     try {
       const response = await api.post(`/wish/${productId}`);
-      return { productId, ...response.data };
+      // toggleWish 후 getWishList 호출로 최신화
+      thunkAPI.dispatch(getWishList());
+      return response.data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
@@ -62,14 +64,7 @@ const wishSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(toggleWish.fulfilled, (state, action) => {
-        const { productId, isWished, product } = action.payload;
-        if (isWished) {
-          state.wishList.push(product);
-        } else {
-          state.wishList = state.wishList.filter(
-            (item) => item._id !== productId
-          );
-        }
+        state.error = null;
       });
   },
 });
