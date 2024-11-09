@@ -1,30 +1,23 @@
 import React, { useEffect } from "react";
-import ProductCard from "./components/ProductCard";
 import { Container } from "react-bootstrap";
-import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Banner from "../../common/component/Banner";
-import { getProductList } from "../../features/product/productSlice";
+import ProductCard from "../../page/LandingPage/components/ProductCard";
 import { getWishList } from "../../features/wishes/wishSlice";
-import "../LandingPage/LandingPage.style.css";
+import "./MyLikePage.style.css";
 
-const LandingPage = () => {
+const MyLikePage = () => {
   const dispatch = useDispatch();
-  const { productList, loading } = useSelector((state) => state.product);
-  const [query] = useSearchParams();
-  const name = query.get("name");
+  const { wishList, loading } = useSelector((state) => state.wishes);
 
   useEffect(() => {
-    dispatch(getProductList({ name }));
     dispatch(getWishList());
-  }, [query, dispatch]);
+  }, [dispatch]);
 
   if (loading) {
     return (
       <Container>
-        <Banner />
         <div className="products-grid">
-          {[1, 2, 3, 4, 8].map((n) => (
+          {[1, 2, 3, 4].map((n) => (
             <div key={n} className="product-skeleton">
               <div className="skeleton-img"></div>
               <div className="skeleton-text"></div>
@@ -36,16 +29,11 @@ const LandingPage = () => {
     );
   }
 
-  if (!productList.length) {
+  if (!wishList.length) {
     return (
       <Container>
-        <Banner />
         <div className="empty-product">
-          <h2>
-            {name
-              ? `'${name}'과 일치하는 상품이 없습니다.`
-              : "등록된 상품이 없습니다!"}
-          </h2>
+          <h2>위시리스트가 비어있습니다.</h2>
         </div>
       </Container>
     );
@@ -53,10 +41,9 @@ const LandingPage = () => {
 
   return (
     <Container>
-      <Banner />
-      <div className="make-it-yours-title">MAKE IT YOURS!</div>
+      <div className="wishlist-title">MY LIKES</div>
       <div className="products-grid">
-        {productList.map((item) => (
+        {wishList.map((item) => (
           <ProductCard key={item._id} item={item} />
         ))}
       </div>
@@ -64,4 +51,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default MyLikePage;

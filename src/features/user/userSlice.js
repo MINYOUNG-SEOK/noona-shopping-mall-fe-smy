@@ -26,13 +26,19 @@ export const loginWithEmail = createAsyncThunk(
 
 export const loginWithGoogle = createAsyncThunk(
   "user/loginWithGoogle",
-  async (token, { rejectWithValue }) => {
+  async (token, { dispatch, rejectWithValue }) => {
+    // dispatch 추가
     try {
       const response = await api.post("/auth/google", { token });
-      // 구글 로그인 성공시 토큰 저장
+
+      // 토큰 저장 로직 추가
       if (response.data.token) {
         sessionStorage.setItem("token", response.data.token);
       }
+
+      // 로그인 성공 후 장바구니 정보 가져오기
+      dispatch(getCartList());
+
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -154,13 +160,11 @@ const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(loginWithEmail.fulfilled, (state, action) => {
-        console.log("Login fulfilled:", action.payload);
         state.loading = false;
         state.user = action.payload.user;
         state.loginError = null;
       })
       .addCase(loginWithEmail.rejected, (state, action) => {
-        console.log("Login rejected:", action.payload);
         state.loading = false;
         state.loginError = action.payload;
       })
@@ -182,6 +186,19 @@ const userSlice = createSlice({
       })
       .addCase(logout.rejected, (state) => {
         state.loading = false;
+      })
+      .addCase(loginWithGoogle.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(loginWithGoogle.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.loginError = null;
+        state.success = true;
+      })
+      .addCase(loginWithGoogle.rejected, (state, action) => {
+        state.loading = false;
+        state.loginError = action.payload;
       });
   },
 });

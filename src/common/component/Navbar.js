@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -26,15 +26,15 @@ const Navbar = ({ user }) => {
   // 어드민 메뉴를 포함한 메뉴 리스트
   const getMenuList = () => {
     const baseMenuList = [
-      { name: "BEST", path: "#" },
-      { name: "TOP", path: "#" },
-      { name: "DRESS", path: "#" },
-      { name: "PANTS", path: "#" },
-      { name: "OUTERWEAR", path: "#" },
-      { name: "SKIRTS", path: "#" },
-      { name: "SHOES", path: "#" },
-      { name: "ACCESSORIES", path: "#" },
-      { name: "BAGS", path: "#" },
+      { name: "BEST", path: "/products/category/best" },
+      { name: "TOP", path: "/products/category/top" },
+      { name: "DRESS", path: "/products/category/dress" },
+      { name: "PANTS", path: "/products/category/pants" },
+      { name: "OUTERWEAR", path: "/products/category/outerwear" },
+      { name: "SKIRTS", path: "/products/category/skirts" },
+      { name: "SHOES", path: "/products/category/shoes" },
+      { name: "ACCESSORIES", path: "/products/category/accessories" },
+      { name: "BAGS", path: "/products/category/bags" },
     ];
 
     // 관리자인 경우 ADMIN 메뉴 추가
@@ -193,7 +193,10 @@ const Navbar = ({ user }) => {
           <FontAwesomeIcon icon={faArrowLeft} />
           <span>BACK</span>
         </div>
-        <div onClick={() => navigate("/mypage")} className="navbar-icon">
+        <div
+          onClick={() => navigate("/account/purchase")}
+          className="navbar-icon"
+        >
           <FontAwesomeIcon icon={faUser} />
           <span>MY ORDERS</span>
         </div>

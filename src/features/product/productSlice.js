@@ -8,7 +8,6 @@ export const getProductList = createAsyncThunk(
   async (query, { rejectWithValue }) => {
     try {
       const response = await api.get("/product", { params: { ...query } });
-      console.log("rrr", response);
       if (response.status !== 200) throw new Error(response.error);
 
       return response.data;
@@ -108,6 +107,7 @@ const productSlice = createSlice({
     totalPageNum: 1,
     totalItemNum: 0,
     success: false,
+    currentCategory: null,
   },
   reducers: {
     setSelectedProduct: (state, action) => {
@@ -144,15 +144,17 @@ const productSlice = createSlice({
         state.loading = true;
       })
       .addCase(getProductList.fulfilled, (state, action) => {
+        console.log("Product List Data:", action.payload); // 데이터 구조 확인
         state.loading = false;
         state.productList = action.payload.data;
-        state.totalPageNum = Math.ceil(action.payload.totalItemNum / 5); // 5는 PAGE_SIZE
+        state.totalPageNum = Math.ceil(action.payload.totalItemNum / 5);
         state.totalItemNum = action.payload.totalItemNum;
         state.error = "";
       })
       .addCase(getProductList.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        state.productList = [];
       })
       // 상품 상세
       .addCase(getProductDetail.pending, (state) => {
@@ -200,6 +202,11 @@ const productSlice = createSlice({
   },
 });
 
-export const { setSelectedProduct, setFilteredList, clearError } =
-  productSlice.actions;
+export const {
+  setSelectedProduct,
+  setFilteredList,
+  clearError,
+  setCurrentCategory,
+} = productSlice.actions;
+
 export default productSlice.reducer;

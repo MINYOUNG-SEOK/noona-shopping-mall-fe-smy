@@ -1,4 +1,3 @@
-import React from "react";
 import Slider from "react-slick";
 import "./Banner.style.css";
 import "slick-carousel/slick/slick.css";
@@ -28,14 +27,22 @@ const Banner = () => {
     <div className="banner-container">
       <Slider {...settings}>
         <div className="banner-item">
-          <img src="/image/1.jpg" alt="Banner 2" className="banner-image" />
+          <img
+            src="/image/1.jpg"
+            alt="틸아이다이 프로모션"
+            className="banner-image"
+          />
           <div className="banner-text">
             <h2>인플루언서가 사랑한 틸아이다이</h2>
             <p>~50% + 15% 쿠폰</p>
           </div>
         </div>
         <div className="banner-item">
-          <img src="/image/2.jpg" alt="Banner 2" className="banner-image" />
+          <img
+            src="/image/2.jpg"
+            alt="라이프스타일 기획전"
+            className="banner-image"
+          />
           <div className="banner-text">
             <h2>취향으로 가득한 라이프스타일</h2>
             <p>특별한 쿠폰 혜택 10%</p>

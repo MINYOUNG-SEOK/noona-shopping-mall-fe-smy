@@ -5,7 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { GoogleLogin } from "@react-oauth/google";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import "./LoginPage.style.css";
-import { loginWithEmail, clearErrors } from "../../features/user/userSlice";
+import {
+  loginWithEmail,
+  clearErrors,
+  loginWithGoogle,
+} from "../../features/user/userSlice";
 
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
@@ -53,6 +57,7 @@ const Login = () => {
 
   const handleGoogleLogin = async (googleData) => {
     // 구글 로그인 처리 로직
+    dispatch(loginWithGoogle(googleData.credential));
   };
 
   useEffect(() => {
@@ -67,6 +72,13 @@ const Login = () => {
 
       <div className="text-align-center mt-2">
         <div className="display-center">
+          {/* 
+        1. 구글 로인 버튼 가져오기
+        3. 로그인
+        4. 백엔드에서 로그인
+         a. 이미 로그인을 한 적 있는 유저 => 로그인 시키고 토큰 값 주면 됨
+         b. 처음 로그인 시도를 한 유저 => 유저 정보 먼저 새로 생성한 후 토큰 값 주기
+          */}
           <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
             <GoogleLogin
               onSuccess={handleGoogleLogin}

@@ -1,13 +1,17 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { currencyFormat } from "../../../utils/number";
 import { FiHeart } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
-import "./ProductCard.style.css"
+import { toggleWish } from "../../../features/wishes/wishSlice";
+import "./ProductCard.style.css";
 
 const ProductCard = ({ item }) => {
   const navigate = useNavigate();
-  const [isWished, setIsWished] = React.useState(false); // 찜하기 상태
+  const dispatch = useDispatch();
+  const wishList = useSelector((state) => state.wishes.wishList);
+  const isWished = wishList.some((wishItem) => wishItem._id === item._id);
 
   const showProduct = (id) => {
     navigate(`/product/${id}`);
@@ -15,15 +19,18 @@ const ProductCard = ({ item }) => {
 
   const handleWishClick = (e) => {
     e.stopPropagation();
-    setIsWished(!isWished);
-    // 여기에 찜하기 API 호출 로직 추가
+    dispatch(toggleWish(item._id));
   };
 
   return (
     <div className="product-card" onClick={() => showProduct(item._id)}>
       <div className="image-container">
         <img src={item?.image} alt={item?.name} />
-        <button className="wishlist-btn" onClick={handleWishClick}>
+        <button
+          className="wishlist-btn"
+          onClick={handleWishClick}
+          aria-label={isWished ? "Remove from wishlist" : "Add to wishlist"}
+        >
           {isWished ? (
             <FaHeart size={30} className="heart-filled" />
           ) : (

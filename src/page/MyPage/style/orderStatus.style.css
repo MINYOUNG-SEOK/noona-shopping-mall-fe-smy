@@ -95,6 +95,7 @@
 @media screen and (max-width: 576px) {
     .status-card-container {
         padding: 0.75rem;
+        padding-bottom: 4rem;
     }
 
     .status-card {
