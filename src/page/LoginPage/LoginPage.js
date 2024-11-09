@@ -80,12 +80,7 @@ const Login = () => {
          b. 처음 로그인 시도를 한 유저 => 유저 정보 먼저 새로 생성한 후 토큰 값 주기
           */}
           <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-            <GoogleLogin
-              onSuccess={handleGoogleLogin}
-              onError={() => {
-                console.log("Login Failed");
-              }}
-            />
+            <GoogleLogin onSuccess={handleGoogleLogin} onError={() => {}} />
           </GoogleOAuthProvider>
         </div>
       </div>

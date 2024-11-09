@@ -142,16 +142,13 @@ const userSlice = createSlice({
     builder
       // Register 리듀서
       .addCase(registerUser.pending, (state) => {
-        console.log("Register pending...");
         state.loading = true;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-        console.log("Register fulfilled:", action.payload);
         state.loading = false;
         state.registrationError = null;
       })
       .addCase(registerUser.rejected, (state, action) => {
-        console.log("Register rejected:", action.payload);
         state.loading = false;
         state.registrationError = action.payload;
       })

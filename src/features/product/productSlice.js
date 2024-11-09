@@ -144,7 +144,6 @@ const productSlice = createSlice({
         state.loading = true;
       })
       .addCase(getProductList.fulfilled, (state, action) => {
-        console.log("Product List Data:", action.payload); // 데이터 구조 확인
         state.loading = false;
         state.productList = action.payload.data;
         state.totalPageNum = Math.ceil(action.payload.totalItemNum / 5);

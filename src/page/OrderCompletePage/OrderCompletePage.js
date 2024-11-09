@@ -8,7 +8,6 @@ const OrderCompletePage = () => {
   const { orderNum } = useSelector((state) => state.order);
 
   if (orderNum === "") {
-    console.log("주문 실패 화면 표시");
     return (
       <Container className="order-complete-page">
         <h1>주문 실패</h1>
@@ -20,7 +19,6 @@ const OrderCompletePage = () => {
     );
   }
 
-  console.log("주문 성공 화면 표시");
   return (
     <Container className="order-complete-page">
       <h2>
@@ -29,8 +27,8 @@ const OrderCompletePage = () => {
       </h2>
       <div className="order-complete-number">주문번호: {orderNum}</div>
       <div>
-        주문하신 내역은 <Link to={"/account/purchase"}>MY ORDERS</Link> 페이지에서
-        확인하실 수 있습니다.
+        주문하신 내역은 <Link to={"/account/purchase"}>MY ORDERS</Link>{" "}
+        페이지에서 확인하실 수 있습니다.
       </div>
     </Container>
   );

@@ -14,7 +14,6 @@ class CloudinaryUploadWidget extends Component {
       },
       (error, result) => {
         if (!error && result && result.event === "success") {
-          console.log("Done! Here is the image info: ", result.info);
           this.props.uploadImage(result.info.secure_url);
         }
       }
@@ -30,7 +29,11 @@ class CloudinaryUploadWidget extends Component {
 
   render() {
     return (
-      <Button id="upload_widget" size="sm" className="ml-2 create-new-product-btn">
+      <Button
+        id="upload_widget"
+        size="sm"
+        className="ml-2 create-new-product-btn"
+      >
         Upload Image +
       </Button>
     );

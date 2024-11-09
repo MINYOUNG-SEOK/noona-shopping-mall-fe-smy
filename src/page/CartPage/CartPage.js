@@ -44,24 +44,24 @@ const CartPage = () => {
 
   const getSelectedItems = () => {
     return cartList
-      .filter(item => !unselectedItems.has(item._id))
-      .map(item => item._id);
+      .filter((item) => !unselectedItems.has(item._id))
+      .map((item) => item._id);
   };
 
   const getSelectedItemsData = () => {
-    return cartList.filter(item => !unselectedItems.has(item._id));
+    return cartList.filter((item) => !unselectedItems.has(item._id));
   };
 
   const handleSelectAll = (e) => {
     if (e.target.checked) {
       setUnselectedItems(new Set());
     } else {
-      setUnselectedItems(new Set(cartList.map(item => item._id)));
+      setUnselectedItems(new Set(cartList.map((item) => item._id)));
     }
   };
 
   const handleSelectItem = (itemId) => {
-    setUnselectedItems(prev => {
+    setUnselectedItems((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(itemId)) {
         newSet.delete(itemId);
@@ -75,7 +75,7 @@ const CartPage = () => {
   const handleDelete = async (itemId) => {
     try {
       await dispatch(deleteCartItem(itemId));
-      setUnselectedItems(prev => {
+      setUnselectedItems((prev) => {
         const newSet = new Set(prev);
         newSet.delete(itemId);
         return newSet;
@@ -101,7 +101,7 @@ const CartPage = () => {
 
   const calculateTotalSelectedPrice = () => {
     return cartList
-      .filter(item => !unselectedItems.has(item._id))
+      .filter((item) => !unselectedItems.has(item._id))
       .reduce((sum, item) => sum + item.productId.price * item.qty, 0);
   };
 
@@ -110,8 +110,8 @@ const CartPage = () => {
     navigate("/payment", {
       state: {
         selectedItems,
-        totalPrice: calculateTotalSelectedPrice()
-      }
+        totalPrice: calculateTotalSelectedPrice(),
+      },
     });
   };
 
@@ -152,7 +152,7 @@ const CartPage = () => {
         <Col xs={12}>
           {cartList.map((item, index) => (
             <CartProductCard
-              key={item._id}
+              key={`${item._id}-${item.size || "default"}`}
               item={item}
               isHeader={index === 0}
               onSelectAll={handleSelectAll}
@@ -194,15 +194,16 @@ const CartPage = () => {
             CONTINUE SHOPPING
           </Button>
 
-          {location.pathname.includes("/cart") && getSelectedItems().length > 0 && (
-            <Button
-              variant="dark"
-              className="checkout-btn"
-              onClick={handleCheckout}
-            >
-              CHECK OUT
-            </Button>
-          )}
+          {location.pathname.includes("/cart") &&
+            getSelectedItems().length > 0 && (
+              <Button
+                variant="dark"
+                className="checkout-btn"
+                onClick={handleCheckout}
+              >
+                CHECK OUT
+              </Button>
+            )}
         </Col>
       </Row>
     </Container>

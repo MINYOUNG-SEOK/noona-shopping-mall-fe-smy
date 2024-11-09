@@ -52,7 +52,6 @@ export const getOrder = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get("/order/my-orders");
-      console.log("내 주문 목록 응답:", response.data);
       return response.data.orders;
     } catch (error) {
       return rejectWithValue(

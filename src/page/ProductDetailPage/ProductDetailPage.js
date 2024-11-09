@@ -13,12 +13,12 @@ import { toggleWish, getWishList } from "../../features/wishes/wishSlice";
 
 const ProductDetail = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { selectedProduct, loading } = useSelector((state) => state.product);
   const [size, setSize] = useState("");
   const { id } = useParams();
   const [sizeError, setSizeError] = useState(false);
   const user = useSelector((state) => state.user.user);
-  const navigate = useNavigate();
   const { wishList } = useSelector((state) => state.wishes);
 
   const isWished = wishList.some((wishItem) => wishItem._id === id);
@@ -43,6 +43,29 @@ const ProductDetail = () => {
       return;
     }
     dispatch(addToCart({ id: id, size }));
+  };
+
+  const handleBuyNow = () => {
+    if (!size) {
+      setSizeError(true);
+      return;
+    }
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    navigate("/payment", {
+      state: {
+        selectedItems: [
+          {
+            productId: selectedProduct,
+            qty: 1,
+            size: size,
+          },
+        ],
+        totalPrice: selectedProduct.price,
+      },
+    });
   };
 
   const selectSize = (value) => {
@@ -161,13 +184,8 @@ const ProductDetail = () => {
             >
               장바구니 담기
             </Button>
-            <Button
-              variant="dark"
-              className="buy-now"
-              onClick={() => {
-                /* 구매 로직 추가 */
-              }}
-            >
+
+            <Button variant="dark" className="buy-now" onClick={handleBuyNow}>
               바로 구매하기
             </Button>
           </div>

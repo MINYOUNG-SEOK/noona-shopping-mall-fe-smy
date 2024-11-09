@@ -10,12 +10,10 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (request) => {
-    console.log("Starting Request", request);
     request.headers.authorization = `Bearer ${sessionStorage.getItem("token")}`;
     return request;
   },
   (error) => {
-    console.log("REQUEST ERROR", error);
     return Promise.reject(error);
   }
 );
@@ -26,7 +24,6 @@ api.interceptors.response.use(
   },
   (error) => {
     const errorData = error.response?.data || {};
-    console.log("RESPONSE ERROR", errorData);
     return Promise.reject(errorData);
   }
 );

@@ -233,7 +233,10 @@ const PaymentPage = () => {
                   {selectedItems.reduce((total, item) => total + item.qty, 0)}개
                 </h2>
                 {selectedItems.map((item) => (
-                  <div key={item.productId._id} className="selected-item mb-3">
+                  <div
+                    key={`${item.productId._id}-${item.size}`}
+                    className="selected-item mb-3"
+                  >
                     <div className="selected-item-container">
                       <img
                         src={item.productId.image}

@@ -13,6 +13,7 @@ export const PRODUCT_EDIT_SUCCESS = "PRODUCT_EDIT_SUCCESS";
 export const PRODUCT_EDIT_FAIL = "PRODUCT_EDIT_FAIL";
 export const SET_FILTERED_LIST = "SET_FILTERED_LIST";
 export const CATEGORY = [
+  "Best",
   "Top",
   "Dress",
   "Pants",

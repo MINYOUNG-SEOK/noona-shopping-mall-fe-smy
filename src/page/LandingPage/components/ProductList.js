@@ -34,7 +34,7 @@ const ProductList = ({ category }) => {
   return (
     <div className="product-list">
       {filteredProducts.map((item) => (
-        <ProductCard key={item._id} item={item} /> // item prop 사용
+        <ProductCard key={item._id} item={item} />
       ))}
     </div>
   );
