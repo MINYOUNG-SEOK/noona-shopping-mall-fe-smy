@@ -20,21 +20,24 @@ export const getWishList = createAsyncThunk(
 // 위시리스트 추가/제거
 export const toggleWish = createAsyncThunk(
   "wishes/toggleWish",
-  async (productId, { getState, dispatch, rejectWithValue }) => {
-    const isWished = getState().wishes.wishList.some(
-      (item) => item._id === productId
-    );
-
+  async (productId, thunkAPI) => {
     try {
-      if (isWished) {
-        await api.delete(`/wish/${productId}`);
-      } else {
-        await api.post(`/wish/${productId}`);
-      }
-      return { productId, isWished };
+      const response = await api.post(`/wish/${productId}`);
+      // toggleWish 후 getWishList 호출로 최신화
+      thunkAPI.dispatch(getWishList());
+      return response.data;
     } catch (error) {
-      return rejectWithValue(productId);
+      return thunkAPI.rejectWithValue(error.message);
     }
+  }
+);
+
+// 상품의 위시리스트 상태 확인
+export const checkWishStatus = createAsyncThunk(
+  "wishes/checkWishStatus",
+  async (productId) => {
+    const response = await api.get(`/wish/${productId}/status`);
+    return response.data;
   }
 );
 
@@ -61,20 +64,7 @@ const wishSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(toggleWish.fulfilled, (state, action) => {
-        const { productId, isWished } = action.payload;
-        const index = state.wishList.findIndex(
-          (item) => item._id === productId
-        );
-
-        if (isWished && index > -1) {
-          state.wishList.splice(index, 1);
-        } else if (!isWished && index === -1) {
-          state.wishList.push({ _id: productId });
-        }
         state.error = null;
-      })
-      .addCase(toggleWish.rejected, (state, action) => {
-        state.error = action.payload;
       });
   },
 });
