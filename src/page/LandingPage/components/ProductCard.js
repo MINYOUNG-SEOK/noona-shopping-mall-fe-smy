@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { currencyFormat } from "../../../utils/number";
 import { FiHeart } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
-import { toggleWish } from "../../../features/wishes/wishSlice";
+import { toggleWishOptimistic } from "../../features/wishes/wishSlice";
 import "./ProductCard.style.css";
 
 const ProductCard = ({ item }) => {
@@ -19,18 +19,14 @@ const ProductCard = ({ item }) => {
 
   const handleWishClick = (e) => {
     e.stopPropagation();
-    dispatch(toggleWish(item._id));
+    dispatch(toggleWishOptimistic(item._id));
   };
 
   return (
     <div className="product-card" onClick={() => showProduct(item._id)}>
       <div className="image-container">
         <img src={item?.image} alt={item?.name} />
-        <button
-          className="wishlist-btn"
-          onClick={handleWishClick}
-          aria-label={isWished ? "Remove from wishlist" : "Add to wishlist"}
-        >
+        <button className="wishlist-btn" onClick={handleWishClick}>
           {isWished ? (
             <FaHeart size={30} className="heart-filled" />
           ) : (
