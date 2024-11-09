@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { currencyFormat } from "../../../utils/number";
 import { FiHeart } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
-import { toggleWish } from "../../features/wishes/wishSlice";
+import { toggleWish } from "../../../features/wishes/wishSlice";
 import "./ProductCard.style.css";
 
 const ProductCard = ({ item }) => {
