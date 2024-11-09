@@ -21,15 +21,21 @@ const ProductDetail = () => {
   const user = useSelector((state) => state.user.user);
   const { wishList } = useSelector((state) => state.wishes);
 
-  const isWished = wishList.some((wishItem) => wishItem._id === id);
+  const [isWished, setIsWished] = useState(false);
 
   useEffect(() => {
     dispatch(getProductDetail(id));
     dispatch(getWishList());
   }, [id, dispatch]);
 
+  useEffect(() => {
+    setIsWished(wishList.some((wishItem) => wishItem._id === id));
+  }, [wishList, id]);
+
   const handleWishClick = (e) => {
     e.stopPropagation();
+    setIsWished((prevState) => !prevState);
+
     dispatch(toggleWish(id));
   };
 
