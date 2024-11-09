@@ -17,6 +17,7 @@ export const getWishList = createAsyncThunk(
   }
 );
 
+// 위시리스트 추가/제거
 export const toggleWish = createAsyncThunk(
   "wishes/toggleWish",
   async (productId, { getState, dispatch, rejectWithValue }) => {
@@ -30,9 +31,9 @@ export const toggleWish = createAsyncThunk(
       } else {
         await api.post(`/wish/${productId}`);
       }
-      return productId;
+      return { productId, isWished };
     } catch (error) {
-      return rejectWithValue(productId); // 실패 시 롤백을 위해 productId 반환
+      return rejectWithValue(productId);
     }
   }
 );
@@ -47,7 +48,6 @@ const wishSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // 위시리스트 가져오기
       .addCase(getWishList.pending, (state) => {
         state.loading = true;
       })
@@ -60,34 +60,21 @@ const wishSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(toggleWish.pending, (state, action) => {
-        const productId = action.meta.arg;
+      .addCase(toggleWish.fulfilled, (state, action) => {
+        const { productId, isWished } = action.payload;
         const index = state.wishList.findIndex(
           (item) => item._id === productId
         );
 
-        // UI에서 즉각 반영
-        if (index > -1) {
-          state.wishList.splice(index, 1); // 이미 있는 경우 제거
-        } else {
-          state.wishList.push({ _id: productId }); // 없는 경우 추가
+        if (isWished && index > -1) {
+          state.wishList.splice(index, 1);
+        } else if (!isWished && index === -1) {
+          state.wishList.push({ _id: productId });
         }
-      })
-      .addCase(toggleWish.fulfilled, (state, action) => {
         state.error = null;
       })
       .addCase(toggleWish.rejected, (state, action) => {
-        const productId = action.payload;
-        const index = state.wishList.findIndex(
-          (item) => item._id === productId
-        );
-
-        // 실패 시 원래 상태로 복구
-        if (index > -1) {
-          state.wishList.splice(index, 1); // 추가한 항목 롤백
-        } else {
-          state.wishList.push({ _id: productId }); // 삭제한 항목 복구
-        }
+        state.error = action.payload;
       });
   },
 });

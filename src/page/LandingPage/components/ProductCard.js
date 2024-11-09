@@ -11,6 +11,7 @@ const ProductCard = ({ item }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const wishList = useSelector((state) => state.wishes.wishList);
+  const user = useSelector((state) => state.user.user);
   const isWished = wishList.some((wishItem) => wishItem._id === item._id);
 
   const showProduct = (id) => {
@@ -19,9 +20,13 @@ const ProductCard = ({ item }) => {
 
   const handleWishClick = (e) => {
     e.stopPropagation();
+    if (!user) {
+      // 로그인되어 있지 않다면 로그인 페이지로 이동
+      navigate("/login");
+      return;
+    }
     dispatch(toggleWish(item._id));
   };
-
   return (
     <div className="product-card" onClick={() => showProduct(item._id)}>
       <div className="image-container">
