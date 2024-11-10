@@ -11,6 +11,7 @@ const ProductCard = ({ item }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const wishList = useSelector((state) => state.wishes.wishList);
+  const user = useSelector((state) => state.user.user);
   const isWished = wishList.some((wishItem) => wishItem._id === item._id);
 
   const showProduct = (id) => {
@@ -19,6 +20,12 @@ const ProductCard = ({ item }) => {
 
   const handleWishClick = (e) => {
     e.stopPropagation();
+
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
     dispatch(toggleWish(item._id));
   };
 

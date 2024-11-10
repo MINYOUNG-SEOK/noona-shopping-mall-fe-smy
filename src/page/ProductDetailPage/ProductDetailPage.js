@@ -34,8 +34,13 @@ const ProductDetail = () => {
 
   const handleWishClick = (e) => {
     e.stopPropagation();
-    setIsWished((prevState) => !prevState);
 
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    setIsWished((prevState) => !prevState);
     dispatch(toggleWish(id));
   };
 
