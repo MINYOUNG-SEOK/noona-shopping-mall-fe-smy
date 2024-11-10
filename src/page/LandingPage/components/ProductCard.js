@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { currencyFormat } from "../../../utils/number";
@@ -12,11 +12,17 @@ const ProductCard = ({ item }) => {
   const dispatch = useDispatch();
   const wishList = useSelector((state) => state.wishes.wishList);
   const user = useSelector((state) => state.user.user);
-  const isWished = wishList.some((wishItem) => wishItem._id === item._id);
+  const [isWished, setIsWished] = useState(
+    wishList.some((wishItem) => wishItem._id === item._id)
+  );
 
   const showProduct = (id) => {
     navigate(`/product/${id}`);
   };
+
+  useEffect(() => {
+    setIsWished(wishList.some((wishItem) => wishItem._id === item._id));
+  }, [wishList, item._id]);
 
   const handleWishClick = (e) => {
     e.stopPropagation();
@@ -28,7 +34,7 @@ const ProductCard = ({ item }) => {
 
     setIsWished((prev) => !prev);
 
-    dispatch(toggleWish(id))
+    dispatch(toggleWish(item._id))
       .unwrap()
       .catch(() => {
         setIsWished((prev) => !prev);
