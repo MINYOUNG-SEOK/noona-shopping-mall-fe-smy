@@ -40,8 +40,13 @@ const ProductDetail = () => {
       return;
     }
 
-    setIsWished((prevState) => !prevState);
-    dispatch(toggleWish(id));
+    setIsWished((prev) => !prev);
+
+    dispatch(toggleWish(id))
+      .unwrap()
+      .catch(() => {
+        setIsWished((prev) => !prev);
+      });
   };
 
   const addItemToCart = () => {

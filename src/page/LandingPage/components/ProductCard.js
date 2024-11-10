@@ -26,7 +26,13 @@ const ProductCard = ({ item }) => {
       return;
     }
 
-    dispatch(toggleWish(item._id));
+    setIsWished((prev) => !prev);
+
+    dispatch(toggleWish(id))
+      .unwrap()
+      .catch(() => {
+        setIsWished((prev) => !prev);
+      });
   };
 
   return (
