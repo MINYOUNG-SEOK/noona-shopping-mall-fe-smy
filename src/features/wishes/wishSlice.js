@@ -25,15 +25,22 @@ export const toggleWish = createAsyncThunk(
       const { wishes } = getState();
       const isWished = wishes.wishList.some((item) => item._id === productId);
 
-      if (isWished) {
-        await api.delete(`/wish/${productId}`);
-        dispatch(showToastMessage("위시리스트에서 제거되었습니다."));
-        return { productId, action: "remove" };
-      } else {
-        await api.post(`/wish/${productId}`);
+      // DELETE 대신 POST 사용
+      const response = await api.post(`/wish/${productId}`);
+      const { data, isWished: newWishStatus } = response.data;
+
+      if (newWishStatus) {
         dispatch(showToastMessage("위시리스트에 추가되었습니다."));
-        return { productId, action: "add" };
+      } else {
+        dispatch(showToastMessage("위시리스트에서 제거되었습니다."));
       }
+
+      // 서버에서 반환된 최신 위시리스트로 상태 업데이트
+      return {
+        productId,
+        action: newWishStatus ? "add" : "remove",
+        wishList: data,
+      };
     } catch (error) {
       throw error;
     }
@@ -63,18 +70,8 @@ const wishSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(toggleWish.fulfilled, (state, action) => {
-        const { productId, action: wishAction } = action.payload;
-
-        if (wishAction === "add") {
-          if (!state.wishList.some((item) => item._id === productId)) {
-            state.wishList.push({ _id: productId });
-          }
-        } else {
-          state.wishList = state.wishList.filter(
-            (item) => item._id !== productId
-          );
-        }
-
+        // 서버에서 반환된 최신 위시리스트로 상태 업데이트
+        state.wishList = action.payload.wishList;
         state.error = null;
       });
   },
