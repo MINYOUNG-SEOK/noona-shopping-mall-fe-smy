@@ -20,24 +20,15 @@ export const getWishList = createAsyncThunk(
 // 위시리스트 추가/제거
 export const toggleWish = createAsyncThunk(
   "wishes/toggleWish",
-  async (productId, thunkAPI) => {
-    try {
-      const response = await api.post(`/wish/${productId}`);
-      // toggleWish 후 getWishList 호출로 최신화
-      thunkAPI.dispatch(getWishList());
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
+  async (productId, { getState }) => {
+    const { wishes } = getState();
+    const isWished = wishes.wishList.some((item) => item._id === productId);
 
-// 상품의 위시리스트 상태 확인
-export const checkWishStatus = createAsyncThunk(
-  "wishes/checkWishStatus",
-  async (productId) => {
-    const response = await api.get(`/wish/${productId}/status`);
-    return response.data;
+    if (isWished) {
+      return { productId, action: "remove" };
+    } else {
+      return { productId, action: "add" };
+    }
   }
 );
 
